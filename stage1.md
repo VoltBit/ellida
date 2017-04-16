@@ -6,10 +6,11 @@ The framework provides a very specific functionality within Yocto environment - 
 
 **Features**
 
+ - Abstracts a specification by using custom meta-specification files (test plans)
+ - Ease of access to a database of tests suitable for specifications such as AGL and CGL
  - Encapsulates two powerful testing facilities already present in Yocto - LTP and Image Tests
  - Abstracts the details of communication between the image and various tests, no matter what part of the framework provides the test
  - Can be controlled by Yocto via meta-ellida layer - specification type, custom specification
- - Ensures configuration of components via classes and recipes
 
 <img src="res/arch.png" width=900>
 
