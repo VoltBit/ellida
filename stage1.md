@@ -1,6 +1,6 @@
 # Architecture
 
-## Software components and existing solutions
+### Software components and existing solutions
 
 1. Testing layers, classes and recipes already integrated in Yocto
 
@@ -23,16 +23,41 @@ Best suited for the unit tests, most if not all of the unit tests can be complet
         - some of the tests (in particular smart tests) start a http server on a random high number port, used to serve files to the target. The smart module serves ${DEPLOY_DIR}/rpm so it can run smart channel commands. That means your host's firewall must accept incoming connections from 192.168.7.0/24 (the default class used for tap0 devices by runqemu)
 
 1.2. **Ptests**
-    - deeply integrated with Yocto, every recepe can provide a ptest in the form of
+    - deeply integrated with Yocto, every recepe can provide a ptest in the form of a test script and a small adition to the recipe code
+    - ptests are run using the ptest-runner utility that should run inside a running image or device
+    ```
+    ptest-runner [-d directory] [-l list] [-t timeout] [-h] [ptest1 ptest2 ...]
+    ```
+    
 1.3. **LTP**
-    - very comprehensive suite of tests with more than 4000 tests
-    - the LTP suite comes in the form of C, C++ programs and shell scripts
-    - they are compiled and copied in /opt/ltp along with some scripts used for
-    running the whole suite
-    - [Docs](http://ltp.sourceforge.net/documentation/how-to/ltp.php)
+- very comprehensive suite of tests with more than 4000 tests
+- the LTP suite comes in the form of C, C++ programs and shell scripts
+- they are compiled and copied in /opt/ltp along with some scripts used for running the whole suite
+- to make use of LTP the framework will create a command file such as:
 
-2. Fuego - solution based on Jenkins automation server
-    - Fuego test phases
+```
+#Tag       Test case
+#---------------------------------------
+mtest01     mtest01 -p 10
+mmstress    mmstress -x 100
+fork01      fork01
+chdir01     symlink01 -T chdir01
+#----------------------------------------
+```
+
+then the scripts inside are run from /opt/ltp with:
+    
+    ```
+    ./runltp -p -l result.log -f my_command_file
+    ```
+- [Docs](http://ltp.sourceforge.net/documentation/how-to/ltp.php)
+
+---
+
+2. Platforms not integrated with Yocto
+
+2.1. **Fuego** - solution based on Jenkins automation server
+**Fuego test phases:**
         - pre_test
         - build
         - deploy
@@ -42,11 +67,13 @@ Best suited for the unit tests, most if not all of the unit tests can be complet
         - post_test
     <img src="http://bird.org/ffiles/fuego-test-phases.png" width=500>
 
-    - The tests are compiled, deployed and ran on the image via ssh or other
-    channel of communicaton that was configured beforehand
-    - Adding a new target - physical or virtual device - is done through
-    configuration files and a minimal setup on the device (create test
-    directory)
+- The tests are compiled, deployed and ran on the image via ssh or other channel of communicaton that was configured beforehand
+- Adding a new target - physical or virtual device - is done through configuration files and a minimal setup on the device (create test directory)
+
+- [Docs](http://bird.org/ffiles/fuego-docs.pdf)
+
+
+--- 
 
 ### Framework setup
 
@@ -61,7 +88,6 @@ Best suited for the unit tests, most if not all of the unit tests can be complet
 ### Features
 
 The framework abstracts away a specification through a set of tests that try to emulate as closely as possible the requirements.
-*** How should the framework integrate with Yocto? ***
 
 Extensibility is vital, tests must be easy to add and remove, they should be easily accessible, easy to view and understand.
 
@@ -74,6 +100,9 @@ Extensibility is vital, tests must be easy to add and remove, they should be eas
 The framework will glue together all utilities necessary for a complete evaluation of a given specification. For each test there is a piece of software needed, ether already implemented in Yocto or that need to be written.
 
 First, each test should be assigned to a testing method. To do this I need to understand how the software works. Mainly, I need to understand Image Tests (which I think I do), ptest, LTP, AutoBuild.
+
+
+---
 
 ### Implementation specific notes
 
