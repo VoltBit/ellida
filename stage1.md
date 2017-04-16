@@ -129,7 +129,8 @@ then the scripts inside are run from /opt/ltp with:
         - get_testlog
         - processing
         - post_test
-    <img src="http://bird.org/ffiles/fuego-test-phases.png" width=500>
+
+<img src="http://bird.org/ffiles/fuego-test-phases.png" width=500>
 
 - The tests are compiled, deployed and ran on the image via ssh or other channel of communication that was configured beforehand
 - Adding a new target - physical or virtual device - is done through configuration files and a minimal setup on the device (create test directory)
