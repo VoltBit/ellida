@@ -1,5 +1,63 @@
 # Architecture
 
+## Framework description
+
+The framework provides a very specific functionality within Yocto environment - how well does a generated image meet the requirements of a given specification.
+
+**Features**
+
+ - Encapsulates two powerful testing facilities already present in Yocto - LTP and Image Tests
+ - Abstracts the details of communication between the image and various tests, no matter what part of the framework provides the test
+ - Can be controlled by Yocto via meta-ellida layer - specification type, custom specification
+ - Ensures configuration of components via classes and recipes
+
+<img src="res/arch.png" width=900>
+
+### Legend
+
+ - Green: to be implemented
+ - Red: auto-generated
+ - Blue: part of Yocto/OpenEmbedded ecosystem
+ - Dashed: optional, nice to have
+
+### Main components
+
+**Test manager**
+
+Component used to add or remove tests, change test details. The test manager contains meta-specification files which are test plans based on a specification and can also be configured.
+Funcions:
+
+ - Manage the test set
+ - Provide test plans for the engine
+
+A test plan consists simply of a plan ID, specification tag and list of tests (by test ID)
+
+**Test set**
+
+Information about the test is kept in some form of database. The set should be kept as JSON files as a full database system seems too much for the given task. The characteristics of a test should include:
+
+ - Type (ex: unit, functional, benchmark)
+ - Tag (AGL, CGL, custom)
+ - ID
+ - Source (LTP, IT)
+ - Arguments
+
+Since LTP is a huge collection of tests it should be used as much as possible, for all tests not included in LTP or are not a perfect fit for some requirement, Image Tests should be used. The system is powerful enough to test just about anything, be it unit, functional or benchmarking. Any other system such as ptest can be integrated in the future.
+
+**Test engine**
+
+Made of:
+
+1. JSON interpreter or database communication system for test fetching
+2. Test filter based on test plans
+3. Control script generator based on meta-specification files (test plans) - generates scripts based on current specification and available tests from the database and runs them
+
+**Log interpreter**
+
+Anything that is readable. Should not be dependent of log file paths or the tests should have a common log location and if possible a common format.
+
+---
+
 ### Software components and existing solutions
 
 1. Testing layers, classes and recipes already integrated in Yocto
@@ -23,12 +81,12 @@ Best suited for the unit tests, most if not all of the unit tests can be complet
         - some of the tests (in particular smart tests) start a http server on a random high number port, used to serve files to the target. The smart module serves ${DEPLOY_DIR}/rpm so it can run smart channel commands. That means your host's firewall must accept incoming connections from 192.168.7.0/24 (the default class used for tap0 devices by runqemu)
 
 1.2. **Ptests**
-    - deeply integrated with Yocto, every recepe can provide a ptest in the form of a test script and a small adition to the recipe code
+    - deeply integrated with Yocto, every recipe can provide a ptest in the form of a test script and a small addition to the recipe code
     - ptests are run using the ptest-runner utility that should run inside a running image or device
     ```
     ptest-runner [-d directory] [-l list] [-t timeout] [-h] [ptest1 ptest2 ...]
     ```
-    
+
 1.3. **LTP**
 - very comprehensive suite of tests with more than 4000 tests
 - the LTP suite comes in the form of C, C++ programs and shell scripts
@@ -46,7 +104,7 @@ chdir01     symlink01 -T chdir01
 ```
 
 then the scripts inside are run from /opt/ltp with:
-    
+
     ```
     ./runltp -p -l result.log -f my_command_file
     ```
@@ -67,39 +125,10 @@ then the scripts inside are run from /opt/ltp with:
         - post_test
     <img src="http://bird.org/ffiles/fuego-test-phases.png" width=500>
 
-- The tests are compiled, deployed and ran on the image via ssh or other channel of communicaton that was configured beforehand
+- The tests are compiled, deployed and ran on the image via ssh or other channel of communication that was configured beforehand
 - Adding a new target - physical or virtual device - is done through configuration files and a minimal setup on the device (create test directory)
 
 - [Docs](http://bird.org/ffiles/fuego-docs.pdf)
-
-
---- 
-
-### Framework setup
-
-1. Configure the desired specification - [ ] AGL | [ ] CGL
-2. Install the parts needed to integrate with Yocto:
-    - Create new layer if it does not exist
-    - Add recipes for all needed software
-
-3. After Yocto processes generate the target image, configure the communication medium
-    - initially communicate via ssh - image tests already do so
-
-### Features
-
-The framework abstracts away a specification through a set of tests that try to emulate as closely as possible the requirements.
-
-Extensibility is vital, tests must be easy to add and remove, they should be easily accessible, easy to view and understand.
-
-
-
-*** Building blocks ***
-1. **Yocto** - Linux image generation based on configuration files called layers and recipies
-2. **Tests** - Set of scripts and programs based on the AGL specification.
-
-The framework will glue together all utilities necessary for a complete evaluation of a given specification. For each test there is a piece of software needed, ether already implemented in Yocto or that need to be written.
-
-First, each test should be assigned to a testing method. To do this I need to understand how the software works. Mainly, I need to understand Image Tests (which I think I do), ptest, LTP, AutoBuild.
 
 
 ---
