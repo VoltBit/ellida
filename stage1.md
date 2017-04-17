@@ -62,7 +62,7 @@ Anything that is readable. Should not be dependent of log file paths or the test
 
 ### Software components and existing solutions
 
-1. Testing layers, classes and recipes already integrated in Yocto
+***1. Testing layers, classes and recipes already integrated in Yocto***
 
 1.1. **Image tests**
 
@@ -117,7 +117,7 @@ then the scripts inside are run from /opt/ltp with:
 
 ---
 
-2. Platforms not integrated with Yocto
+***2. Platforms not integrated with Yocto***
 
 2.1. **Fuego** - solution based on Jenkins automation server
 
@@ -141,7 +141,16 @@ then the scripts inside are run from /opt/ltp with:
 
 ---
 
+### Ideas
+
+- Have **pre-build** tests and **post-build** tests for a more efficient evaluation. Core recipes or layers need to be identified and integrated in the meta-specification files (a list of packages mandatory for a given specification). The sistem can then use a variable with a role similar to --WError flag in gcc that stops the build process. It might be difficult to determine the list of included packages since BitBake does not separate do_fetch from the other tasks and dependencies are automatically fetched at build time, in parallel with other tasks.
+
+ - 
+
 ### Implementation specific notes
 
-ROOTFS_POSTPROCESS_COMMAND += "function1;...;functionN" - run shell functions as soon as the image build is done (for conf/local)
-IMAGE_POSTPROCESS_COMMAND += "func" for classes
+run shell functions as soon as the image build is done (from conf/local and from classes)
+```
+ROOTFS_POSTPROCESS_COMMAND += "function1;...;functionN"
+IMAGE_POSTPROCESS_COMMAND += "func"
+```
