@@ -1,0 +1,45 @@
+Din cate inteleg framework-ul de testare trebuie sa spună dacă ficare cerință
+sau element al specificației este respectat de o anume distribuție realizată cu
+Yocto.
+
+1. Care vor fi input-ul și output-ul framewokr-ului? Nu sunt înca familiar cu
+Yocto, am început sa citesc cartile de la [1] și [2], dar nu am facut și ceva
+practic. Îmi imaginez că ideal ar fi să am ca input direct imaginea generată cu
+toată distribuția. Output-ul va fi probabil cu mai multe niveluri de
+verbozitate, iar la cel mai succint nivel va arata doar un raport teste_picate/
+teste_efectuate sau un procent.
+
+2. Cum și în ce mediu ar trebuii să se desfașoare testarea? Am observat că
+specificația AGL este foarte cuprinzătoare și meționează detalii de la
+interfața grafică (pe care nu le voi acoperii probabil) până la
+
+. Știu ca în general testarea și automatizarea se fac în python, dar aș vrea
+să știu dacă este o problemă dacă încerc să implementez cât mai mult din
+proiect în limbajul Rust. Mă va înceti puțin pentru ca nu am multă
+experiență cu limbajul și este considerabil mai restrictiv decât python, dar
+este un limbaj sigur, rapid, cu multe feature-uri moderne.
+
+ Pentru ca deja exista o distributie realizata de catre echipa din spatele AGL
+Framework-ul trebuie nu numai sa aibe ca referinta specificatia AGL, dar ar
+trebuii și să valideze în totalitate distribuția respectivă. Cu alte cuvinte
+dacă în urma analizei framework-ul furnizează un procent, acest procent ar
+trebuii sa fie 100% în cazul distribuției respective, e un mod bun de testare
+a framework-ului?
+
+Am observat ca deja există unele proiecte care au ca tema testarea automată
+cum ar fi LAVA și restul descrise în [2].
+
+[1]
+https://www.amazon.com/Embedded-Linux-Development-Yocto-Project/dp/1783282339
+[2]
+https://www.amazon.com/Learning-Embedded-Linux-using-Project/dp/1784397393/
+
+Idei:
+Daca în teste lucrez cu Rust și QEMU pot să pun bazele pentru o biblioteca
+care furnizeaza API de QEMU în Rust.
+https://wiki.linuxfoundation.org/gsoc/other-project-ideas
+
+
+https://summerofcode.withgoogle.com/archive/2016/projects/6376816327524352/
+https://wiki.linuxfoundation.org/gsoc/other-project-ideas
+

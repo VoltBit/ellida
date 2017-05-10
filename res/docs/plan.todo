@@ -1,0 +1,68 @@
+* Ce trebuie să fac defapt?
+- Un sistem modular care acceptă teste într-un format cât mai divers astfel încât să poată fi acoperită toată specificația AGL și/sau CGL
+- Determinarea de categorii sau grupuri de teste, definirea de meta-informație necesară pentru un test
+- Mă voi axa pe implementarea platformei propriu zise și mai puțin pe testele efective. Voi încerca să fac între 10 și 20 teste relvante și intersante ca testarea comportamentului sistemului de fișiere în diverse scenarii, rezistența la eșec în timpul operației de upgrade, priorități corecte ale proceselor s.a.
+- Incerc să acopăr prin teste specificațiile de la secțiunea Operating system layer
+
+* Modularitate - ce este un test? In ce constă?
+- Testele sunt adăugate prin fișiere de configurare JSON
+- Testul constă într-un script, ideal, limbajul de programre pentru test nu ar trebuii să conteze, informația din configurare conținând și modul de rulare al scriptului
+
+* La ce nivel se face testarea?
+- Unele teste pot fi făcute la nivel de layer yocto (ex: determinarea aplicațiilor integrate, versiuni, dependințe, specificații de sistem), altele la nivel de imagine (ex: determinarea performanțelor, fiabilitatea)
+
+Cerințe
+[1] Yocto project
+[*] Cum arată receipe și layer? Cum se folosesc?
+	-> Un layer este o colectie de recipies.
+	-> https://layers.openembedded.org/layerindex/branch/master/layer/meta-gnome/
+[2] Extensibility
+[3] Remote execution
+[4] Linux testing suites
+[5] Testing formats for CGL and AGL
+[6] Performance
+
+[**] Mod de testare
+- Framework-ul trebuie să fie scalabil, pot fi testate în paralel oricât de multe detalii ale specificației. Trebuie să poată fi specificat ce test este standalone și ce test este independent de instanța de VM în care rulează (dacă este nevoie să fie spawnată o noua VM sau nu).
+- Sistem de conflicte între teste, unele teste le exclud pe altele sau nu pot fi executate concurent, evitată introducerea de zgomot.
+- Dacă o resursă lipsește testul trebuie dezactivat
+-> Cum se folosește QEMU, cum este controlat, ce informații pot afla din exterior?
+-> Cum introduc un proces propriu în mașina virtuală?
+
+1) Sunt analizate testele cerute și resursele sistemului
+2) Este determinată o ordonare optimă a testelor, unele teste au nevoie de mai multe threaduri, de IO sau CPU
+3) Sunt executați pașii și este dat feedback în timp real
+4) Testarea ar trebuii să poată fi abandonată într-un mod curat în orice moment
+
+[**] Organizarea testelor
+ - Fișier de configurare JSON unde sunt specificate testele și informațiile necesare: resurse de care depinde, independență de comportamentul sistemului, prioritate
+
+https://github.com/SUPERAndroidAnalyzer/super/blob/master/rules.json
+
+
+## Tipurile de teste
+TODO
+## Lista de teste și modul de implementare pentru fiecare
+TODO
+
+[***] Document de inscriere
+
+1. Specificarea temei
+Tema proiectului de licență este o platformă de testare a unei distribuții Linux axată pe validarea de imagini realizate prin intermediului sistemului Yocto. Platforma are ca rol validarea pe baza unei specificații și realizarea unui raport detaliat cu privire la gradul în care o anume distribuție respecta specificația dată.
+
+2. Conținutul lucrării scrise (cuprins preliminar)
+Lucrarea scrisă va cuprinde în primul rând o descriere a platformei, descrierea constă în metodele găsite pentru optimizarea ordinii în care sunt rulate testele, descrierea nivelului de scalabilitate și care sunt caracteristicile ce oferă modularitate. De asemenea, vor fi descrise sistemele și specificațiile pe care proiectul se bazează și problemele pe care le rezolvă. In final vor fi prezentate diverse teste pentru a demonstra caracteristicile și performanțele platformei.
+	Referințe:
+	-
+	-
+	-
+
+
+
+
+http://www.yoctoproject.org/docs/1.8/dev-manual/dev-manual.html
+https://community.nxp.com/docs/DOC-103530
+https://wiki.yoctoproject.org/wiki/Building_your_own_recipes_from_first_principles
+http://www.openembedded.org/wiki/Creating_a_new_Layer
+https://layers.openembedded.org/layerindex/branch/master/layer/meta-gnome/
+http://wiki.qemu-project.org/Documentation/QMP
