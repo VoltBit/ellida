@@ -1,0 +1,10 @@
+{
+  "id": "AVL.2.1",
+  "name": "Multi-bit ECC handling",
+  "spec": "CGL",
+  "priority": "P2",
+  "category": "availability",
+  "type": "unit",
+  "dependencies": ["AVL.2.0"],
+  "description": "CGL specifies that carrier grade Linux shall provide a panic trigger mechanism when hardware error checking and correcting (ECC) detects multi-bit ECC errors."
+}

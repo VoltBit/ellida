@@ -9,3 +9,11 @@ systemtap, LTTng
 [LTTng Docs](http://lttng.org/docs/v2.9/#doc-what-is-tracing)
 ![LTTng architectrue](https://static.lwn.net/images/2012/lttng-overview.png)
 
+The Database will have an internal organisation simillar to to a filesystem:
++ A "superblock" JSON file which delcares the supported specifications în the root directory
++ Each subfolder is an organisation element like Layer of Objective
++ Each JSON file is simmilar to an inoode containing metadata and the actual path to th test
+
+
+
+[?] How to I map a test to a JSON file

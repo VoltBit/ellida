@@ -1,3 +1,7 @@
 {
-    "specs": ["agl", "cgl"]
+    "specs": ["agl", "cgl"],
+    "mapping": {
+        "AVL.2.0": "cgl_avl_example.py",
+        "SMM.3.1": "cgl_smm_example.py"
+    }
 }
