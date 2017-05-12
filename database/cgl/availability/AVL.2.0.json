@@ -1,0 +1,10 @@
+{
+    "category": "availability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a mechanism for reporting when hardware error checking and correcting (ECC) detects and/or recovers from a single-bit ECC error.",
+    "id": "AVL.2.0",
+    "name": "Single-bit ECC handling",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

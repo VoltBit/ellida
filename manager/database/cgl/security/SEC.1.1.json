@@ -1,0 +1,10 @@
+{
+    "category": "security",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide the APIs as defined by the SA Forum AIS B.01.01 or a subsequent level of the relevant AIS specification",
+    "id": "SEC.1.1",
+    "name": "Dynamic Kernel Security Module Mechanism",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

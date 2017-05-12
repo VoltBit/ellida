@@ -1,0 +1,10 @@
+{
+    "category": "availability",
+    "dependencies": [],
+    "description": "CGL specifies that Linux shall support multiple Forwarding Information Base (FIB) quick look-up tables with forwarding addresses to allow better server virtualization of overlapping addresses. An FIB is a table that contains a copy of the forwarding information in the IP routing table. All hooks/changes required to support multiple FIBs shall be added.",
+    "id": "AVL.17.0",
+    "name": "Multiple FIB Support",
+    "priority": "P3",
+    "spec": "CGL",
+    "type": ""
+}

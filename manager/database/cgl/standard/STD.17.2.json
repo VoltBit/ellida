@@ -1,0 +1,10 @@
+{
+    "category": "standard",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide the functionality listed in the RFCs and internet drafts below:",
+    "id": "STD.17.2",
+    "name": "iSCSI Support: ",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

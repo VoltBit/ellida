@@ -1,0 +1,10 @@
+{
+    "category": "availability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide\ncapabilities to assist in monitoring storage systems.. The aim of this support\nis to assist in predicting situations likely to lead to failure of disks. This\nallows preventive action to be taken to avoid the failure and resulting\ndisruption of service.",
+    "id": "AVL.6.0",
+    "name": "Disk Predictive Analysis",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

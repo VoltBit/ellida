@@ -1,0 +1,10 @@
+{
+    "category": "standard",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide the functionality listed in the Internet draft below:",
+    "id": "STD.5.2.2",
+    "name": "IPSec Minor CGL Features: ",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

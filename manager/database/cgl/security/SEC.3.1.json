@@ -1,0 +1,10 @@
+{
+    "category": "security",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide support for Internet Small Computer Systems Interface (iSCSI) Initiators. The iSCSI Initiators shall support IPv6, SNMP MIBs, error handling, target discovery, and multiple sessions. This functionality is defined in the following RFCs:",
+    "id": "SEC.3.1",
+    "name": "Auditing",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

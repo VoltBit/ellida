@@ -1,0 +1,10 @@
+{
+    "category": "availability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a\nmechanism to enable multiple access paths from a node to storage devices.  A\nmechanism must be provided for the reactivation of failed paths, allowing them\nto be placed back in service.",
+    "id": "AVL.7.1.4",
+    "name": "Multi-Path Access to Storage",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

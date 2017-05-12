@@ -1,0 +1,10 @@
+{
+    "category": "availability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall support bonding of multiple Ethernet NICs within a single node using IPV6. The bonding supports the following functions:",
+    "id": "AVL.21.1",
+    "name": "Ethernet link bonding using IPV6",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

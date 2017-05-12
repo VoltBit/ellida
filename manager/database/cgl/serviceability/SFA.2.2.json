@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide support that allows the structuring of kernel messages using an event log format to provide more information to identify the problem and its severity, and to allow client applications registered for the fault event to take policy-based corrective action.",
+    "id": "SFA.2.2",
+    "name": "Dynamic Probe Insertion",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

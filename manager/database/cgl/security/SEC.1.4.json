@@ -1,0 +1,10 @@
+{
+    "category": "security",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide the\nfunctionality defined in the following RFCs and Internet drafts.",
+    "id": "SEC.1.4",
+    "name": "Buffer Overflow Protection",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

@@ -15,7 +15,7 @@ import os
 import sys
 sys.path.append('/home/smith/Dropbox/')
 from ellida.manager.depg import DepGraph
-
+from ellida.spec_parser import SpecParser
 
 """
 [x] Complete spec parse from database => list
@@ -225,9 +225,8 @@ class EllidaManager(object):
 
 def main():
     """ Main """
+    SpecParser.parse_cgl()
     mgr = EllidaManager()
-    # mgr.add_test()
-    # mgr.rm_test()
     mgr.parse_specifications()
 
 if __name__ == '__main__':

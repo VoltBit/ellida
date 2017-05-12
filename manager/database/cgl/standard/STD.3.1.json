@@ -1,0 +1,10 @@
+{
+    "category": "standard",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide high-resolution timer support. As specified by POSIX 1003.1b section 14, Clocks and Timers API.",
+    "id": "STD.3.1",
+    "name": "SCTP - Base Features",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

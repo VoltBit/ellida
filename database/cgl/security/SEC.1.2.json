@@ -1,0 +1,10 @@
+{
+    "category": "security",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide the functionality defined in the SA Forum HPI B.01.01 specification or a subsequent level of the relevant HPI specification.",
+    "id": "SEC.1.2",
+    "name": "Process Containment using File System Restrictions",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

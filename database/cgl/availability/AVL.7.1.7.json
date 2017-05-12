@@ -1,0 +1,10 @@
+{
+    "category": "availability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a\nmechanism to enable multiple access paths from a node to storage devices.  A\nmultipath device feature that allows multipath detection and mapping early in\nthe boot process must be provided so that the root file system can exist on a\nmultipath device.",
+    "id": "AVL.7.1.7",
+    "name": "Multi-Path Access to Storage",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

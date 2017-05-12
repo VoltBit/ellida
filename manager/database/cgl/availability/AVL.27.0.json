@@ -1,0 +1,10 @@
+{
+    "category": "availability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a mechanism for symbols, functions, or variables within a running kernel to be replaced with new symbols, functions, or variables. CGL further specifies this operation be completed without a system shutdown or restart",
+    "id": "AVL.27.0",
+    "name": "Kernel Live Patching",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

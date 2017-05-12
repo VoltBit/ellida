@@ -1,0 +1,10 @@
+{
+    "category": "security",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide access control list (ACL) capabilities on file systems that allow the specification of access rights for multiple users and groups. Objectives Satisfied: O.CONTAINMENT",
+    "id": "SEC.7.1",
+    "name": "Memory Limits",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

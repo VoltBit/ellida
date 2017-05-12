@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that Linux shall support profiling of a running kernel and applications to identify bottlenecks and other kernel and application statistics.",
+    "id": "SMM.10.0",
+    "name": "System Initialization Error Handling Enhancements",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

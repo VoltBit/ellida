@@ -1,0 +1,10 @@
+{
+    "category": "performance",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide support for correctly storing core dumps of multi-threaded user-space applications.",
+    "id": "PRF.3.1",
+    "name": "Dynamic allocation with low space loss",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

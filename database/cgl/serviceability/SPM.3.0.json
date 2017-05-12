@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a capability that supports the monitoring of media settings and conditions for system media, such as hard disks or hardware specific disk sub-systems.",
+    "id": "SPM.3.0",
+    "name": "Version and Dependency Checking via Package Management",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

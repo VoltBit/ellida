@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a\nmechanism to detect errors during system initialization. When such an\ninitialization error occurs, this mechanism shall be able to report the event\nto a remote system over the network. CGL further specifies the following error\nconditions shall apply to this requirement:",
+    "id": "SFA.4.0",
+    "name": "Kernel Dump: Limit Scope",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

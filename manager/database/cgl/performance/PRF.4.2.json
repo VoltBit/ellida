@@ -1,0 +1,10 @@
+{
+    "category": "performance",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide support for tools to enable enhanced analysis of kernel dumps. These enhancements must include, but not be limited to, the following capabilities:",
+    "id": "PRF.4.2",
+    "name": "Support of Gigabit Ethernet Jumbo MTU",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

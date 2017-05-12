@@ -1,0 +1,10 @@
+{
+    "category": "performance",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide support for remote debugging of a live kernel. This shall include support over serial and/or local Ethernet.",
+    "id": "PRF.2.2",
+    "name": "Enabling Interrupt CPU Affinity",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

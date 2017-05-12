@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a mechanism to profile critical resources of the kernel and applications. The critical resources that are profiled by this mechanism shall include (but are not limited to):",
+    "id": "SMM.12.0",
+    "name": "Remote Boot Support (was PMT.2.0)",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

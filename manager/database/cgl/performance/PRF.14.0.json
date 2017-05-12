@@ -1,0 +1,10 @@
+{
+    "category": "performance",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide the\nability to configure the kernel to provide real time support so the scheduling\nlatency of a given task will not exceed a target defined by the vendor. Based\non commodity hardware commonly supported by Linux, latency responses of less\nthan 1 millisecond should be considered a reasonable and likely target.",
+    "id": "PRF.14.0",
+    "name": "RAID 0 Support",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

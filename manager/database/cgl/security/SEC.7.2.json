@@ -1,0 +1,10 @@
+{
+    "category": "security",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall support a mechanism for implementing new operating system authentication mechanisms. This support must allow for the dynamic loading of authentication modules. Objectives Satisfied: O.APPLICATION-TOOLS, O.KNOWN-TOE",
+    "id": "SEC.7.2",
+    "name": "File System Quotas",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

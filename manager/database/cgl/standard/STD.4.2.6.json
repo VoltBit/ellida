@@ -1,0 +1,10 @@
+{
+    "category": "standard",
+    "dependencies": [],
+    "description": "Description: CGL specifies that carrier grade Linux shall be compliant with the Linux Standard Base (LSB) 3.0 The LSB 3.0 specification has been split into a generic LSB core, a generic module for C++, and a set of architecture specific modules. Required LSB 3.0 modules for CGL are:",
+    "id": "STD.4.2.6",
+    "name": "IPv6 Additional Features: ",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

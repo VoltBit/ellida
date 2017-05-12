@@ -1,0 +1,10 @@
+{
+    "category": "standard",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall enable process affinity. Process affinity enables a process to run on an explicitly designated processor. When process affinity is used, it provides more efficient caching. For example, it must be possible to bind real-time processes to specified processors.",
+    "id": "STD.3.2.3",
+    "name": "",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

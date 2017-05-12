@@ -1,0 +1,10 @@
+{
+    "category": "standard",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall enable optimized symmetric multi-threading (SMT) processors and interrupt migration between logical processors. Note: The latest stable kernel enables this feature.",
+    "id": "STD.3.2.5",
+    "name": "",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

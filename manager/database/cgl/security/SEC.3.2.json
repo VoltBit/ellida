@@ -1,0 +1,10 @@
+{
+    "category": "security",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide support for differentiated services for IPv4 protocol as defined by the RFCs below. Differentiated services provide network traffic with different levels of service to enable quality of service and traffic control.",
+    "id": "SEC.3.2",
+    "name": "Secure Transport of Log Information",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

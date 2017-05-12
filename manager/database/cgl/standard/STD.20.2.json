@@ -1,0 +1,10 @@
+{
+    "category": "standard",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide the functionality listed in the RFCs below.",
+    "id": "STD.20.2",
+    "name": "PKI CA: ",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

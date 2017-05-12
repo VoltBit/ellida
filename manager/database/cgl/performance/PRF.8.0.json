@@ -1,0 +1,10 @@
+{
+    "category": "performance",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a method to accurately track CPU time consumed by an individual thread. It shall also provide a method to set CPU threshold time used by an individual thread. This method shall also include the ability to send a signal to an individual thread if its CPU threshold time is exceeded.",
+    "id": "PRF.8.0",
+    "name": "Network Storage block level Replication Performances",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

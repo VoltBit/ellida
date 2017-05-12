@@ -1,0 +1,10 @@
+{
+    "category": "standard",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide the\nIPv6 functionality listed in the RFCs below:",
+    "id": "STD.5.2.4",
+    "name": "IPSec Minor CGL Features: ",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

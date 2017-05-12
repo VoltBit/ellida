@@ -1,0 +1,10 @@
+{
+    "category": "availability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a mechanism to enable multiple access paths from a node to storage devices. The software shall determine if multiple paths exist to the same port of the I/O device, and, with configurable controls, balance I/O requests across multiple host bus adapters. If multiple paths exist to the same device over two separate device ports on the same host bus adapter, those I/Os will not be balanced.",
+    "id": "AVL.7.1.2",
+    "name": "Multi-Path Access to Storage",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

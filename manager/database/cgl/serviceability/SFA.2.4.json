@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide support for a remote access capability that allows a centralized system to access the Linux OS event log information of a remote system.",
+    "id": "SFA.2.4",
+    "name": "Multithreaded Core Dump Support for Threaded Applications",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

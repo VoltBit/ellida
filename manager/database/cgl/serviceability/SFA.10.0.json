@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide for Linux on diskless systems.",
+    "id": "SFA.10.0",
+    "name": "Kernel Dump: Configurable Destinations",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

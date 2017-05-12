@@ -1,0 +1,10 @@
+{
+    "category": "hardware",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a mechanism for periodically and automatically analyzing log files. This mechanism shall be able to generate reports if any suspicious or unrecognized log entry is detected. Objectives Satisfied: O.DETECT-SOPHISTICATED, O.ACCOUNT-TOE, O.DETECT-TOE,\nO.OBSERVE-TOE, O.DETECT-SYSTEM",
+    "id": "PMT.1.1",
+    "name": "IPMI support",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

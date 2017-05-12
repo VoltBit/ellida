@@ -1,0 +1,10 @@
+{
+    "category": "performance",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide mechanisms that allow manual rollback to a previous version of software without having to reinstall the previous version.",
+    "id": "PRF.1.7",
+    "name": "Handling Interrupts As Threads",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

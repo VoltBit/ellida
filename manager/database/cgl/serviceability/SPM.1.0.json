@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a capability that supports the monitoring of system temperature settings and conditions.",
+    "id": "SPM.1.0",
+    "name": "Remote Package Update and Installation",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

@@ -1,0 +1,10 @@
+{
+    "category": "standard",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide support for a selfresizing file system for transient data that can be limited to a maximum size.",
+    "id": "STD.4.2.2",
+    "name": "IPv6 Additional Features: ",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

@@ -1,0 +1,10 @@
+{
+    "category": "standard",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall enable handling of interrupt handlers (top half and bottom half) as a task-based process rather than in interrupt processing routine mechanism to allow:",
+    "id": "STD.3.2.2",
+    "name": "Extensions to BSD Sockets to support SCTP",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

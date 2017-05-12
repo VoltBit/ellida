@@ -1,0 +1,10 @@
+{
+    "category": "standard",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall support a 1 ms tick value on all compatible architectures The base overhead of the timer interrupt handler should remain less than 0.1% of CPU time.",
+    "id": "STD.1.0",
+    "name": "Linux Standard Base Compliance",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a capability that supports the monitoring of system network settings and conditions.",
+    "id": "SPM.4.0",
+    "name": "Upgrade Log",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

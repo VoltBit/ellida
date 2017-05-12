@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a capability that supports the monitoring of system fan settings and conditions.",
+    "id": "SPM.2.0",
+    "name": "No System Reboot for Upgrade of Kernel Modules",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide management of logical volumes on shared storage from different cluster nodes. Volumes in such an environment are usually on physical disks accessible to multiple nodes. Volume management shall include the following:",
+    "id": "SMM.3.2",
+    "name": "Network Console Operation",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that Linux shall provide each cluster node the ability to have redundant communication paths to other cluster nodes and for these paths to appear as a single interface to an application. CGL Availability Requirement: AVL.7.3 Redundant Communication Paths",
+    "id": "SMM.7.2",
+    "name": "Fan Monitoring",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

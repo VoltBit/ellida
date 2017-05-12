@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a mechanism for storage network replication. The storage network replication shall provide the following:",
+    "id": "SMM.3.1",
+    "name": "Serial Console Operation",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

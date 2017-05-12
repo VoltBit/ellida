@@ -1,0 +1,10 @@
+{
+    "category": "security",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide tools for the administration of MAC-based access control policies. These tools should facilitate the creation, maintenance, and management of policies. The tools should provide at least one of a command line or graphical interface. Objectives Satisfied: O.CONTAINMENT, O.APPLICATION-TOOLS, O.ACCESS-MALICIOUS",
+    "id": "SEC.4.6",
+    "name": "PKI Certificate Authority (CA)",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

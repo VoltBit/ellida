@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide support for remote booting across common LAN and WAN communication media to support diskless systems.",
+    "id": "SFA.8.0",
+    "name": "Kernel Flat/Graph Execution Profiling",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}
