@@ -223,6 +223,12 @@ class EllidaManager(object):
         cls.__cleanup()
         print("Ellida manager closed")
 
+    @classmethod
+    def clean_database():
+        for spec in cls.supported_specs:
+            shutil.rmtree(cls.database_path + spec + '/*')
+
+
 def main():
     """ Main """
     SpecParser.parse_cgl()
