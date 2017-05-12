@@ -15,5 +15,9 @@ The Database will have an internal organisation simillar to to a filesystem:
 + Each JSON file is simmilar to an inoode containing metadata and the actual path to th test
 
 
-
+Links
+[How to add a recipe](https://wiki.yoctoproject.org/wiki/How_do_I#Q:_How_do_I_put_my_recipe_into_Yocto.3F)
+[^2](http://stevephillips.me/blog/adding-custom-software-to-bitbake-oe-core)
+[^3](https://lists.yoctoproject.org/pipermail/yocto/2015-September/026696.html)
 [?] How to I map a test to a JSON file
+
