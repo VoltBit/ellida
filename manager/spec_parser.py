@@ -20,7 +20,7 @@ class SpecParser(object):
 		'PMT': 'hardware'}
 	cgl_target = "https://wiki.linuxfoundation.org/en/Carrier_Grade_Linux/CGL_Requirements"
 
-	database_path = "database/"
+	database_path = "../database/"
 
 	@classmethod
 	def parse_cgl(cls, force=False):
@@ -28,11 +28,14 @@ class SpecParser(object):
 		base_path = cls.database_path + 'cgl/'
 		if not force:
 			for cat_id, cat_name in cls.cgl_categories.items():
-				if not os.path.exists(base_path + cat_name):
+				if not os.path.exists(base_path + cat_name + '/'):
 					cache_incomplete = True
 					break
-		if not cache_incomplete:
-			return
+				else:
+					print(base_path + cat_name, "\t[ OK ]")
+			if not cache_incomplete:
+				return
+		print("Parsing CGL...")
 		page = requests.get(cls.cgl_target)
 		tree = html.fromstring(page.content)
 		reqs = tree.xpath('//h3/span/text()')
@@ -54,6 +57,7 @@ class SpecParser(object):
 		req_descriptions = tree.xpath('//h3/following-sibling::p[2]/text()')
 		req_descriptions = [x.strip() for x in req_descriptions]
 		cls.__generate_cgl_spec(req_ids, req_names, req_priorities, req_descriptions)
+		print("CGL parse complete!")
 
 	@classmethod
 	def __generate_cgl_spec(cls, ids, names, prs, descr):

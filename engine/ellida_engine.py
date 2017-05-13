@@ -79,3 +79,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+class EllidaEngineError(Exception):
+    def __init__(self, message = "Ellida engine error"):
+        self.message = "[E] " + message
