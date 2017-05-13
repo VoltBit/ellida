@@ -1,3 +1,2 @@
 igraph
 lxml
-scrapy

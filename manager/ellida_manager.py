@@ -15,25 +15,7 @@ import os
 import sys
 sys.path.append('/home/smith/Dropbox/')
 from ellida.manager.depg import DepGraph
-from ellida.spec_parser import SpecParser
-
-"""
-[x] Complete spec parse from database => list
-[] Map tests to parsed database (append characteristics to the list) ->
-how?
-[] See if file read and writes can be diminished
-[] Try to only open files once at the initialization of the object and close on exit
-the path to the tests should be set inside the JSON
--> the manager should generate a database based on physical locations
--> ideally: both the set of tests and the LTP tests would contain a label and
-the JSON will only provide a label
--> labels could be just the name of the requirement
--> the manager has to have an internal mapping between tests and specification
-directory tree
-
-exceptions:
-https://docs.python.org/3/tutorial/errors.html#user-defined-exceptions
-"""
+from ellida.manager.spec_parser import SpecParser
 
 class EllidaManager(object):
     """ Test management component.

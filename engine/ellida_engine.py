@@ -12,6 +12,7 @@ Next todo:
     [] perf
     [] systemtap -> cum controlez sau inserez module de kernel?
 """
+
 import sys
 sys.path.append('/home/smith/Dropbox/')
 import os
@@ -33,7 +34,6 @@ class EllidaEngine(object):
 
     def __setup(self):
         os.makedirs(self.build_path, exist_ok=True)
-        # os.makedirs(self.build_path)
         for spec in self.supported_specs:
             self.build_handlers.append(open(self.build_path + str(spec) +
                                             ".sh", "w+"))

@@ -18,7 +18,7 @@ class SpecParser(object):
 		'STD': 'standard',
 		'SEC': 'security',
 		'PMT': 'hardware'}
-	cgl_target = "https://wiki.linuxfoundation.org/en/Carrier_Grade_Linux/CGL_Requirements#SEC.7.2_File_System_Quotas"
+	cgl_target = "https://wiki.linuxfoundation.org/en/Carrier_Grade_Linux/CGL_Requirements"
 
 	database_path = "database/"
 
