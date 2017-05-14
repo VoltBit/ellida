@@ -1,16 +1,16 @@
 {
     "specs": ["agl", "cgl"],
-    "mapping": {
+    "map": {
         "AVL.2.0": [{
             "name": "dummy1",
             "source": "it"
         }],
         "AVL.2.1": [{
-            "name": "dummy2.py",
+            "name": "dummy2",
             "source": "it"
         }],
         "AVL.4.1": [{
-            "name": "dummy2.py",
+            "name": "dummy2",
             "source": "it"
         }],
         "AVL.5.3": [{
@@ -23,7 +23,7 @@
                 "source": "it"
             },
             {
-                "name": "dummy2.py",
+                "name": "dummy2",
                 "source": "it"
             }
         ],

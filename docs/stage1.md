@@ -12,7 +12,7 @@ The framework provides a very specific functionality within Yocto environment - 
  - Abstracts the details of communication between the image and various tests, no matter what part of the framework provides the test
  - Can be controlled by Yocto via meta-ellida layer - specification type, custom specification
 
-<img src="res/arch.png" width=900>
+<img src="../res/arch.png" width=900>
 
 ### Legend
 

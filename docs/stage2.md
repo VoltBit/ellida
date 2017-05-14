@@ -24,3 +24,8 @@ Links
 
 [?] How to I map a test to a JSON file
 
+TODOs:
+
+Each test might need additional files such as C/C++ source files and makefiles. The framework must account for them somehow.
+
+

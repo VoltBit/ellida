@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 """
 Engine used for processing test plans.
 Next todo:
@@ -5,7 +7,6 @@ Next todo:
 [] Generate dummy running scripts for LTP and image tests.
     [] Setup Image Tests: copy tests in the right directory, config file with
     the list of tests
-    [] 
 [] Should support:
     [] Selenium
     [] LTTng
@@ -17,6 +18,7 @@ import sys
 sys.path.append('/home/smith/Dropbox/')
 import os
 import shutil
+import subprocess
 from ellida.manager.ellida_manager import EllidaManager
 
 class EllidaEngine(object):
@@ -42,9 +44,55 @@ class EllidaEngine(object):
     def build_ltp(cls):
         pass
 
-    @classmethod
-    def build_imagetest(cls):
-        pass
+    def build_imagetest(self, tests):
+        """
+        1. Setup tap device
+        id $USER
+        sudo /home/smith/projects/poky/scripts/runqemu-gen-tapdevs <uid> <gid> <num> <native-sysroot-basedir>
+        2. add INHERIT += "testimage" in local.conf
+        3. add TEST_SUITES = test_list in local.conf
+        4. copy tests in meta/lib/oeqa/runtime
+        5. call bitbake core-image-minimal -c testimage
+        """
+        # The path must be taken from somwhere else <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        conf_path = "/home/smith/projects/poky/build/conf/local.conf"
+        backup_path = "../res/local.conf"
+        test_destination_path = "/home/smith/projects/poky/meta/lib/oeqa/runtime/"
+        test_source_path = "../database/tests/"
+        # backup the loca.conf
+        shutil.copy(conf_path, backup_path) # generate this command dinamically
+        # proc = subprocess.Popen('sudo /home/smith/projects/poky/scripts/runqemu-gen-tapdevs 1000 1000 1 /home/smith/projects/poky/build/tmp/sysroots/x86_64-linux',
+        #     stdin=subprocess.PIPE,
+        #     stdout=subprocess.PIPE,
+        #     stderr=subprocess.PIPE)
+        comm = ["sudo", "/home/smith/projects/poky/scripts/runqemu-gen-tapdevs", "1000", "1000", "1", "/home/smith/projects/poky/build/tmp/sysroots/x86_64-linux"]
+        proc = subprocess.Popen(comm, shell=True,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
+        # sudo_prompt = proc.communicate(str.encode('mkaa[][]\n'))[1]
+        print("Tapgen resut: ", proc.communicate())
+        conf_handle  = open(conf_path, 'r+')
+        conf_data = conf_handle.readlines()
+        if 'INHERIT += "testimage"' not in conf_data or not "INHERIT += 'testimage'":
+            conf_data.append('\nINHERIT += "testimage"\n')
+        flag = False
+        for i in range(len(conf_data)):
+            if "TEST_SUITES" in conf_data[i]:
+                conf_data[i] = "\nTEST_SUITES = \"" + " ".join(tests) + "\"\n"
+                flag = True
+                break
+        if not flag:
+            conf_data.append("\nTEST_SUITES = \"" + " ".join(tests) + "\"\n")
+        print("\nTEST_SUITES = \"" + " ".join(tests) + "\"")
+        conf_handle.seek(0) ## very inefficient, do it better <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        conf_handle.write("".join(conf_data))
+        for test in tests:
+            # print("copy: ", test_source_path + test + ".py", test_destination_path + test + ".py")
+            shutil.copy2(test_source_path + test + ".py", test_destination_path + test + ".py")
+        conf_handle.close()
+
 
     def start_engine(self):
         """
@@ -52,9 +100,25 @@ class EllidaEngine(object):
         2. Iau arborele de dependinte si il parcurg
         3. Generez scripturi de configurare si rulare pentru Image Tests.
         """
-        spec_graphs = self.manager.parse_specifications()
-        for spec, graph in spec_graphs.items():
-            print("Spec: ", spec, "\n", graph)
+        (self.spec_database, self.spec_graphs) = self.manager.parse_specifications()
+
+        spec = 'cgl'
+        test_sets = {}
+        test_sets[spec] = []
+        requirements = self.manager.get_requirements(spec)
+        for req in requirements:
+            for x in self.spec_database[spec]: # change this <<<<<<<<<<<<
+                if x['id'] == req:
+                    if x['tests']:
+                        test_sets[spec].append(x['tests'])
+                    break
+        tests = []
+        for x in test_sets[spec]:
+            for y in x:
+                if len(y['name']) > 2 and y['name'] != 'empty':
+                    tests.append(y['name'])
+        print("Tests to be run for", spec, ":", set(tests))
+        self.build_imagetest(set(tests))
 
     def close_engine(self):
         """ Do cleanup.

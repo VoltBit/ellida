@@ -13,7 +13,7 @@ class DepGraph(object):
         TODO: try to add warning message of ops that are not errorneous but might hint at a problem.
         https://docs.python.org/3.6/library/warnings.html
         """
-        print("added node: ", label)
+        # print("added node: ", label)
         if label not in self.graph.keys():
             self.graph[label] = {'internal': [], 'external': []}
 
@@ -76,6 +76,9 @@ class DepGraph(object):
         """ Returns the current internal representation of the graph.
         """
         return self.graph
+
+    def get_requirements(self):
+        return self.graph.keys()
 
     def __str__(self):
         ret_str = ""

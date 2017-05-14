@@ -22,7 +22,7 @@ class EllidaManager(object):
     Add, remove, change tests; generate test plans based on availbale metadata.
     """
     database_path = "../database/"
-    meta_database_file = "database.json"
+    superspec_file = "database.json"
     build_path = "build/"
     supported_specs = []
     spec_database = {} # list of specs, each spec is a list of JSON objects
@@ -41,39 +41,12 @@ class EllidaManager(object):
     def __get_supported_specifications(cls):
         """ Parse the superfile and provide a list of supported specifications.
         """
-        with open(cls.database_path + cls.meta_database_file) as meta_database:
-            data = json.load(meta_database)
-        cls.supported_specs = data['specs']
-        cls.mapping = data['mapping']
+        with open(cls.database_path + cls.superspec_file) as superspec_handle:
+            cls.superspec = json.load(superspec_handle)
+        cls.supported_specs = cls.superspec['specs']
+        cls.mapping = cls.superspec['map']
         print("Supported specs: ", cls.supported_specs)
         print("mapping: ", cls.mapping)
-
-    """
-    {
-      "id": "AVL.2.0",
-      "name": "Single-bit ECC handling",
-      "spec": "CGL",
-      "priority": "P2",
-      "category": "availability",
-      "type": "unit",
-      "dependencies": [],
-      "description": ""
-    }
-
-    {
-        "specs": ["agl", "cgl"],
-        "mapping": {
-            "AVL.2.0": [{
-                "path": "cgl_avl_example.py",
-                "source": "it"
-            }],
-            "SMM.3.1": [{
-                "path": "cgl_smm_example.py",
-                "source": "it"
-            }]
-        }
-    }
-    """
 
     def get_specs(self):
         """ Return a list of the supported specifications.
@@ -109,8 +82,29 @@ class EllidaManager(object):
         self.__check_test_files(test_data['tests'])
         self.mapping[test_data['id']] += test_data['tests']
 
+    def __attach_test_info(self, spec_entry, tests=None):
+        if not spec_entry['id'] in self.mapping.keys():
+            spec_entry['tests'] = [{'name': "", 'source': ""}]
+        elif tests and tests.instanceof(dict): ## in this case the map file must be updated <<<<<<<<<<<<<
+            spec_entry['tests'] = tests
+        else:
+            spec_entry['tests'] = self.mapping[spec_entry['id']]
+        return spec_entry
+
+    def __add_map_entry(self, requirement, tests=None):
+        if not requirement['id'] in self.mapping.keys():
+            if tests:
+                self.superspec['map'][requirement['id']] = tests
+            else:
+                self.superspec['map'][requirement['id']] = []
+            self.mapping = self.superspec['map']
+            self.supported_specs = self.superspec['specs']
+            with open(cls.database_path + cls.superspec_file) as superspec_handle:
+                json.dump(self.superspec, superspec_handle, sort_keys=True, indent=4)
+
+
     def add_requirement(self, test_id, name, spec, priority, category, test_type,
-                        dependencies, description):
+                        dependencies, description, tests=None):
         """ Add a requirement to database, changes the spec abstartization structure
         and the meta-mapping.
         """
@@ -125,6 +119,8 @@ class EllidaManager(object):
         if not description:
             description = ""
         new_entry['description'] = description
+        new_entry = self.__attach_test_info(new_entry, tests)
+        self.__add_map_entry(new_entry, tests)
         self.spec_database[spec].append(new_entry)
         print("Added test with ID ", str(test_id))
 
@@ -139,7 +135,8 @@ class EllidaManager(object):
             if field != 'description' and not json_data[field]:
                 raise EllidaManagerError("New test format error, empty fields")
         self.spec_database[json_data['spec']].append(json_data)
-        print("Added test with ID ", str(json_data['id']))
+        self.__add_map_entry(json_data)
+        print("Added requirement ", str(json_data['id']))
 
     def rm_test(self, spec, test_id):
         """ Remove a test.
@@ -171,28 +168,34 @@ class EllidaManager(object):
         """
         file_list = []
         for spec in self.supported_specs:
-            self.spec_database[spec] = []
-            for root, _, files in os.walk(self.database_path + spec):
-                for current_file in files:
-                    file_list.append(os.path.join(root, current_file))
-                    with open(os.path.join(root, current_file)) as json_file:
-                        self.spec_database[spec].append(json.load(json_file))
-            self.spec_graphs[spec] = self.__gen_dependency_graph(self.spec_database[spec])
-        return self.spec_graphs
+            self.parse_specification(spec)
+        return (self.spec_database, self.spec_graphs)
 
     def parse_specification(self, spec):
         """ Parse database directory tree and return dependecny tree for a
         give specification.
         """
+        if spec == 'cgl':
+            SpecParser.parse_cgl()
         file_list = []
         self.spec_database[spec] = []
         for root, _, files in os.walk(self.database_path + spec):
             for current_file in files:
                 file_list.append(os.path.join(root, current_file))
                 with open(os.path.join(root, current_file)) as json_file:
-                    self.spec_database[spec].append(json.load(json_file))
+                    new_entry = self.__attach_test_info(json.load(json_file))
+                self.spec_database[spec].append(new_entry)
         self.spec_graphs[spec] = self.__gen_dependency_graph(self.spec_database[spec])
-        return self.spec_graphs[spec]
+        return (self.spec_database[spec], self.spec_graphs[spec])
+
+    def get_specifications(self):
+        return self.spec_database
+
+    def get_specification(self, spec):
+        return self.spec_database[spec]
+
+    def get_requirements(self, spec):
+        return [x['id'] for x in self.spec_database[spec]]
 
     @classmethod
     def start_manager(cls):
@@ -215,7 +218,6 @@ class EllidaManager(object):
 
 def main():
     """ Main """
-    SpecParser.parse_cgl()
     mgr = EllidaManager()
     mgr.parse_specifications()
 
