@@ -88,6 +88,8 @@ class EllidaManager(object):
 
     def add_tests(self, requirement_id, test_list):
         """ Add a tests to a requirement.
+            Input: reqID, [tests]
+            Example: SMM.3.1, [dummy1, dummy2]
         """
         if requirement_id not in self.mapping.keys():
             raise EllidaManagerError("Unknown requirement")

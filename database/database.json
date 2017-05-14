@@ -2,28 +2,28 @@
     "specs": ["agl", "cgl"],
     "mapping": {
         "AVL.2.0": [{
-            "name": "dummy_1.py",
+            "name": "dummy1",
             "source": "it"
         }],
         "AVL.2.1": [{
-            "name": "dummy_2.py",
+            "name": "dummy2.py",
             "source": "it"
         }],
         "AVL.4.1": [{
-            "name": "dummy_2.py",
+            "name": "dummy2.py",
             "source": "it"
         }],
         "AVL.5.3": [{
-            "name": "dummy_1.py",
+            "name": "dummy1",
             "source": "it"
         }],
         "AVL.6.0": [
             {
-                "name": "dummy_1.py",
+                "name": "dummy1",
                 "source": "it"
             },
             {
-                "name": "dummy_2.py",
+                "name": "dummy2.py",
                 "source": "it"
             }
         ],
