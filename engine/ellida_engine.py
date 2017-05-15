@@ -44,28 +44,17 @@ class EllidaEngine(object):
     def build_ltp(cls):
         pass
 
-    def build_imagetest(self, tests):
+    def __direct_imagetest_build(self, tests):
         """
-        1. Setup tap device
-        id $USER
-        sudo /home/smith/projects/poky/scripts/runqemu-gen-tapdevs <uid> <gid> <num> <native-sysroot-basedir>
-        2. add INHERIT += "testimage" in local.conf
-        3. add TEST_SUITES = test_list in local.conf
-        4. copy tests in meta/lib/oeqa/runtime
-        5. call bitbake core-image-minimal -c testimage
+        Make the necessary setup for image tests without an auxiliary bash script.
         """
         # The path must be taken from somwhere else <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
         conf_path = "/home/smith/projects/poky/build/conf/local.conf"
         backup_path = "../res/local.conf"
         test_destination_path = "/home/smith/projects/poky/meta/lib/oeqa/runtime/"
         test_source_path = "../database/tests/"
         # backup the loca.conf
         shutil.copy(conf_path, backup_path) # generate this command dinamically
-        # proc = subprocess.Popen('sudo /home/smith/projects/poky/scripts/runqemu-gen-tapdevs 1000 1000 1 /home/smith/projects/poky/build/tmp/sysroots/x86_64-linux',
-        #     stdin=subprocess.PIPE,
-        #     stdout=subprocess.PIPE,
-        #     stderr=subprocess.PIPE)
         comm = ["sudo", "/home/smith/projects/poky/scripts/runqemu-gen-tapdevs", "1000", "1000", "1", "/home/smith/projects/poky/build/tmp/sysroots/x86_64-linux"]
         proc = subprocess.Popen(comm, shell=True,
             stdin=subprocess.PIPE,
@@ -75,7 +64,7 @@ class EllidaEngine(object):
         print("Tapgen resut: ", proc.communicate())
         conf_handle  = open(conf_path, 'r+')
         conf_data = conf_handle.readlines()
-        if 'INHERIT += "testimage"' not in conf_data or not "INHERIT += 'testimage'":
+        if 'INHERIT += "testimage\n"' not in conf_data or not "INHERIT += 'testimage'\n":
             conf_data.append('\nINHERIT += "testimage"\n')
         flag = False
         for i in range(len(conf_data)):
@@ -92,6 +81,33 @@ class EllidaEngine(object):
             # print("copy: ", test_source_path + test + ".py", test_destination_path + test + ".py")
             shutil.copy2(test_source_path + test + ".py", test_destination_path + test + ".py")
         conf_handle.close()
+
+    def build_imagetest(self, tests):
+        """
+        1. Setup tap device
+        id $USER
+        sudo /home/smith/projects/poky/scripts/runqemu-gen-tapdevs <uid> <gid> <num> <native-sysroot-basedir>
+        2. add INHERIT += "testimage" in local.conf
+        3. add TEST_SUITES = test_list in local.conf
+        4. copy tests in meta/lib/oeqa/runtime
+        5. call bitbake core-image-minimal -c testimage
+        """
+        conf_path = "/home/smith/projects/poky/build/conf/local.conf"
+        imagetest_script_path = "imagetest_script.sh"
+        test_string = "\"" + " ".join(tests) + "\""
+        imagetest_script = """
+sudo /home/smith/projects/poky/scripts/runqemu-gen-tapdevs 1000 1000 1 /home/smith/projects/poky/build/tmp/sysroots/x86_64-linux
+grep -q -F 'INHERIT += "testimage"' """ + conf_path + """ || (echo '' >> """ + conf_path + """ && echo 'INHERIT += "testimage"' >> """ + conf_path + """)
+if grep -q -F 'TEST_SUITES' """ + conf_path + """
+then
+    sed -i 's/.*TEST_SUITES.*/TEST_SUITES = """ + test_string + """/' """ + conf_path + """
+else
+    echo 'TEST_SUITES = """ + test_string + """' >> """ + conf_path + """
+fi
+"""
+        with open(imagetest_script_path, 'w+') as imagetest_script_handle:
+            imagetest_script_handle.write(imagetest_script)
+        os.chmod(imagetest_script_path, 0o755)
 
 
     def start_engine(self):
