@@ -1,0 +1,235 @@
+[CGL] https://wiki.linuxfoundation.org/en/Carrier_Grade_Linux/CGL_Requirements
+
+[] -> not checked yet
+[.] -> can't be done / don't know how
+[*] -> can be done
+[x] -> already implemented
+
+
+├── availability
+│   ├── AVL.10.0.json [.]
+│   ├── AVL.13.1.json [*]
+        + [yocto] check for presence of init systems that allow parallel bootup
+            + systemd -> https://layers.openembedded.org/layerindex/recipe/5979/
+            + openRC
+            + runit
+        https://www.linux.com/news/boot-faster-parallel-starting-services
+│   ├── AVL.17.0.json [.]
+│   ├── AVL.18.0.json [.]
+│   ├── AVL.2.0.json [*]
+        First check if the hardware support ECC (via dmidecode) then use a program to cause a ECC and check the MCE log (via mcelog).
+            Dependencies: mcelog, dmidecode
+            https://superuser.com/questions/381875/ecc-registered-vs-ecc-unbuffered
+            http://www.advancedclustering.com/act_kb/what-are-machine-check-exceptions-or-mce/
+│   ├── AVL.21.0.json [.]
+│   ├── AVL.21.1.json [.]
+│   ├── AVL.2.1.json [*]
+        **** AVL.2.0.json
+│   ├── AVL.22.0.json [.]
+    - can't do without RAID suporting hardware
+    + use commands to detect RAID controler
+    https://serverfault.com/questions/718654/can-i-detect-hardware-raid-infromation-from-inside-linux
+│   ├── AVL.23.0.json [*]
+    + [LTP] lib/newlib_tests/test10.c
+│   ├── AVL.24.0.json [*]
+    + [LTP] lib/newlib_tests/test10.c
+    + [linux] https://github.com/torvalds/linux/blob/master/tools/testing/selftests/watchdog/watchdog-test.c
+    + [yocto] watchdog package has de availabilities described, check if it is installed
+        -> https://layers.openembedded.org/layerindex/recipe/122/
+│   ├── AVL.25.0.json [*]
+    + many LTP tests -> utils/sctp/
+    + [yocto] check if heartbeat is installed and the daemon is running
+        -> https://layers.openembedded.org/layerindex/recipe/32922/
+    + try to create a testcase
+    http://www.linuxjournal.com/article/9838
+    https://en.wikipedia.org/wiki/Linux-HA
+│   ├── AVL.26.0.json [*]
+    + look for file systems that support journaling (lsblk -f)
+        + ext3
+        + ext4
+        + jfs
+        + ntfs
+        + reiserfs
+│   ├── AVL.27.0.json [*]
+    + [yocto] check for kpatch
+    + use kpatch to add a dummy patch
+│   ├── AVL.4.1.json [.]
+│   ├── AVL.5.3.json [*] ** last part should be done with systemV/systemd
+        + start/stop process: a test starts a dummy process and uses kill command, the dummy program should be a binary file that is ran
+        + check exit code of process
+        http://kamalmarhubi.com/blog/2016/04/13/rust-nix-easier-unix-systems-programming-3/
+│   ├── AVL.6.0.json [*]
+        + use S.M.A.R.T. (Self-Monitoring, Analysis, and Reporting Technology) to check health of HDD (smartctl)
+        https://wiki.archlinux.org/index.php/S.M.A.R.T.
+│   ├── AVL.7.1.1.json [.]
+│   ├── AVL.7.1.2.json [.]
+│   ├── AVL.7.1.3.json [.]
+│   ├── AVL.7.1.4.json [.]
+│   ├── AVL.7.1.5.json [.]
+│   ├── AVL.7.1.6.json [.]
+│   ├── AVL.7.1.7.json [.]
+│   ├── AVL.7.2.2.json [.]
+│   ├── AVL.7.2.4.json [.]
+│   ├── AVL.8.1.json [.]
+│   └── AVL.9.0.json [.]
+├── cluster
+│   ├── CCM.2.1.json [.]
+│   ├── CCM.2.2.json [.]
+│   ├── CCM.3.0.json [.]
+│   ├── CFH.1.0.json [.]
+│   ├── CFH.2.0.json [.]
+│   ├── CFH.3.0.json [.]
+│   ├── CSM.1.0.json [.]
+│   ├── CSM.2.0.json [.]
+│   ├── CSM.4.0.json [.]
+│   ├── CSM.6.0.json [.]
+│   └── CSM.7.0.json [.]
+├── hardware
+│   ├── PMS.1.0.json []
+│   ├── PMS.5.1.json []
+│   ├── PMS.5.2.json []
+│   ├── PMS.5.3.json []
+│   ├── PMT.1.1.json []
+│   └── PMT.1.3.json []
+├── performance
+│   ├── PRF.1.1.json []
+│   ├── PRF.1.3.json []
+│   ├── PRF.14.0.json []
+│   ├── PRF.1.4.json []
+│   ├── PRF.1.6.json []
+│   ├── PRF.1.7.json []
+│   ├── PRF.2.1.json []
+│   ├── PRF.2.2.json []
+│   ├── PRF.2.3.json []
+│   ├── PRF.2.4.json []
+│   ├── PRF.3.1.json []
+│   ├── PRF.4.2.json []
+│   ├── PRF.5.0.json []
+│   ├── PRF.6.0.json []
+│   ├── PRF.7.0.json []
+│   └── PRF.8.0.json []
+├── security
+│   ├── SEC.1.1.json []
+│   ├── SEC.1.2.json []
+│   ├── SEC.1.3.1.json []
+│   ├── SEC.1.3.json []
+│   ├── SEC.1.4.json []
+│   ├── SEC.1.5.json []
+│   ├── SEC.2.1.json []
+│   ├── SEC.2.2.json []
+│   ├── SEC.3.1.json []
+│   ├── SEC.3.2.json []
+│   ├── SEC.3.3.json []
+│   ├── SEC.3.4.json []
+│   ├── SEC.3.5.json []
+│   ├── SEC.4.1.json []
+│   ├── SEC.4.2.json []
+│   ├── SEC.4.3.json []
+│   ├── SEC.4.4.json []
+│   ├── SEC.4.5.json []
+│   ├── SEC.4.6.json []
+│   ├── SEC.5.1.json []
+│   ├── SEC.7.1.json []
+│   ├── SEC.7.2.json []
+│   ├── SEC.7.3.json []
+│   ├── SEC.7.4.json []
+│   └── SEC.8.json []
+├── serviceability
+│   ├── SFA.10.0.json []
+│   ├── SFA.1.0.json []
+│   ├── SFA.14.0.json []
+│   ├── SFA.2.1.json []
+│   ├── SFA.2.2.json []
+│   ├── SFA.2.3.json []
+│   ├── SFA.2.4.json []
+│   ├── SFA.3.0.json []
+│   ├── SFA.4.0.json []
+│   ├── SFA.8.0.json []
+│   ├── SMM.10.0.json []
+│   ├── SMM.12.0.json []
+│   ├── SMM.13.0.json []
+│   ├── SMM.3.1.json [*]
+    + connect to serial port from both sides
+│   ├── SMM.3.2.json [*]
+    + ssh test
+│   ├── SMM.4.0.json [.]
+│   ├── SMM.5.0.json [*]
+    + [yocto] check for perf
+│   ├── SMM.5.1.json [*]
+    + [yocto] check for perf and other profilers
+        + mpstat
+        + vmstat
+        + iostat
+        + opened files
+            -> lsof -p $(pidof firefox) | wc -l
+        + ipcs
+        + make a dummy stress test and use the existing utilies
+│   ├── SMM.6.0.json [*]
+    + try to use the logs, might depend on the init system, for systemd
+        -> /var/log/auth.log | grep reboot - check difference in time between successive reboots
+│   ├── SMM.7.1.json [*]
+│   ├── SMM.7.2.json [*]
+│   ├── SMM.7.3.json [*]
+│   ├── SMM.7.4.json [*]
+│   ├── SMM.7.5.json [*]
+│   ├── SMM.7.6.json [*]
+│   ├── SMM.7.7.json [*]
+│   ├── SMM.7.9.json [.]
+│   ├── SMM.8.1.json [*]
+│   ├── SMM.8.2.json []
+│   ├── SMM.8.3.json []
+│   ├── SMM.9.0.json []
+│   ├── SPM.1.0.json []
+│   ├── SPM.2.0.json []
+│   ├── SPM.2.1.json []
+│   ├── SPM.3.0.json []
+│   ├── SPM.4.0.json []
+│   └── SPM.5.0.json []
+└── standard
+    ├── STD.10.0.json []
+    ├── STD.1.0.json []
+    ├── STD.11.1.json []
+    ├── STD.11.2.json []
+    ├── STD.17.1.json []
+    ├── STD.17.2.json []
+    ├── STD.17.3.json []
+    ├── STD.18.1.json []
+    ├── STD.18.2.json []
+    ├── STD.20.1.json []
+    ├── STD.20.2.json []
+    ├── STD.20.3.json []
+    ├── STD.20.4.json []
+    ├── STD.3.1.json []
+    ├── STD.3.2.1.json []
+    ├── STD.3.2.2.json []
+    ├── STD.3.2.3.json []
+    ├── STD.3.2.4.json []
+    ├── STD.3.2.5.json []
+    ├── STD.3.2.6.json []
+    ├── STD.3.2.7.json []
+    ├── STD.4.1.json []
+    ├── STD.4.2.10.json []
+    ├── STD.4.2.1.json []
+    ├── STD.4.2.2.json []
+    ├── STD.4.2.3.json []
+    ├── STD.4.2.4.json []
+    ├── STD.4.2.5.json []
+    ├── STD.4.2.6.json []
+    ├── STD.4.2.7.json []
+    ├── STD.4.2.8.json []
+    ├── STD.4.2.9.json []
+    ├── STD.5.1.json []
+    ├── STD.5.2.1.json []
+    ├── STD.5.2.2.json []
+    ├── STD.5.2.3.json []
+    ├── STD.5.2.4.json []
+    ├── STD.5.2.5.json []
+    ├── STD.5.2.6.json []
+    ├── STD.5.2.7.json []
+    ├── STD.6.1.json []
+    ├── STD.6.2.json []
+    ├── STD.7.1.json []
+    ├── STD.7.2.json []
+    ├── STD.8.1.json []
+    ├── STD.8.8.json []
+    └── STD.9.0.json []

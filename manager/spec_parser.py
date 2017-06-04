@@ -11,13 +11,19 @@ class SpecParser(object):
 	cgl_categories = {
 		'AVL': 'availability',
 		'CFH': 'cluster',
+		'CSM': 'cluster',
+		'CCM': 'cluster',
+		'CAF': 'cluster',
+		'CCON': 'cluster',
+		'CDIAG': 'cluster',
 		'SMM': 'serviceability',
 		'SFA': 'serviceability',
 		'SPM': 'serviceability',
 		'PRF': 'performance',
 		'STD': 'standard',
 		'SEC': 'security',
-		'PMT': 'hardware'}
+		'PMT': 'hardware',
+		'PMS': 'hardware'}
 	cgl_target = "https://wiki.linuxfoundation.org/en/Carrier_Grade_Linux/CGL_Requirements"
 
 	database_path = "../database/"

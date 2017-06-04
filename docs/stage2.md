@@ -14,6 +14,12 @@ The Database will have an internal organisation simillar to to a filesystem:
 + Each subfolder is an organisation element like Layer of Objective
 + Each JSON file is simmilar to an inoode containing metadata and the actual path to th test
 
+Adding GUI via Toaster
+
+1. The framework will be accessible via build page of a particular completed build
+2. Modified files:
+    poky/bitbake/lib/toaster/toastergui/template/basebuildpage.html -> adaug o secțiune in mediul din stânga cu Ellida
+    pot face o pagină ca cea pentru build summary care se găsește în templates/builddashboard.html și este configurată în views.py
 
 Links
 [How to add a recipe](https://wiki.yoctoproject.org/wiki/How_do_I#Q:_How_do_I_put_my_recipe_into_Yocto.3F)
