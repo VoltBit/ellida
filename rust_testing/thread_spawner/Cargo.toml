@@ -1,0 +1,6 @@
+[package]
+name = "thread_spawner"
+version = "0.1.0"
+authors = ["VoltBit <andrei_ciprian.dobre@cti.pub.ro>"]
+
+[dependencies]

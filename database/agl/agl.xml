@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root>
+
+	<text><i><b>3 App/HMI Layer </b></i></text>
+	<text><b>31 Home Screen </b></text>
+	<text>311 Layout</text>
+	<text>312 System UI Parts</text>
+	<text>313 Application Management </text>
+	<text>314 Application Switch</text>
+	<text>315 Application History</text>
+	<text>316 Application Stack</text>
+	<text>317 Role of Home Screen</text>
+	<text>318 Requirements </text>
+	<text><i><b>4 Application Framework Layer</b></i></text>
+	<text><b>41 AGL Application Framework </b></text>
+	<text>411 Application Manager</text>
+	<text>412 Window Manager </text>
+	<text>413 Policy Manager</text>
+	<text>414 Sound Manager </text>
+	<text>415 Input Manager </text>
+	<text>416 User Manager </text>
+	<text><b>42 Web HMI </b></text>
+	<text>421 Web API </text>
+	<text>422 Web Runtime</text>
+	<text><b>43 Native HMI </b></text>
+	<text>431 Native App Runtime</text>
+	<text>432 Native Application Framework </text>
+	<text><i><b>5 Services Layer </b></i></text>
+	<text><b>51 Platform Services </b></text>
+	<text>511 Bluetooth </text>
+	<text>512 Error Management</text>
+	<text>513 Graphics </text>
+	<text>514 Location Services</text>
+	<text>515 Health Monitoring </text>
+	<text>516 IPC </text>
+	<text>517 Lifecycle Management</text>
+	<text>518 Network Services</text>
+	<text>519 Persistent Storage </text>
+	<text>5110 Power Management</text>
+	<text>5111 Resource Management</text>
+	<text>5112 Telephony Services </text>
+	<text>5113 Wi-Fi </text>
+	<text>5114 Window System</text>
+	<text><b>52 Automotive Services </b></text>
+	<text>521 Audio Services</text>
+	<text>522 Camera Services</text>
+	<text>523 Configuration Services </text>
+	<text>524 Diagnostic Services </text>
+	<text>525 Multimedia Services </text>
+	<text>526 Navigation Services</text>
+	<text>527 PIM</text>
+	<text>528 Smartphone Link </text>
+	<text>529 Speech Services </text>
+	<text>5210 Tuner Services </text>
+	<text>5211 Vehicle Bus / Vehicle Info Control</text>
+	<text>5212 Telematics Services</text>
+	<text>5213 Window System</text>
+	<text><i><b>6 Security Services1</b></i></text>
+	<text><b>61 Access Control </b></text>
+	<text>611 Requirements </text>
+	<text><i><b>7 Operating System Layer 1</b></i></text>
+	<text><b>71 Kernel </b></text>
+	<text>711 Linux Kernel </text>
+	<text><b>72 Boot Loader </b></text>
+	<text><b>73 Hypervisor </b></text>
+	<text>731 Requirements </text>
+	<text><b>74 Operating System </b></text>
+	<text>741 File Systems</text>
+	<text>742 Resource Control </text>
+	<text>743 Startup/Shutdown Control </text>
+	<text>744 Database </text>
+	<text>745 System Update</text>
+	<text><b>75 Device Drivers</b></text>
+	<text>751 Peripherals </text>
+	<text>752 Graphics Drivers</text>
+	<text>753 Video Drivers</text>
+	<text>754 Audio Codecs </text>
+	<text>755 Automotive Devices </text>
+</root>
