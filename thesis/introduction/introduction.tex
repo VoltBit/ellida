@@ -1,0 +1,21 @@
+\documentclass{article}
+
+\begin{document}
+
+	Ellida project aims to provide a simple framework for testing whether an operating system distribution meets the requirements of a given specification or not. The framework consists conceptually of two main parts - the framework itself and a collection of tests. The project does not aim to create an exhaustive collection of tests or test every possible aspect of an operating system. Instead, it builds a high level tool on top of existing infrastructure, tools and test suites that provides a very specific functionality - test against a standardized specification.
+
+	Operating system standardization started decades ago, specifications such as CGL - Carrier Grade Linux were designed to help telecommunication companies minimize the risk of network downtime due to software failure. These efforts are based on the principle that standard platforms enable ecosystems, higher development speed and improved software quality. In the past few years, along with the mobile phone development, microprocessor powered devices became more and more common and capable. The rise of IoT phenomenon made it clear that embedded computers will soon become even more commonplace and as such, initiatives to standardize the software started to take shape both in open source and business-driven communities. An industrial branch where a standard was deemed necessary for many years is the automotive industry. The AGL - Automotive Grade Linux specification and the GenIVI standards are the latest in a series of attempts to make software in cars safe, reliable, manageable, and easy to use.
+
+	A software requirements specification (SRS) is a description of a software system to be developed. It lays out functional and non-functional requirements, and may include a set of use cases that describe user interactions that the software must provide.
+
+	\emph{Linus's law} states that "given enough eyeballs, all bugs are shallow", in other words, given enough resources (testers, tests, time etc.) any software bug becomes visible and the fix becomes more obvious. The statement also underlines a precondition for high software quality - intense reviews and high test coverage.
+
+	\emph{Motivation}
+	Software is evolving rapidly both in terms of complexity and volume. It is common for the open source community to lack proper testing tools and this is because they require time to make, time that could be spent developing and improving the software. Testing is also very difficult to do right, the bug detection rate must be as high as possible, resource footprint minimal, and as easy to use as possible to limit the development overhead. Ellida project aims to provide a simple functionality that complements already existing software infrastructure by bridging requirements testing suites. It makes it easy to validate a distribution system against the requirements of a specification and offers a quantitative result - what percent of the requirements are met. The framework is lightweight, can be easily extended to support new specifications, test management is simple and supports several widely used Linux testing suites. It is meant to be a tool that help developer track their progress and validate the system they are writing. The project does not focus on the actual tests, they are seen as drop in elements, easy to replace and provided by one of the supported test providers.
+
+	Specification -> Ellida -> tests
+
+\end{document}
+
+https://en.wikibooks.org/wiki/LaTeX/Modular_Documents#Project_structure
+https://www.sharelatex.com/learn/Multi-file_LaTeX_projects

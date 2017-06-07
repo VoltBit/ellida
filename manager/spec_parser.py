@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 
 from lxml import html
+import untangle
 import requests
 import string
 import json
 import os
+import re
 
 class SpecParser(object):
 
@@ -24,6 +26,14 @@ class SpecParser(object):
 		'SEC': 'security',
 		'PMT': 'hardware',
 		'PMS': 'hardware'}
+
+	agl_layers = {
+		'3': 'app',
+		'4': 'framework',
+		'5': 'os',
+		'6': 'security',
+		'7': 'services'}
+
 	cgl_target = "https://wiki.linuxfoundation.org/en/Carrier_Grade_Linux/CGL_Requirements"
 
 	database_path = "../database/"
@@ -85,9 +95,40 @@ class SpecParser(object):
 			with open(file_path, 'w+') as req_file:
 				json.dump(new_req, req_file, sort_keys=True, indent=4)
 
+	@classmethod
+	def parse_agl(cls):
+		base_path = cls.database_path + 'agl/'
+		""" check if file exists <<<<<<<<<<<<<<<<<<<< """
+		spec_path = base_path + "agl.xml"
+		for cat_id, cat_name in cls.agl_layers.items():
+			os.makedirs(base_path + cat_name, exist_ok=True)
+		print("Parsing AGL...")
+		obj = untangle.parse(spec_path)
+		spec_list = obj.root.children
+		cls.__generate_agl_spec(spec_list)
+
+	@classmethod
+	def __generate_agl_spec(cls, spec_list):
+		base_path = cls.database_path + 'agl/'
+		for req in spec_list:
+			if req.cdata:
+				layer = req.cdata[0]
+				new_req = {}
+				req_id =  re.findall(r'\d+', req.cdata)[0]
+				file_path = base_path + cls.agl_layers[layer] + '/' + "AGL." + req_id + '.json'
+				new_req['id'] = req_id
+				new_req['name'] = req.cdata[len(req_id):].strip()
+				new_req['spec'] = "AGL"
+				new_req['description'] = ""
+				new_req['dependencies'] = []
+				new_req['type'] = ""
+				with open(file_path, 'w+') as req_file:
+					json.dump(new_req, req_file, sort_keys=True, indent=4)
+
 
 def main():
-	SpecParser.parse_cgl()
+	# SpecParser.parse_cgl()
+	SpecParser.parse_agl()
 
 if __name__ == '__main__':
 	main()
