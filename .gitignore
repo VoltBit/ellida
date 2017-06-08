@@ -1,3 +1,5 @@
 sofi/
 django/
 __pycache__/
+compile/
+node_modules/
