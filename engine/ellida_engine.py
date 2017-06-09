@@ -60,7 +60,6 @@ class EllidaEngine(object):
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)
-        # sudo_prompt = proc.communicate(str.encode('mkaa[][]\n'))[1]
         print("Tapgen resut: ", proc.communicate())
         conf_handle  = open(conf_path, 'r+')
         conf_data = conf_handle.readlines()
