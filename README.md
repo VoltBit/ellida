@@ -24,3 +24,4 @@ Diploma project 2017
 
 [Old repo](https://github.com/VoltBit/diploma)
 
+[Icons source](http://www.flaticon.com/packs/vikings)

@@ -17,9 +17,9 @@ class ButtonStyles(object):
           cursor:pointer;
           color:#777777;
           font-family:Arial;
-          font-size:15px;
+          font-size:17px;
           font-weight:bold;
-          padding:6px 24px;
+          padding:8px 24px;
           text-decoration:none;
           text-shadow:0px 1px 0px #ffffff;
       """
