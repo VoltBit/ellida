@@ -37,6 +37,10 @@
 			\subsubsection{User interface}
 				The UI comes in the form of a single-page application (SPA) which is a web application that fits on a single web page with the goal of providing a user experience similar to that of a desktop application. The code is written using AngularJS library.
 
-		\subsection{Integration and API}
+		    \subsection{Integration and API}
+                The system uses "Providers" as a unifying concept for all APIs and integrated frameworks. Each framework that can be used through tests is called "Provider". This form of abstraction makes management of different components easier. It facilitates new framework integration and allows the user disable/enable one system or another.
+
+            \subsection{Daemon}
+                Communication with the target is done via a daemon that accepts commands and can return logging information.
 
 \end{document}

@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from sofi.app import Sofi
 from sofi.ui import Container, View, Row, Panel, Column, ListGroup
 from sofi.ui import Paragraph, Heading, Anchor, Image, Label

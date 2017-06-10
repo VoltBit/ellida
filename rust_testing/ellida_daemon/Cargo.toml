@@ -1,0 +1,10 @@
+[package]
+name = "ellida_daemon"
+version = "0.1.0"
+authors = ["VoltBit <andrei_ciprian.dobre@cti.pub.ro>"]
+
+[dependencies]
+daemonize = "*"
+log = "*"
+syslog = "*"
+env_logger = "*"

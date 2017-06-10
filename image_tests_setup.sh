@@ -1,4 +1,4 @@
-DIR="/home/smith/projects/poky"
+DIR="/home/smith/projects/poky/scripts"
 TARGET_BUILD="/home/smith/projects/poky/build/"
 TAPDEV_COUNT="2"
 
