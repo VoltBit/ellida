@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a capability that supports the monitoring of CPU settings and conditions, such as current utilization totals, per process totals and trends, and current speed settings.",
+    "id": "SMM.8.3",
+    "name": "Remote Access to Event Log",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

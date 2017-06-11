@@ -166,9 +166,9 @@ class EllidaManager(object):
     def parse_specifications(self):
         """ Parse database directory tree.
         """
-        file_list = []
-        for spec in self.supported_specs:
-            self.parse_specification(spec)
+        # for spec in self.supported_specs:
+        #     self.parse_specification(spec)
+        self.parse_specification('cgl')
         return (self.spec_database, self.spec_graphs)
 
     def parse_specification(self, spec):
@@ -177,14 +177,17 @@ class EllidaManager(object):
         """
         if spec == 'cgl':
             SpecParser.parse_cgl()
+        elif spec == 'agl':
+            SpecParser.parse_agl()
         file_list = []
         self.spec_database[spec] = []
         for root, _, files in os.walk(self.database_path + spec):
             for current_file in files:
-                file_list.append(os.path.join(root, current_file))
-                with open(os.path.join(root, current_file)) as json_file:
-                    new_entry = self.__attach_test_info(json.load(json_file))
-                self.spec_database[spec].append(new_entry)
+                if not current_file == 'agl.xml':
+                    file_list.append(os.path.join(root, current_file))
+                    with open(os.path.join(root, current_file)) as json_file:
+                        new_entry = self.__attach_test_info(json.load(json_file))
+                    self.spec_database[spec].append(new_entry)
         self.spec_graphs[spec] = self.__gen_dependency_graph(self.spec_database[spec])
         return (self.spec_database[spec], self.spec_graphs[spec])
 
@@ -215,10 +218,14 @@ class EllidaManager(object):
         for spec in cls.supported_specs:
             shutil.rmtree(cls.database_path + spec + '/*')
 
+    def start(self):
+        self.parse_specifications()
+
 
 def main():
     """ Main """
     mgr = EllidaManager()
+    # mgr.start()
     mgr.parse_specifications()
 
 if __name__ == '__main__':

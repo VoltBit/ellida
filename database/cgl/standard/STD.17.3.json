@@ -1,0 +1,10 @@
+{
+    "category": "standard",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide the functionality defined in the IEEE Std 802.1Q-1998 specification. This standard defines the operation of virtual LAN (VLAN) endpoints that permit the definition, operation and administration of Virtual LAN topologies within a LAN infrastructure.",
+    "id": "STD.17.3",
+    "name": "iSCSI Support: ",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

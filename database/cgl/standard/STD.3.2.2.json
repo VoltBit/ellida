@@ -1,0 +1,10 @@
+{
+    "category": "standard",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a network storage replication service with the following performance levels:",
+    "id": "STD.3.2.2",
+    "name": "Extensions to BSD Sockets to support SCTP",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

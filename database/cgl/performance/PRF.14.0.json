@@ -1,0 +1,10 @@
+{
+    "category": "performance",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall enable support for a 9000 byte Maximum Transmission Unit (MTU) for the Gigabit Ethernet protocol to enable lower CPU overhead and better throughput. This shall be a configurable option as some applications may prefer low latency to large message sizes. Hardware support is required.",
+    "id": "PRF.14.0",
+    "name": "RAID 0 Support",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

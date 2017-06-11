@@ -1,0 +1,10 @@
+{
+    "category": "standard",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide an efficient capability for handling a large number of essentially simultaneous asynchronous events arriving on multiple channels, such as multiple sockets or other similar paths.",
+    "id": "STD.1.0",
+    "name": "Linux Standard Base Compliance",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

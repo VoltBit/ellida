@@ -1,0 +1,10 @@
+{
+    "category": "security",
+    "dependencies": [],
+    "description": ", 2402, 2406 and at least one encapsulating security payload (ESP) algorithm such as specified by",
+    "id": "SEC.5.1",
+    "name": "Periodic User-Level File Integrity Checking",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide remote software installation and upgrade mechanisms that perform transaction logging of dates, times, changes, and the identity of the user performing a change.",
+    "id": "SFA.2.3",
+    "name": "User Space Debug Support for Threads",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

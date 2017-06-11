@@ -1,0 +1,10 @@
+{
+    "category": "performance",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide high-resolution timer support. As specified by POSIX 1003.1b section 14, Clocks and Timers API.",
+    "id": "PRF.2.3",
+    "name": "(Hyper-Threading) Optimized SMT Support",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

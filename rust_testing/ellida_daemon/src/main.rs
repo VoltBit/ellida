@@ -18,20 +18,40 @@ fn syslog_test() {
     }
 }
 
-fn action_test() {
-    let mut lg = syslog::unix(Facility::LOG_USER);
+let local_logger: Box<Logger>;
+let external_logger: Box<Logger>;
 
-    match syslog::unix(Facility::LOG_USER) {
-        Err(_)  => {},
-        Ok(writer)   => {
-            lg = writer;
-        }
-    }
+fn action_test() {
+
+    local_logger = syslog::unix(Facility::LOG_USER).unwrap();
+    external_logger = syslog::tcp("127.0.0.1:9779",
+                                      "localhost".to_string(),
+                                      Facility::LOG_USER).unwrap();
 
     let sleep_time = time::Duration::from_millis(2000);
-    while true {
-        lg.send(Severity::LOG_ALERT, "test");
+    loop {
+        logger.send(Severity::LOG_ALERT, "test");
+        external_logger.send(Severity::LOG_ALERT, "test");
         thread::sleep(sleep_time);
+    }
+}
+
+fn handle_client(stream: TcpStream) {
+    let mut buffer = [0; 4096];
+    let x = stream.read(&mut buffer);
+    local_logger.write(x);
+    external_logger.write(x);
+}
+
+fn command_listener() {
+    let listener = TcpListener::bind("127.0.0.1:9778").unwrap();
+    for stream in listener.incoming() {
+        match stream {
+            Ok(stream) => {
+                handle_client(stream);
+            }
+            Err(e) => { /* connection failed */ }
+        }
     }
 }
 
@@ -44,7 +64,7 @@ fn main() {
     syslog_test();
 
     let daemon = Daemonize::new()
-        .pid_file("/tmp/ellida.pid")
+        .pid_file("/home/smith/Dropbox/ellida/res/ellida.pid")
         .chown_pid_file(true)
         .working_directory(working_dir)
         .user(user_name)

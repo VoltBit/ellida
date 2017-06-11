@@ -106,6 +106,7 @@ class SpecParser(object):
 		obj = untangle.parse(spec_path)
 		spec_list = obj.root.children
 		cls.__generate_agl_spec(spec_list)
+		print("AGL parse complete!")
 
 	@classmethod
 	def __generate_agl_spec(cls, spec_list):

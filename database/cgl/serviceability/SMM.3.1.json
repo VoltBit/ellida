@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide the ability for the management console to remotely boot or reboot any node in the cluster. The ability to boot/reboot a cluster node must conform to the HPI standard. Links to Other Specifications CGL Standards Requirements Definition:",
+    "id": "SMM.3.1",
+    "name": "Serial Console Operation",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

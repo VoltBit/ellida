@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide support for remote booting across common LAN and WAN communication media to support diskless systems.",
+    "id": "SPM.3.0",
+    "name": "Version and Dependency Checking via Package Management",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

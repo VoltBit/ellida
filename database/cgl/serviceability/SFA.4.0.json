@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide support for remote debugging of a live kernel. This shall include support over serial and/or local Ethernet.",
+    "id": "SFA.4.0",
+    "name": "Kernel Dump: Limit Scope",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

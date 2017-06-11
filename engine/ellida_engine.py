@@ -19,6 +19,10 @@ sys.path.append('/home/smith/Dropbox/')
 import os
 import shutil
 import subprocess
+import socket
+import signal
+from time import sleep
+from threading import Thread
 from ellida.manager.ellida_manager import EllidaManager
 
 class EllidaEngine(object):
@@ -27,6 +31,9 @@ class EllidaEngine(object):
     build_path = "build/"
     build_handlers = []
     poky_build = "/home/smith/projects/poky/build/"
+    host = "localhost"
+    port = 9779
+    shutdown = False
 
     def __init__(self):
         self.manager = EllidaManager()
@@ -109,12 +116,31 @@ fi
         os.chmod(imagetest_script_path, 0o755)
 
 
+    def __log_interpreter(self, listen_socket):
+        print("Started log interpreter thread")
+        while not self.shutdown:
+            try:
+                packet, _ = comm_socket.recvfrom(1024)
+                packet = packet.decode('utf-8')
+                print("Received: ", packet)
+            except socket.error:
+                pass
+
+    def signal_handler(self, signal, frame):
+        print("Engine shuting down")
+        self.shutdown = True
+        self.close_engine()
+        sys.exit(0)
+
     def start_engine(self):
         """
         1. Folosesc managerul ca sa parsez specificatia
         2. Iau arborele de dependinte si il parcurg
         3. Generez scripturi de configurare si rulare pentru Image Tests.
         """
+        print("Engine running")
+        signal.signal(signal.SIGINT, self.signal_handler)
+
         (self.spec_database, self.spec_graphs) = self.manager.parse_specifications()
 
         spec = 'cgl'
@@ -134,6 +160,22 @@ fi
                     tests.append(y['name'])
         print("Tests to be run for", spec, ":", set(tests))
         self.build_imagetest(set(tests))
+
+        listen_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        listen_socket.bind((self.host, self.port))
+        listen_socket.listen()
+
+        while not self.shutdown:
+            print("Engine waiting for loggers...")
+            (comm_socket, address) = listen_socket.accept()
+            print("Accepted logger from ", address)
+            log_thread = Thread(target=self.__log_interpreter, args=(comm_socket,))
+            log_thread.daemon = True
+            log_thread.start()
+
+
+        log_thread.join()
+        listen_socket.close()
 
     def close_engine(self):
         """ Do cleanup.

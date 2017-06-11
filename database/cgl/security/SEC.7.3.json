@@ -1,0 +1,10 @@
+{
+    "category": "security",
+    "dependencies": [],
+    "description": ". Objectives Satisfied: O.APPLICATION-TOOLS, O.NETWORK",
+    "id": "SEC.7.3",
+    "name": "Process Quotas",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

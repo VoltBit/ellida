@@ -1,0 +1,10 @@
+{
+    "category": "availability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a panic trigger mechanism when hardware error checking and correcting (ECC) detects multi-bit ECC errors.",
+    "id": "AVL.2.1",
+    "name": "Multi-bit ECC handling",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

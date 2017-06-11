@@ -1,0 +1,10 @@
+{
+    "category": "performance",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide support for producing and storing kernel dumps as follows:",
+    "id": "PRF.1.6",
+    "name": "Protecting Against Priority Inversion On Mutex",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

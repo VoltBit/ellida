@@ -1,0 +1,10 @@
+{
+    "category": "standard",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide support for Internet Small Computer Systems Interface (iSCSI) Initiators. The iSCSI Initiators shall support IPv6, SNMP MIBs, error handling, target discovery, and multiple sessions. This functionality is defined in the following RFCs:",
+    "id": "STD.20.1",
+    "name": "PKI CA: ",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

@@ -1,0 +1,10 @@
+{
+    "category": "security",
+    "dependencies": [],
+    "description": ". Objectives Satisfied: O.APPLICATION-TOOLS, O.NETWORK",
+    "id": "SEC.7.1",
+    "name": "Memory Limits",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

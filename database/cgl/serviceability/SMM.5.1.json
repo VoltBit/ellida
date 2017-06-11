@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide cluster wide time synchronization within 500mS, and must synchronize within 10 seconds once the time synchronization service is initiated. In a cluster, each node must have be synchronized to the same wall-clock time to provide consistency in access times to shared resources (i.e. clustered file system modification and access times) as well as time stamps in cluster-wide logs.",
+    "id": "SMM.5.1",
+    "name": "Application Profiler (was AVL.19.0)",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

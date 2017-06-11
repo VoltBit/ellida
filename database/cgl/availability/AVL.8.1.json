@@ -1,0 +1,10 @@
+{
+    "category": "availability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a\nmechanism to speed up operating system initialization by bypassing the system\nfirmware when one instance of Linux reboots to another instance of Linux.",
+    "id": "AVL.8.1",
+    "name": "Fast Linux Restart Bypassing System Firmware",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

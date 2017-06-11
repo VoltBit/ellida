@@ -1,0 +1,10 @@
+{
+    "category": "performance",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide support for profiling of the running kernel using a prof or gprof style of recording trace information during system execution.",
+    "id": "PRF.1.4",
+    "name": "High-Resolution Timers",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

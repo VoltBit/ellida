@@ -1,0 +1,10 @@
+{
+    "category": "security",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide at least one mechanism to protect against the exploitation of software bugs that exploit the lack of boundary checking in many programs and give an attacker some access to a task's address space by writing outside of buffer bounds. Objectives Satisfied: O.ENTRY, O.ENTRY-SOPHISTICATED",
+    "id": "SEC.3.2",
+    "name": "Secure Transport of Log Information",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

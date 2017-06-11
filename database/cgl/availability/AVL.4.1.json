@@ -1,0 +1,10 @@
+{
+    "category": "availability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide the ability to control kernel virtual memory allocation adjustments based on the specific needs of the system. Control of virtual memory shall include but not be limited to the following:",
+    "id": "AVL.4.1",
+    "name": "VM Strict Over-Commit",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

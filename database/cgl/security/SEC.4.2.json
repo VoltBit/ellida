@@ -1,0 +1,10 @@
+{
+    "category": "security",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide secure transport of log information over a network to the log files. The transport mechanism shall ensure that the information remains confidential, cannot be modified, is not a replay of an earlier log message, and originated at the source it claims. Objectives Satisfied: O.DETECT-SOPHISTICATED, O.ACCOUNT-TOE, O.DETECT-TOE,\nO.OBSERVE-TOE, O.DETECT-SYSTEM",
+    "id": "SEC.4.2",
+    "name": "IKE",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

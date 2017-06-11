@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that Linux shall provide support for a management console connection via a network port in addition to providing the standard support for a management console connection via a serial port.",
+    "id": "SMM.7.1",
+    "name": "Temperature Monitoring",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

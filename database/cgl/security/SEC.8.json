@@ -1,0 +1,10 @@
+{
+    "category": "security",
+    "dependencies": [],
+    "description": ", for key management for the IPsec module and the IKE service. Objectives Satisfied: O.APPLICATION-TOOLS, O.NETWORK",
+    "id": "SEC.8",
+    "name": "Trusted Platform Module (TPM) Support",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}
