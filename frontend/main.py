@@ -47,6 +47,11 @@ class EllidaUI(object):
             'name': 'LDTP',
             'desc': 'Linux Desktop Testing Project',
             'type': 'interface',
+            'state': 'inactive'},
+        {
+            'name': 'Image Tests',
+            'desc': 'Yocto package for easy managing and writing pf Python tests',
+            'type': 'general',
             'state': 'inactive'}
     ]
 

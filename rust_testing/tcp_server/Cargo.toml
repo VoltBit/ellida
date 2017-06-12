@@ -1,0 +1,7 @@
+[package]
+name = "tcp_server"
+version = "0.1.0"
+authors = ["VoltBit <andrei_ciprian.dobre@cti.pub.ro>"]
+
+[dependencies]
+daemonize = "*"

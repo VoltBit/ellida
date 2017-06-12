@@ -5,6 +5,7 @@ extern crate syslog;
 use daemonize::{Daemonize};
 use syslog::{Facility,Severity};
 use std::{thread, time};
+use std::net::{TcpListener, TcpStream};
 
 fn syslog_test() {
     match syslog::unix(Facility::LOG_USER) {
@@ -18,10 +19,7 @@ fn syslog_test() {
     }
 }
 
-let local_logger: Box<Logger>;
-let external_logger: Box<Logger>;
-
-fn action_test() {
+fn action_test(local_logger: Box<syslog::Logger>, external_logger: Box<syslog::Logger>) {
 
     local_logger = syslog::unix(Facility::LOG_USER).unwrap();
     external_logger = syslog::tcp("127.0.0.1:9779",
@@ -30,25 +28,25 @@ fn action_test() {
 
     let sleep_time = time::Duration::from_millis(2000);
     loop {
-        logger.send(Severity::LOG_ALERT, "test");
+        local_logger.send(Severity::LOG_ALERT, "test");
         external_logger.send(Severity::LOG_ALERT, "test");
         thread::sleep(sleep_time);
     }
 }
 
-fn handle_client(stream: TcpStream) {
+fn handle_client(stream: TcpStream, local_logger: Box<syslog::Logger>, external_logger: Box<syslog::Logger>) {
     let mut buffer = [0; 4096];
     let x = stream.read(&mut buffer);
     local_logger.write(x);
     external_logger.write(x);
 }
 
-fn command_listener() {
+fn command_listener(local_logger: Box<syslog::Logger>, external_logger: Box<syslog::Logger>) {
     let listener = TcpListener::bind("127.0.0.1:9778").unwrap();
     for stream in listener.incoming() {
         match stream {
             Ok(stream) => {
-                handle_client(stream);
+                handle_client(stream, local_logger, external_logger);
             }
             Err(e) => { /* connection failed */ }
         }
@@ -62,6 +60,9 @@ fn main() {
     let group_name = "smith";
 
     syslog_test();
+
+    let mut local_logger: Box<syslog::Logger>;
+    let mut external_logger: Box<syslog::Logger>;
 
     let daemon = Daemonize::new()
         .pid_file("/home/smith/Dropbox/ellida/res/ellida.pid")

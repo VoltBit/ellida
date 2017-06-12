@@ -2,16 +2,6 @@
 
 """
 Engine used for processing test plans.
-Next todo:
-
-[] Generate dummy running scripts for LTP and image tests.
-    [] Setup Image Tests: copy tests in the right directory, config file with
-    the list of tests
-[] Should support:
-    [] Selenium
-    [] LTTng
-    [] perf
-    [] systemtap -> cum controlez sau inserez module de kernel?
 """
 
 import sys
@@ -31,21 +21,43 @@ class EllidaEngine(object):
     build_path = "build/"
     build_handlers = []
     poky_build = "/home/smith/projects/poky/build/"
-    host = "localhost"
-    port = 9779
+    # local_addr = "192.168.7.1"
+    # target_addr = "192.168.7.2"
+    local_addr = "192.168.10.4"
+    target_addr = "192.168.10.4"
+
+    comm_port = 9778
+    log_port = 9779
     shutdown = False
+    conf_path = "../res/ellida.conf" # make this non-relative <<<<<<<<<<<<<<<<<<<<<
+    test_sets = ["test_set1", "test_set2"]
 
     def __init__(self):
         self.manager = EllidaManager()
         self.supported_specs = self.manager.get_specs()
+        self.config = {}
         self.__setup()
         print("Ellida engine initialized.")
 
     def __setup(self):
+        # self.__read_config()
         os.makedirs(self.build_path, exist_ok=True)
         for spec in self.supported_specs:
             self.build_handlers.append(open(self.build_path + str(spec) +
                                             ".sh", "w+"))
+
+    def __read_config(self):
+        with open(self.conf_path) as conf_file:
+            current_config = conf_file.readlines()
+        for setting in current_config: # check for wrong format like: /home/smith = CONF_FILE
+            params = setting.split('=')
+            if len(params) > 1:
+                self.config[params[0].strip()] = params[1].strip()
+            else:
+                raise EllidaEngineError("Wrong file format, you can find an example in the res/ directory.")
+        self.target_addr = self.config['TARGET_ADDR']
+        self.local_addr = self.config['LOCAL_ADDR']
+        print("Config loaded: ", self.config)
 
     @classmethod
     def build_ltp(cls):
@@ -116,11 +128,11 @@ fi
         os.chmod(imagetest_script_path, 0o755)
 
 
-    def __log_interpreter(self, listen_socket):
+    def __log_interpreter(self, log_socket):
         print("Started log interpreter thread")
         while not self.shutdown:
             try:
-                packet, _ = comm_socket.recvfrom(1024)
+                packet, _ = log_socket.recvfrom(1024)
                 packet = packet.decode('utf-8')
                 print("Received: ", packet)
             except socket.error:
@@ -131,6 +143,16 @@ fi
         self.shutdown = True
         self.close_engine()
         sys.exit(0)
+
+    # implement a good producer-consumer the sender should consume sets of tests, the manager should add more sets <<<<<<<<<<<<<<<<<<<<<<<<<<
+    def __command_sender(self, comm_socket):
+        print("Connecting to daemon on ", self.target_addr, "...")
+        comm_socket.connect((self.target_addr, self.comm_port))
+        print("Connected to daemon.")
+        for test_set in self.test_sets:
+            payload = bytes(test_set, 'utf-8')
+            ret = comm_socket.sendto(payload, (self.target_addr, self.comm_port))
+            print("Sent command: ", test_set, " [", ret, "]")
 
     def start_engine(self):
         """
@@ -161,21 +183,33 @@ fi
         print("Tests to be run for", spec, ":", set(tests))
         self.build_imagetest(set(tests))
 
-        listen_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        listen_socket.bind((self.host, self.port))
-        listen_socket.listen()
+        command_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        command_socket.bind((self.local_addr, self.comm_port))
+        sender_thread = Thread(target=self.__command_sender, args=(command_socket,))
+        sender_thread.daemon = True
+        sender_thread.start()
+
+        log_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        log_socket.bind((self.local_addr, self.log_port))
+        log_socket.listen()
 
         while not self.shutdown:
             print("Engine waiting for loggers...")
-            (comm_socket, address) = listen_socket.accept()
+            (active_socket, address) = log_socket.accept()
             print("Accepted logger from ", address)
-            log_thread = Thread(target=self.__log_interpreter, args=(comm_socket,))
+            log_thread = Thread(target=self.__log_interpreter, args=(active_socket,))
             log_thread.daemon = True
             log_thread.start()
+            self.active_threads.append(log_thread)
+            self.active_sockets.append(active_socket)
 
-
-        log_thread.join()
-        listen_socket.close()
+        for thr in self.active_threads:
+            thr.join()
+        sender_thread.join()
+        for sock in self.active_sockets:
+            sock.close()
+        log_socket.close()
+        command_socket.close()
 
     def close_engine(self):
         """ Do cleanup.
@@ -198,9 +232,10 @@ def main():
     engine = EllidaEngine()
     engine.start_engine()
 
+
 if __name__ == '__main__':
     main()
 
 class EllidaEngineError(Exception):
     def __init__(self, message = "Ellida engine error"):
-        self.message = "[E] " + message
+        self.message = "\033[91[E] " + message + "\e[0m"

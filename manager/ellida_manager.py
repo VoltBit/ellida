@@ -149,7 +149,7 @@ class EllidaManager(object):
         print("database: ", self.database_path)
         print("test ", str(test_id), " removed")
 
-    def ch_test(self, spec, test_id):
+    def change_test(self, spec, test_id):
         """ Change a test.
         Input: """
         print("test change")
@@ -166,9 +166,8 @@ class EllidaManager(object):
     def parse_specifications(self):
         """ Parse database directory tree.
         """
-        # for spec in self.supported_specs:
-        #     self.parse_specification(spec)
-        self.parse_specification('cgl')
+        for spec in self.supported_specs:
+            self.parse_specification(spec)
         return (self.spec_database, self.spec_graphs)
 
     def parse_specification(self, spec):
