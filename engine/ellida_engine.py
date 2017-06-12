@@ -23,7 +23,7 @@ class EllidaEngine(object):
     poky_build = "/home/smith/projects/poky/build/"
     # local_addr = "192.168.7.1"
     # target_addr = "192.168.7.2"
-    local_addr = "192.168.10.4"
+    local_addr = "192.168.10.7"
     target_addr = "192.168.10.4"
 
     comm_port = 9778
@@ -36,6 +36,8 @@ class EllidaEngine(object):
         self.manager = EllidaManager()
         self.supported_specs = self.manager.get_specs()
         self.config = {}
+        self.active_threads = []
+        self.active_sockets = []
         self.__setup()
         print("Ellida engine initialized.")
 
@@ -134,7 +136,10 @@ fi
             try:
                 packet, _ = log_socket.recvfrom(1024)
                 packet = packet.decode('utf-8')
-                print("Received: ", packet)
+                if packet:
+                    print("Received: ", packet)
+                else:
+                    break
             except socket.error:
                 pass
 
@@ -147,7 +152,12 @@ fi
     # implement a good producer-consumer the sender should consume sets of tests, the manager should add more sets <<<<<<<<<<<<<<<<<<<<<<<<<<
     def __command_sender(self, comm_socket):
         print("Connecting to daemon on ", self.target_addr, "...")
-        comm_socket.connect((self.target_addr, self.comm_port))
+        while not self.shutdown:
+            try:
+                comm_socket.connect((self.target_addr, self.comm_port))
+                break
+            except socket.error:
+                sleep(1)
         print("Connected to daemon.")
         for test_set in self.test_sets:
             payload = bytes(test_set, 'utf-8')
@@ -184,12 +194,14 @@ fi
         self.build_imagetest(set(tests))
 
         command_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        command_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         command_socket.bind((self.local_addr, self.comm_port))
         sender_thread = Thread(target=self.__command_sender, args=(command_socket,))
         sender_thread.daemon = True
         sender_thread.start()
 
         log_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        log_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         log_socket.bind((self.local_addr, self.log_port))
         log_socket.listen()
 
