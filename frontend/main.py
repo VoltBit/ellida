@@ -1,14 +1,15 @@
 #!/usr/bin/python3
 
 from sofi.app import Sofi
-from sofi.ui import Container, View, Row, Panel, Column, ListGroup
-from sofi.ui import Paragraph, Heading, Anchor, Image, Label
-from sofi.ui import Navbar, Dropdown, DropdownItem
+from sofi.ui import Container, View, Row, Panel, Column, ListGroup, ListItem, Div
+from sofi.ui import Paragraph, Heading, Anchor, Image, Label, Span
+from sofi.ui import Navbar, Dropdown, DropdownItem, UnorderedList
 from sofi.ui import Button, ButtonGroup, ButtonToolbar, ButtonDropdown
 
 import json
 import asyncio
 import logging
+import os
 from styles import ButtonStyles
 
 class EllidaUI(object):
@@ -34,8 +35,8 @@ class EllidaUI(object):
             'type': 'monitor',
             'state': 'inactive'},
         {
-            'name': 'perf',
-            'desc': 'perf',
+            'name': 'Phoronix',
+            'desc': 'Benchmarking platform',
             'type': 'benchmark',
             'state': 'inactive'},
         {
@@ -136,8 +137,12 @@ class EllidaUI(object):
         return config_view
 
     async def gen_spec_view(self, event):
+        # http://jsfiddle.net/Fh47n/
+        # http://jsfiddle.net/jhfrench/GpdgF/
         self.__click_msg(event)
-        spec_view = View("Specifications")
+        # spec_view = View("Specifications", customcss=["/home/smith/Dropbox/ellida/res/tree.css"],
+        spec_view = View("Specifications", customcss=["/home/smith/Dropbox/ellida/res/tree_enhanced.css"],
+            customjs=["/home/smith/Dropbox/ellida/res/tree.js"])
         spec_view = self.__gen_nav_interface(spec_view)
         container = Container()
         for spec, descr in self.spec_list.items():
@@ -149,7 +154,54 @@ class EllidaUI(object):
             col = Column('md', 4)
             col.addelement(panel)
             container.addelement(col)
-        spec_view.addelement(container)
+
+        # list_agl_group = ListGroup('Test')
+        list_agl = UnorderedList()
+        list_agl.addelement(ListItem(str(Span('AGL'))))
+
+        list_agl_os = UnorderedList()
+        list_agl_os.addelement(ListItem(str(Span('OS'))))
+
+        list_agl_os_tests = UnorderedList()
+        list_agl_os_tests.addelement(ListItem(str(Span('test1'))))
+        list_agl_os_tests.addelement(ListItem(str(Span('test1'))))
+        list_agl_os_tests.addelement(ListItem(str(Span('test1'))))
+        list_agl_os.addelement(list_agl_os_tests)
+        list_agl.addelement(list_agl_os)
+        agl_tree_top = Div(text=str(list_agl), cl="tree", style="width:350px;margin-left:100px;margin-top:50px")
+        # spec_view.addelement(agl_tree_top)
+
+
+        list_cgl = UnorderedList()
+        list_cgl.addelement(ListItem(str(Span('CGL'))))
+
+        list_cgl_os = UnorderedList()
+        list_cgl_os.addelement(ListItem(str(Span('OS'))))
+
+        list_cgl_os_tests = UnorderedList()
+        list_cgl_os_tests.addelement(ListItem(str(Span('test1'))))
+        list_cgl_os_tests.addelement(ListItem(str(Span('test1'))))
+        list_cgl_os_tests.addelement(ListItem(str(Span('test1'))))
+        list_cgl_os.addelement(list_cgl_os_tests)
+        list_cgl.addelement(list_cgl_os)
+        cgl_tree_top = Div(text=str(list_cgl), cl="tree", style="width:350px;margin-left:100px;margin-top:50px")
+
+        forest = Row()
+        forest.addelement(agl_tree_top)
+        forest.addelement(cgl_tree_top)
+        spec_view.addelement(forest)
+        # spec_view.addelement(list_agl)
+
+        # startpath = "/home/smith/Dropbox/ellida/database/agl"
+        # for root, dirs, files in os.walk(startpath):
+
+        #     level = root.replace(startpath, '').count(os.sep)
+        #     indent = ' ' * 4 * (level)
+        #     print('{}{}/'.format(indent, os.path.basename(root)))
+        #     subindent = ' ' * 4 * (level + 1)
+        #     for f in files:
+        #         print('{}{}'.format(subindent, f))
+
         self.app.load(str(spec_view), event['client'])
         return spec_view
 
@@ -157,6 +209,19 @@ class EllidaUI(object):
         self.__click_msg(event)
         res_view = View("Results")
         res_view = self.__gen_nav_interface(res_view)
+
+
+        progress_bar = Div(
+            text=
+            """<div class=\"progress-bar\" role=\"progressbar\"
+            aria-valuenow=\"70\"
+            aria-valuemin=\"0\"
+            aria-valuemax=\"100\" style=\"width:70%\">
+            AGL 70%</div>""",
+            cl="progress",
+            style="width: 600px; margin-top: 100px; margin-left: 100px")
+
+        res_view.addelement(progress_bar)
         self.app.load(str(res_view), event['client'])
         return res_view
 

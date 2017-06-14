@@ -25,8 +25,11 @@ class EllidaManager(object):
     superspec_file = "database.json"
     build_path = "build/"
     supported_specs = []
+    providers = []
     spec_database = {} # list of specs, each spec is a list of JSON objects
+    test_database = {}
     spec_graphs = {}
+    parse_done = False
 
     def __init__(self):
         self.__get_supported_specifications()
@@ -217,8 +220,24 @@ class EllidaManager(object):
         for spec in cls.supported_specs:
             shutil.rmtree(cls.database_path + spec + '/*')
 
+    def parse_database(self):
+        if not self.parse_done:
+            print("Specs not parsed")
+            return None
+        database_path = "/home/smith/Dropbox/ellida/database/"
+        for spec in self.supported_specs
+            spec_path = database_path + spec + '/'
+            for root, dirs, files in os.walk(startpath):
+                level = root.replace(startpath, '').count(os.sep)
+                indent = ' ' * 4 * (level)
+                print('{}{}/'.format(indent, os.path.basename(root)))
+                subindent = ' ' * 4 * (level + 1)
+                for f in files:
+                    print('{}{}'.format(subindent, f))
+
     def start(self):
         self.parse_specifications()
+        self.parse_done = True
 
 
 def main():

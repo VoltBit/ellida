@@ -15,10 +15,10 @@ class EllidaDaemon(object):
     [x] Sender thread to send the logs back to the engine
     """
     proc_pid = "../res/ellida.pid"
-    # engine_addr = "192.168.7.1"
-    # local_addr = "192.168.7.2"
-    engine_addr = "192.168.10.7"
-    local_addr = "192.168.10.4"
+    engine_addr = "192.168.7.1"
+    local_addr = "192.168.7.2"
+    # engine_addr = "192.168.10.7"
+    # local_addr = "192.168.10.4"
     log_port = 9779
     comm_port = 9778
     log_results = ["log_test1", "log_test2"]

@@ -21,10 +21,10 @@ class EllidaEngine(object):
     build_path = "build/"
     build_handlers = []
     poky_build = "/home/smith/projects/poky/build/"
-    # local_addr = "192.168.7.1"
-    # target_addr = "192.168.7.2"
-    local_addr = "192.168.10.7"
-    target_addr = "192.168.10.4"
+    local_addr = "192.168.7.1"
+    target_addr = "192.168.7.2"
+    # local_addr = "192.168.10.7"
+    # target_addr = "192.168.10.4"
 
     comm_port = 9778
     log_port = 9779
@@ -229,6 +229,10 @@ fi
         for handle in self.build_handlers:
             handle.close()
         shutil.rmtree(self.build_path)
+
+    def install_providers(self):
+        providers = self.manager.get_providers()
+
 
     def __setup_image_tests(self):
         """
