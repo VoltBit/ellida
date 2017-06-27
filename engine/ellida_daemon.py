@@ -4,21 +4,20 @@ import socket
 import logging
 import signal
 import sys
+sys.path.append('/usr/bin/python3.5/site-packages/')
+sys.path.append('/usr/bin/python2.7/site-packages/')
 from time import sleep
 from daemonize import Daemonize
 from threading import Thread
 
 class EllidaDaemon(object):
     """ Daemon object that runs on target machine and manages communication between Ellida engine and the target
-    [x] Main method that daemonizes and spawns two threads
-    [x] Listening thread that waits for commands (to run tests)
-    [x] Sender thread to send the logs back to the engine
     """
     proc_pid = "../res/ellida.pid"
-    engine_addr = "192.168.7.1"
-    local_addr = "192.168.7.2"
-    # engine_addr = "192.168.10.7"
-    # local_addr = "192.168.10.4"
+    # engine_addr = "192.168.7.1"
+    # local_addr = "192.168.7.2"
+    engine_addr = "192.168.10.7"
+    local_addr = "192.168.10.4"
     log_port = 9779
     comm_port = 9778
     log_results = ["log_test1", "log_test2"]
@@ -84,7 +83,7 @@ class EllidaDaemon(object):
         command_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         command_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         command_socket.bind((self.local_addr, self.comm_port))
-        command_socket.listen()
+        command_socket.listen(0)
         while not self.shutdown:
             self.logger.debug("Daemon waiting for commands...")
             (active_socket, address) = command_socket.accept()

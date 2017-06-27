@@ -216,7 +216,7 @@ class EllidaManager(object):
         print("Ellida manager closed")
 
     @classmethod
-    def clean_database():
+    def clean_database(cls):
         for spec in cls.supported_specs:
             shutil.rmtree(cls.database_path + spec + '/*')
 
@@ -225,7 +225,7 @@ class EllidaManager(object):
             print("Specs not parsed")
             return None
         database_path = "/home/smith/Dropbox/ellida/database/"
-        for spec in self.supported_specs
+        for spec in self.supported_specs:
             spec_path = database_path + spec + '/'
             for root, dirs, files in os.walk(startpath):
                 level = root.replace(startpath, '').count(os.sep)

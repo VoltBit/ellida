@@ -21,8 +21,9 @@ class EllidaEngine(object):
     build_path = "build/"
     build_handlers = []
     poky_build = "/home/smith/projects/poky/build/"
-    local_addr = "192.168.7.1"
+    # local_addr = "192.168.7.1"
     target_addr = "192.168.7.2"
+    local_addr = "192.168.10.4"
     # local_addr = "192.168.10.7"
     # target_addr = "192.168.10.4"
 
