@@ -234,14 +234,12 @@ fi
     def install_providers(self):
         providers = self.manager.get_providers()
 
-
     def __setup_image_tests(self):
         """
         1. copy scripts
         2. add list of scripts to file
         """
         pass
-
 
 def main():
     """ Main function.

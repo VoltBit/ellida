@@ -12,7 +12,7 @@ import logging
 import os
 from styles import ButtonStyles
 
-class EllidaUI(object):
+class EllidaUi(object):
 
     app = None
     res_path = '../res/'
@@ -276,7 +276,7 @@ class EllidaUI(object):
 
 def main():
     # logging.basicConfig(format="%(asctime)s [%(levelname)s] - %(funcName)s: %(message)s", level=logging.INFO)
-    gui = EllidaUI()
+    gui = EllidaUi()
     gui.ui_init()
 
 if __name__ == '__main__':

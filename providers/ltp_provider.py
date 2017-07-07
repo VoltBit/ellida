@@ -1,12 +1,15 @@
-
 from __future__ import print_function
+
 import subprocess
 from provider import Provider
 
 class LtpProvider(Provider):
     ''' Provider class for the LTP package '''
-def __init__(self, log_filename=Provider.DEFAULT_LOG_NAMEFILE): super(LtpProvider, self).__init__() self.log_filename = log_filename
-        self.log_handle = open(log_filename, 'r+')
+
+    def __init__(self, log_filename=Provider.DEFAULT_LOG_NAMEFILE):
+        super(LtpProvider, self).__init__()
+        self.log_filename = log_filename
+        self.log_handle = open(log_filename, 'w+')
         self.command = 'echo "LTP test debug message"'
 
     def send_command(self, command):
@@ -20,7 +23,8 @@ def __init__(self, log_filename=Provider.DEFAULT_LOG_NAMEFILE): super(LtpProvide
     def _start_test(self, command):
         ltp_proc = subprocess.Popen(command, stdout=self.log_handle,
                                     stderr=self.log_handle)
-        print("LTP proc returned: [", str(ltp_proc), "]")
+        streamdata = ltp_proc.communicate()[0]
+        print("LTP proc returned: [", str(ltp_proc.returncode), "]")
 
     def cleanup(self):
         self.log_handle.close()
