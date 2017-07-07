@@ -4,16 +4,19 @@
 Engine used for processing test plans.
 """
 
-import sys
-sys.path.append('/home/smith/Dropbox/')
+from __future__ import print_function
 import os
+import sys
 import shutil
 import subprocess
 import socket
 import signal
 from time import sleep
 from threading import Thread
+
+sys.path.append('/home/smith/Dropbox/')
 from ellida.manager.ellida_manager import EllidaManager
+
 
 class EllidaEngine(object):
     """ Ellida engine. Builds scripts that run the tests.
@@ -23,7 +26,8 @@ class EllidaEngine(object):
     poky_build = "/home/smith/projects/poky/build/"
     # local_addr = "192.168.7.1"
     target_addr = "192.168.7.2"
-    local_addr = "192.168.10.4"
+    # local_addr = "192.168.10.4"
+    local_addr = "192.168.42.128"
     # local_addr = "192.168.10.7"
     # target_addr = "192.168.10.4"
 

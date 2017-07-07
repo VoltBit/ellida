@@ -4,9 +4,14 @@ Full system initializer.
 """
 
 from __future__ import print_function
+import sys
 import multiprocessing
 from ellida.engine.ellida_engine import EllidaEngine
+
 from ellida.frontend.ellida_ui import EllidaUi
+sys.path.append('/home/smith/Dropbox/')
+
+import zmq
 
 class EllidaInit(object):
     """
@@ -25,7 +30,6 @@ class EllidaInit(object):
 
         engine_process.join()
         gui_process.join()
-
 
 def main():
     EllidaInit.start()
