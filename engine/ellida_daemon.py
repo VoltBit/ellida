@@ -1,23 +1,36 @@
 #!/usr/bin/python3
 
+"""
+Object used to define and create a daemon process on the guest machine that is subjected to testing.
+The daemon is responsible for receiving a test plan, executing it and returning the results.
+"""
+
 import socket
 import logging
 import signal
 import sys
+from time import sleep
+from threading import Thread
+import zmq
+
 sys.path.append('/usr/bin/python3.5/site-packages/')
 sys.path.append('/usr/bin/python2.7/site-packages/')
-from time import sleep
+
 from daemonize import Daemonize
-from threading import Thread
+
 
 class EllidaDaemon(object):
-    """ Daemon object that runs on target machine and manages communication between Ellida engine and the target
+    """
+    Daemon object that runs on target machine and manages communication between
+    Ellida engine and the target
     """
     proc_pid = "../res/ellida.pid"
     # engine_addr = "192.168.7.1"
     # local_addr = "192.168.7.2"
-    engine_addr = "192.168.10.7"
-    local_addr = "192.168.10.4"
+    # engine_addr = "192.168.10.7"
+    # local_addr = "192.168.10.4"
+    local_addr = "192.168.42.128"
+    engine_addr = "192.168.42.128"
     log_port = 9779
     comm_port = 9778
     log_results = ["log_test1", "log_test2"]

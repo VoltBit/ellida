@@ -6,13 +6,20 @@ from sofi.ui import Paragraph, Heading, Anchor, Image, Label, Span
 from sofi.ui import Navbar, Dropdown, DropdownItem, UnorderedList
 from sofi.ui import Button, ButtonGroup, ButtonToolbar, ButtonDropdown
 
+import zmq
 import json
 import asyncio
 import logging
 import os
-from styles import ButtonStyles
+import sys
+import multiprocessing
 
-class EllidaUi(object):
+sys.path.append('/home/smith/Dropbox/')
+
+from ellida.frontend.styles import ButtonStyles
+from ellida.settings import EllidaSettings
+
+class EllidaUi(multiprocessing.Process):
 
     app = None
     res_path = '../res/'
@@ -55,6 +62,14 @@ class EllidaUi(object):
             'type': 'general',
             'state': 'inactive'}
     ]
+
+    def __init__(self):
+        self.__network_setup()
+
+    def __network_setup(self):
+        self.context = zmq.Context()
+        self.engine_socket = context.socket(zmq.REP)
+        self.engine_socket.bind("tcp://*:%s" % EllidaSettings.UI_SCOKET)
 
     @classmethod
     def __gen_nav_interface(cls, current_view):
@@ -273,6 +288,10 @@ class EllidaUi(object):
             return self.res_path + 'viking-ship-green.png'
         else:
             return self.res_path + 'viking-ship-black.png'
+
+    def shutdown(self):
+        self.exit.set()
+
 
 def main():
     # logging.basicConfig(format="%(asctime)s [%(levelname)s] - %(funcName)s: %(message)s", level=logging.INFO)

@@ -13,11 +13,14 @@ meta-mapping (the spec "superblock") ->
 import json
 import os
 import sys
+import zmq
+
 sys.path.append('/home/smith/Dropbox/')
 from ellida.manager.depg import DepGraph
 from ellida.manager.spec_parser import SpecParser
+from ellida.settings import EllidaSettings
 
-class EllidaManager(object):
+class EllidaManager(multiprocessing.Process):
     """ Test management component.
     Add, remove, change tests; generate test plans based on availbale metadata.
     """
@@ -33,6 +36,12 @@ class EllidaManager(object):
 
     def __init__(self):
         self.__get_supported_specifications()
+        self.__network_setup()
+
+    def __network_setup(self):
+        self.context = zmq.Context()
+        self.manager_socket = self.context.socket(zmq.REQ)
+        self.manager_socket.bind("tcp://*:%s" % EllidaSettings.MANAGER_SOCKET)
 
     @classmethod
     def __cleanup(cls):
@@ -88,7 +97,8 @@ class EllidaManager(object):
     def __attach_test_info(self, spec_entry, tests=None):
         if not spec_entry['id'] in self.mapping.keys():
             spec_entry['tests'] = [{'name': "", 'source': ""}]
-        elif tests and tests.instanceof(dict): ## in this case the map file must be updated <<<<<<<<<<<<<
+            # TODO in this case the map file must be updated
+        elif tests and tests.instanceof(dict):
             spec_entry['tests'] = tests
         else:
             spec_entry['tests'] = self.mapping[spec_entry['id']]
@@ -238,6 +248,9 @@ class EllidaManager(object):
     def start(self):
         self.parse_specifications()
         self.parse_done = True
+
+    def shutdown(self):
+        self.exit.set()
 
 
 def main():

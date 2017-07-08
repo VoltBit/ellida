@@ -13,23 +13,23 @@ import socket
 import signal
 from time import sleep
 from threading import Thread
+import zmq
+import multiprocessing
 
 sys.path.append('/home/smith/Dropbox/')
 from ellida.manager.ellida_manager import EllidaManager
+from ellida.settings import EllidaSettings
 
-
-class EllidaEngine(object):
+class EllidaEngine(multiprocessing.Process):
     """ Ellida engine. Builds scripts that run the tests.
     """
     build_path = "build/"
     build_handlers = []
     poky_build = "/home/smith/projects/poky/build/"
     # local_addr = "192.168.7.1"
-    target_addr = "192.168.7.2"
-    # local_addr = "192.168.10.4"
-    local_addr = "192.168.42.128"
-    # local_addr = "192.168.10.7"
-    # target_addr = "192.168.10.4"
+    # target_addr = "192.168.7.2"
+    local_addr = "192.168.10.7"
+    target_addr = "192.168.10.4"
 
     comm_port = 9778
     log_port = 9779
@@ -44,7 +44,13 @@ class EllidaEngine(object):
         self.active_threads = []
         self.active_sockets = []
         self.__setup()
+        self.__network_setup()
         print("Ellida engine initialized.")
+
+    def __network_setup(self):
+        self.context = zmq.Context()
+        self.engine_socket = context.socket(zmq.REP)
+        self.engine_socket.bind("tcp://*:%s" % EllidaSettings.ENGINE_SOCKET)
 
     def __setup(self):
         # self.__read_config()
@@ -244,6 +250,9 @@ fi
         2. add list of scripts to file
         """
         pass
+
+    def shutdown(self):
+        self.exit.set()
 
 def main():
     """ Main function.
