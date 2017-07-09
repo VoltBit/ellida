@@ -25,14 +25,14 @@ class EllidaDaemon(object):
     Ellida engine and the target
     """
     proc_pid = "../res/ellida.pid"
-    # engine_addr = "192.168.7.1"
-    # local_addr = "192.168.7.2"
+    engine_addr = "192.168.7.1"
+    local_addr = "192.168.7.2"
     # engine_addr = "192.168.10.7"
     # local_addr = "192.168.10.4"
-    local_addr = "192.168.42.128"
-    engine_addr = "192.168.42.128"
-    log_port = 9779
+    # local_addr = "192.168.42.128"
+    # engine_addr = "192.168.42.128"
     comm_port = 9778
+    log_port = 9779
     log_results = ["log_test1", "log_test2"]
     shutdown = False
 
@@ -41,7 +41,7 @@ class EllidaDaemon(object):
         self.active_threads = []
         self.active_sockets = []
 
-    def signal_handler(self, signal, frame):
+    def kill_handler(self, signal, frame):
         self.logger.debug("Ellida daemon shuting down")
         self.shutdown = True
         sys.exit(0)
@@ -117,7 +117,7 @@ class EllidaDaemon(object):
 
     def daemon_start(self):
         self.logger.debug("Starting the daemon")
-        signal.signal(signal.SIGINT, self.signal_handler)
+        signal.signal(signal.SIGINT, self.kill_handler)
         self.__daemon_thread()
         # try:
         #   print(self.log_fds)

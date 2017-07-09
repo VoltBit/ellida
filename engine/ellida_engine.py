@@ -13,8 +13,8 @@ import socket
 import signal
 from time import sleep
 from threading import Thread
-import zmq
 import multiprocessing
+import zmq
 
 sys.path.append('/home/smith/Dropbox/')
 from ellida.manager.ellida_manager import EllidaManager
@@ -28,8 +28,8 @@ class EllidaEngine(multiprocessing.Process):
     poky_build = "/home/smith/projects/poky/build/"
     # local_addr = "192.168.7.1"
     # target_addr = "192.168.7.2"
-    local_addr = "192.168.10.7"
-    target_addr = "192.168.10.4"
+    target_addr = "192.168.7.2"
+    local_addr = "192.168.10.4"
 
     comm_port = 9778
     log_port = 9779
@@ -49,7 +49,7 @@ class EllidaEngine(multiprocessing.Process):
 
     def __network_setup(self):
         self.context = zmq.Context()
-        self.engine_socket = context.socket(zmq.REP)
+        self.engine_socket = self.context.socket(zmq.REP)
         self.engine_socket.bind("tcp://*:%s" % EllidaSettings.ENGINE_SOCKET)
 
     def __setup(self):
@@ -67,7 +67,8 @@ class EllidaEngine(multiprocessing.Process):
             if len(params) > 1:
                 self.config[params[0].strip()] = params[1].strip()
             else:
-                raise EllidaEngineError("Wrong file format, you can find an example in the res/ directory.")
+                raise EllidaEngineError("\
+                    Wrong file format, you can find an example in the res/ directory.")
         self.target_addr = self.config['TARGET_ADDR']
         self.local_addr = self.config['LOCAL_ADDR']
         print("Config loaded: ", self.config)
@@ -76,7 +77,8 @@ class EllidaEngine(multiprocessing.Process):
     def build_ltp(cls):
         pass
 
-    def __direct_imagetest_build(self, tests):
+    @classmethod
+    def __direct_imagetest_build(cls, tests):
         """
         Make the necessary setup for image tests without an auxiliary bash script.
         """
@@ -87,13 +89,17 @@ class EllidaEngine(multiprocessing.Process):
         test_source_path = "../database/tests/"
         # backup the loca.conf
         shutil.copy(conf_path, backup_path) # generate this command dinamically
-        comm = ["sudo", "/home/smith/projects/poky/scripts/runqemu-gen-tapdevs", "1000", "1000", "1", "/home/smith/projects/poky/build/tmp/sysroots/x86_64-linux"]
-        proc = subprocess.Popen(comm, shell=True,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
+        comm = ["sudo",
+                "/home/smith/projects/poky/scripts/runqemu-gen-tapdevs",
+                "1000", "1000", "1",
+                "/home/smith/projects/poky/build/tmp/sysroots/x86_64-linux"]
+        proc = subprocess.Popen(comm,
+                                shell=True,
+                                stdin=subprocess.PIPE,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
         print("Tapgen resut: ", proc.communicate())
-        conf_handle  = open(conf_path, 'r+')
+        conf_handle = open(conf_path, 'r+')
         conf_data = conf_handle.readlines()
         if 'INHERIT += "testimage\n"' not in conf_data or not "INHERIT += 'testimage'\n":
             conf_data.append('\nINHERIT += "testimage"\n')
@@ -106,14 +112,15 @@ class EllidaEngine(multiprocessing.Process):
         if not flag:
             conf_data.append("\nTEST_SUITES = \"" + " ".join(tests) + "\"\n")
         print("\nTEST_SUITES = \"" + " ".join(tests) + "\"")
-        conf_handle.seek(0) ## very inefficient, do it better <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        conf_handle.seek(0) ## very inefficient, do it better <<<<<<<<<<<<
         conf_handle.write("".join(conf_data))
         for test in tests:
             # print("copy: ", test_source_path + test + ".py", test_destination_path + test + ".py")
             shutil.copy2(test_source_path + test + ".py", test_destination_path + test + ".py")
         conf_handle.close()
 
-    def build_imagetest(self, tests):
+    @classmethod
+    def build_imagetest(cls, tests):
         """
         1. Setup tap device
         id $USER

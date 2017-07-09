@@ -13,6 +13,7 @@ meta-mapping (the spec "superblock") ->
 import json
 import os
 import sys
+import multiprocessing
 import zmq
 
 sys.path.append('/home/smith/Dropbox/')
