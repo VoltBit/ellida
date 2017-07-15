@@ -26,13 +26,16 @@ class EllidaEngine(Process):
     build_path = "build/"
     build_handlers = []
     poky_build = "/home/smith/projects/poky/build/"
+    # local_addr = "192.168.7.1"
     target_addr = "192.168.7.2"
     local_addr = "192.168.10.4"
+    # local_addr = "192.168.10.7"
+    # target_addr = "192.168.10.4"
 
     comm_port = 9778
     log_port = 9779
     shutdown = False
-    conf_path = "../res/ellida.conf" # make this non-relative <<<<<<<<<<<<<<<<<<<<<
+    conf_path = "../res/ellida.conf" # make this non-relative <<<<<<<<<<<
     test_sets = ["test_set1", "test_set2"]
 
     def __init__(self):
@@ -45,17 +48,17 @@ class EllidaEngine(Process):
         self.__network_setup()
         print("Ellida engine initialized.")
 
-    def __network_setup(self):
-        self.context = zmq.Context()
-        self.engine_socket = self.context.socket(zmq.REP)
-        self.engine_socket.bind("tcp://*:%s" % EllidaSettings.ENGINE_SOCKET)
-
     def __setup(self):
         # self.__read_config()
         os.makedirs(self.build_path, exist_ok=True)
         for spec in self.supported_specs:
             self.build_handlers.append(open(self.build_path + str(spec) +
                                             ".sh", "w+"))
+
+    def __network_setup(self):
+        self.context = zmq.Context()
+        self.engine_socket = self.context.socket(zmq.REP)
+        self.engine_socket.bind("tcp://*:%s" % EllidaSettings.ENGINE_SOCKET)
 
     def __read_config(self):
         with open(self.conf_path) as conf_file:
@@ -65,8 +68,7 @@ class EllidaEngine(Process):
             if len(params) > 1:
                 self.config[params[0].strip()] = params[1].strip()
             else:
-                raise EllidaEngineError("\
-                    Wrong file format, you can find an example in the res/ directory.")
+                raise EllidaEngineError("Wrong file format, you can find an example in the res/ directory.")
         self.target_addr = self.config['TARGET_ADDR']
         self.local_addr = self.config['LOCAL_ADDR']
         print("Config loaded: ", self.config)
@@ -75,8 +77,7 @@ class EllidaEngine(Process):
     def build_ltp(cls):
         pass
 
-    @classmethod
-    def __direct_imagetest_build(cls, tests):
+    def __direct_imagetest_build(self, tests):
         """
         Make the necessary setup for image tests without an auxiliary bash script.
         """
@@ -87,17 +88,13 @@ class EllidaEngine(Process):
         test_source_path = "../database/tests/"
         # backup the loca.conf
         shutil.copy(conf_path, backup_path) # generate this command dinamically
-        comm = ["sudo",
-                "/home/smith/projects/poky/scripts/runqemu-gen-tapdevs",
-                "1000", "1000", "1",
-                "/home/smith/projects/poky/build/tmp/sysroots/x86_64-linux"]
-        proc = subprocess.Popen(comm,
-                                shell=True,
-                                stdin=subprocess.PIPE,
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE)
+        comm = ["sudo", "/home/smith/projects/poky/scripts/runqemu-gen-tapdevs", "1000", "1000", "1", "/home/smith/projects/poky/build/tmp/sysroots/x86_64-linux"]
+        proc = subprocess.Popen(comm, shell=True,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
         print("Tapgen resut: ", proc.communicate())
-        conf_handle = open(conf_path, 'r+')
+        conf_handle  = open(conf_path, 'r+')
         conf_data = conf_handle.readlines()
         if 'INHERIT += "testimage\n"' not in conf_data or not "INHERIT += 'testimage'\n":
             conf_data.append('\nINHERIT += "testimage"\n')
@@ -110,15 +107,14 @@ class EllidaEngine(Process):
         if not flag:
             conf_data.append("\nTEST_SUITES = \"" + " ".join(tests) + "\"\n")
         print("\nTEST_SUITES = \"" + " ".join(tests) + "\"")
-        conf_handle.seek(0) ## very inefficient, do it better <<<<<<<<<<<<
+        conf_handle.seek(0) ## very inefficient, do it better <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         conf_handle.write("".join(conf_data))
         for test in tests:
             # print("copy: ", test_source_path + test + ".py", test_destination_path + test + ".py")
             shutil.copy2(test_source_path + test + ".py", test_destination_path + test + ".py")
         conf_handle.close()
 
-    @classmethod
-    def build_imagetest(cls, tests):
+    def build_imagetest(self, tests):
         """
         1. Setup tap device
         id $USER
@@ -165,7 +161,7 @@ fi
         self.close_engine()
         sys.exit(0)
 
-    # implement a good producer-consumer the sender should consume sets of tests,
+    # implement a good producer-consumer the sender should consume sets of tests
     # the manager should add more sets <<<<<<<<<<<<<<<<<<<<<<<<<<
     def __command_sender(self, comm_socket):
         print("Connecting to daemon on ", self.target_addr, "...")
@@ -174,7 +170,6 @@ fi
                 comm_socket.connect((self.target_addr, self.comm_port))
                 break
             except socket.error:
-                print(".")
                 sleep(1)
         print("Connected to daemon.")
         for test_set in self.test_sets:
@@ -250,7 +245,7 @@ fi
 
     def install_providers(self):
         providers = self.manager.get_providers()
-        return providers
+
 
     def __setup_image_tests(self):
         """
@@ -259,8 +254,6 @@ fi
         """
         pass
 
-    def shutdown(self):
-        self.exit.set()
 
 def main():
     """ Main function.

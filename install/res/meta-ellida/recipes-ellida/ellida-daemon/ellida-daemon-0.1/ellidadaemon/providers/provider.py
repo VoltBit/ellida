@@ -6,29 +6,24 @@ sys.path.append('/usr/bin/python3.5/site-packages/')
 sys.path.append('/usr/bin/python2.7/site-packages/')
 
 class Provider(object):
-    """ TODO """
     __metaclass__ = ABCMeta
-    GLOBAL_LOG_NAMEFILE = "/tmp/ellida.log"
+    DEFAULT_LOG_NAMEFILE = "/tmp/ellida.log"
 
     def __init__(self):
         pass
 
     @abstractmethod
-    def execute(self, targets):
-        """ TODO """
+    def send_command(self, command):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_result(self, type=None):
-        """ TODO """
+    def get_result_log(self):
         raise NotImplementedError()
 
     @abstractmethod
-    def _start_test(self, command=None):
-        """ TODO """
+    def _start_test(self):
         raise NotImplementedError()
 
     @abstractmethod
     def cleanup(self):
-        """ TODO """
         raise NotImplementedError()

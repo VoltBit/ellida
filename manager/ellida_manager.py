@@ -20,6 +20,8 @@ sys.path.append('/home/smith/Dropbox/')
 from ellida.manager.depg import DepGraph
 from ellida.manager.spec_parser import SpecParser
 from ellida.settings import EllidaSettings
+from ellida.providers.provider import Provider
+from ellida.providers.ltp_provider import LtpProvider
 
 class EllidaManager(multiprocessing.Process):
     """ Test management component.

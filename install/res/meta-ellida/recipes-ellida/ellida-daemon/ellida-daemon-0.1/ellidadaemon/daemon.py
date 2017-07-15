@@ -5,8 +5,6 @@ Object used to define and create a daemon process on the guest machine that is s
 The daemon is responsible for receiving a test plan, executing it and returning the results.
 """
 
-from __future__ import print_function
-
 import socket
 import logging
 import signal
@@ -21,8 +19,6 @@ sys.path.append('/usr/bin/python2.7/site-packages/')
 from daemonize import Daemonize
 # from providers import LtpProvider
 # from settings import EllidaSettings
-from ellida.providers.provider import Provider
-from ellida.providers.ltp_provider import LtpProvider
 
 class EllidaDaemon(object):
     """
@@ -54,7 +50,6 @@ class EllidaDaemon(object):
         # self.engine_socket.bind("tcp://*:%s" % EllidaSettings.ENGINE_SOCKET)
 
     def kill_handler(self, signal, frame):
-        """ TODO """
         self.logger.debug("Ellida daemon shuting down")
         self.shutdown = True
         sys.exit(0)
@@ -129,7 +124,6 @@ class EllidaDaemon(object):
         command_socket.close()
 
     def daemon_start(self):
-        """ TODO """
         self.logger.debug("Starting the daemon")
         signal.signal(signal.SIGINT, self.kill_handler)
         self.__daemon_thread()

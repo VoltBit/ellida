@@ -2,7 +2,7 @@
 
 from sofi.app import Sofi
 from sofi.ui import Container, View, Row, Panel, Column, ListGroup, ListItem, Div
-from sofi.ui import Paragraph, Heading, Anchor, Image, Label, Span
+from sofi.ui import Paragraph, Heading, Anchor, Image, Label, Span, Textarea, Input
 from sofi.ui import Navbar, Dropdown, DropdownItem, UnorderedList
 from sofi.ui import Button, ButtonGroup, ButtonToolbar, ButtonDropdown
 
@@ -63,13 +63,13 @@ class EllidaUi(multiprocessing.Process):
             'state': 'inactive'}
     ]
 
-    def __init__(self):
-        self.__network_setup()
+    # def __init__(self):
+        # self.__network_setup()
 
-    def __network_setup(self):
-        self.context = zmq.Context()
-        self.engine_socket = context.socket(zmq.REP)
-        self.engine_socket.bind("tcp://*:%s" % EllidaSettings.UI_SCOKET)
+    # def __network_setup(self):
+        # self.context = zmq.Context()
+        # self.engine_socket = context.socket(zmq.REP)
+        # self.engine_socket.bind("tcp://*:%s" % EllidaSettings.UI_SCOKET)
 
     @classmethod
     def __gen_nav_interface(cls, current_view):
@@ -85,6 +85,8 @@ class EllidaUi(multiprocessing.Process):
             ident='conf', style=ButtonStyles.grey_button)
         spec_btn = Button('Specifications', severity='primary',  size='large',
             ident='spec', style=ButtonStyles.grey_button)
+        control_btn = Button('Control', severity='primary', size='large',
+            ident='control', style=ButtonStyles.grey_button)
         result_btn = Button('Results', severity='primary', size='large',
             ident='result', style=ButtonStyles.grey_button)
         providers_btn = Button('Providers', severity='primary', size='large',
@@ -96,6 +98,7 @@ class EllidaUi(multiprocessing.Process):
         # menu = Column('md', 2)
         button_group.addelement(conf_btn)
         button_group.addelement(spec_btn)
+        button_group.addelement(control_btn)
         button_group.addelement(result_btn)
         button_group.addelement(providers_btn)
         button_group.addelement(about_btn)
@@ -129,6 +132,8 @@ class EllidaUi(multiprocessing.Process):
         self.app.register('click', self.gen_config_view, selector='#conf',
             client=event['client'])
         self.app.register('click', self.gen_spec_view, selector='#spec',
+            client=event['client'])
+        self.app.register('click', self.gen_control_view, selector='#control',
             client=event['client'])
         self.app.register('click', self.gen_result_view, selector='#result',
             client=event['client'])
@@ -240,6 +245,20 @@ class EllidaUi(multiprocessing.Process):
         self.app.load(str(res_view), event['client'])
         return res_view
 
+    async def gen_control_view(self, event):
+        self.__click_msg(event)
+        control_view = View("Control")
+        control_view = self.__gen_nav_interface(control_view)
+        container = Container()
+        # text_label = Textarea(text="Name of the requirement:")
+        text_input = Input("text", style="width:150px;margin-top:100px;")
+
+        container.addelement(text_input)
+        # container.addelement(text_label)
+        control_view.addelement(container)
+        self.app.load(str(control_view), event['client'])
+        return control_view
+
     async def gen_providers_view(self, event):
         self.__click_msg(event)
         provider_view = View("Providers")
@@ -291,7 +310,6 @@ class EllidaUi(multiprocessing.Process):
 
     def shutdown(self):
         self.exit.set()
-
 
 def main():
     # logging.basicConfig(format="%(asctime)s [%(levelname)s] - %(funcName)s: %(message)s", level=logging.INFO)
