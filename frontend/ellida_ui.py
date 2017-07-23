@@ -6,6 +6,9 @@ from sofi.ui import Paragraph, Heading, Anchor, Image, Label, Span, Textarea, In
 from sofi.ui import Navbar, Dropdown, DropdownItem, UnorderedList
 from sofi.ui import Button, ButtonGroup, ButtonToolbar, ButtonDropdown
 
+from colorama import init, Fore
+init(autoreset=True)
+
 import zmq
 import json
 import asyncio
@@ -117,10 +120,31 @@ class EllidaUi(multiprocessing.Process):
     def __click_msg(self, event):
         if 'id' in event['event_object']['target']:
             # print(event['event_object']['target']['id'] + " CLICKED!")
-            self.__engine_socket.send_string(event['event_object']['target']['id'] + " CLICKED!")
+            # self.__engine_socket.send_string(event['event_object']['target']['id'] + " CLICKED!")
+            pass
         else:
+            pass
             # print(event['event_object']['target']['innerText'] + " CLICKED!")
-            self.__engine_socket.send_string(event['event_object']['target']['innerText'] + " CLICKED!")
+            # self.__engine_socket.send_string(event['event_object']['target']['innerText'] + " CLICKED!")
+
+    async def __text_input(self, event):
+        if 'id' and 'value' in event['event_object']['target']:
+            # print(Fore.BLUE + event['event_object']['target']['id'] + " input value: " +
+            #     event['event_object']['target']['value'])
+            # self.__engine_socket.send_string(event['event_object']['target']['id'] + " CLICKED!")
+            self.__req_input_value = event['event_object']['target']['value']
+        else:
+            print(Fore.BLUE + event['event_object']['target'].keys())
+            # self.__engine_socket.send_string(event['event_object']['target']['innerText'] + " CLICKED!")
+
+    async def __send_req(self, event):
+        # print(Fore.BLUE + self.__req_input_value)
+        packet = {}
+        packet['event'] = "req_exe"
+        packet['value'] = self.__req_input_value
+        # print(json.dumps(packet))
+        self.__engine_socket.send_json(json.dumps(packet))
+        # ack = self.__engine_socket.recv_string()
 
     async def oninit(self, event):
         # Every page is built on top of a View object, which contains the <head> and <body> tags that are filled in by the other objects
@@ -144,6 +168,10 @@ class EllidaUi(multiprocessing.Process):
         self.app.register('click', self.gen_providers_view, selector='#provider',
             client=event['client'])
         self.app.register('click', self.gen_about_view, selector='#about',
+            client=event['client'])
+        self.app.register('keyup', self.__text_input, selector='#req_input',
+            client=event['client'])
+        self.app.register('click', self.__send_req, selector='#req_submit',
             client=event['client'])
 
     def ui_init(self):
@@ -254,11 +282,14 @@ class EllidaUi(multiprocessing.Process):
         control_view = View("Control")
         control_view = self.__gen_nav_interface(control_view)
         container = Container()
-        # text_label = Textarea(text="Name of the requirement:")
-        text_input = Input("text", style="width:150px;margin-top:100px;")
+        req_area = Row()
+        req_input = Input("text", style="width:200px;margin-top:100px;", ident="req_input")
+        submit_btn = Button('Submit', severity='primary', size='large',
+            ident='req_submit', style=ButtonStyles.grey_button)
+        req_area.addelement(req_input)
+        req_area.addelement(submit_btn)
 
-        container.addelement(text_input)
-        # container.addelement(text_label)
+        container.addelement(req_area)
         control_view.addelement(container)
         self.app.load(str(control_view), event['client'])
         return control_view

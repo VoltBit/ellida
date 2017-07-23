@@ -33,11 +33,19 @@ class EllidaEngine(Process):
     """
     shutdown = False
 
+    EXEC = "req_exe"
+
     def __init__(self):
         self.colour = Fore.BLUE
         # self.__network_setup()
         EllidaEngine.shutdown = False
         print("Ellida engine initialized.")
+
+    def tprint(self, out_str, colour=""):
+        print_lock.acquire()
+        sys.stdout.write(colour + out_str)
+        sys.stdout.flush()
+        print_lock.release()
 
     def kill_handler(self, signal, frame):
         print("Engine shuting down")
@@ -46,33 +54,29 @@ class EllidaEngine(Process):
         sys.exit(0)
 
     def __manager_comm(self):
-        msg = self.__manager_socket.recv()
-        if msg:
-            self.__manager_socket.send_string("OK")
-        print_lock.acquire()
-        print(Fore.YELLOW + "[M]")
-        print(msg)
-        print_lock.release()
+        msg = self.__manager_socket.recv_string()
+        self.tprint("[M]: ", Fore.YELLOW)
+        self.tprint(msg + '\n')
 
     def __daemon_comm(self):
-        msg = self.__daemon_socket.recv()
-        if msg:
-            self.__daemon_socket.send_string("OK")
-        print_lock.acquire()
-        print(Fore.RED + "[D]")
-        print(msg)
-        print_lock.release()
+        msg = self.__daemon_socket.recv_string()
+        self.tprint("[D]: ", Fore.RED)
+        self.tprint(msg + '\n')
 
     def __ui_comm(self):
-        print_lock.acquire()
-        msg = self.__ui_socket.recv()
-        if msg:
-            self.__ui_socket.send_string("OK")
-        print(Fore.BLUE + "[U]")
-        print(msg)
-        print_lock.release()
+        packet = json.dumps({})
+        packet = self.__ui_socket.recv_json()
+        packet = json.loads(packet)
+        self.tprint("[U]: ", Fore.BLUE)
+        self.tprint(packet['event'] + ": " + packet['value'] + '\n')
+        if packet['event'] == self.EXEC:
+            try: # TODO make sure this behaviour is fine
+                self.__daemon_socket.send_json(packet, zmq.NOBLOCK)
+            except:
+                pass
 
     def __run_set(self, test_set):
+        """ TODO """
         test_set = {
             'spec': "agl",
             'layer': "services",
@@ -115,22 +119,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-    # def __network_setup(self):
-    #     context = zmq.Context()
-
-    #     manager_thread = Thread(target=self.__manager_comm, args=(context,))
-    #     manager_thread.daemon = True
-    #     manager_thread.start()
-    #     daemon_thread = Thread(target=self.__daemon_comm, args=(context,))
-    #     daemon_thread.daemon = True
-    #     daemon_thread.start()
-    #     ui_thread = Thread(target=self.__ui_comm, args=(context,))
-    #     ui_thread.daemon = True
-    #     ui_thread.start()
-
-    #     ui_thread.join()
-    #     daemon_thread.join()
-    #     manager_thread.join()
-    #     print(Fore.GREEN + "All threads are down")

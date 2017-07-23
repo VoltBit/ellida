@@ -6,7 +6,12 @@ SRC_URI = "file://setup.py \
 			file://ellida_daemon.py \
 				file://ellidadaemon/__init__.py \
 				file://ellidadaemon/daemon.py"
+
+SRC_URI += "file://ellida_tests"
+
 S = "${WORKDIR}"
+TEST_LOG = "/opt/logs"
+TEST_DST = "/opt/"
 # DEPENDS += "python-pyzmq \
 #             python-daemonize"
 
@@ -28,8 +33,15 @@ RDEPENDS_${PN} += "\
 
 # export PYTHONPATH=/usr/lib/python3.5/site-packages/:$PYTHONPATH
 
+
 do_install_append() {
-    # export PYTHONPATH=/usr/lib/python3.5/site-packages/:/usr/lib/python/site-packages/:$PYTHONPATH
+	rm -rf ${D}${TEST_DST}
+	install -d ${D}${TEST_DST}
+	install -d ${D}${TEST_LOG}
+    cp -r ${S}/ellida_tests ${D}${TEST_DST}
+
 	install -d ${D}${bindir}
     install -m 0755 ellida_daemon.py ${D}${bindir}
 }
+
+FILES_${PN} += "/opt/ellida_tests/*"

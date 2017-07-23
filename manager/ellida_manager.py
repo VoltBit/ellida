@@ -13,12 +13,12 @@ meta-mapping (the spec "superblock") ->
 import json
 import os
 import sys
-import time
 import multiprocessing
 import zmq
 import signal
 import json
 
+from time import sleep
 from colorama import init, Fore
 init(autoreset=True)
 
@@ -263,11 +263,12 @@ class EllidaManager(multiprocessing.Process):
         # self.parse_specifications()
         # self.parse_done = True
         while not self.shutdown:
-            self.__engine_socket.send_string("Hello")
-            ack = self.__engine_socket.recv_string()
-            if ack != "OK":
-                print(Fore.RED + "[M] ACK error")
-            time.sleep(0.3)
+            try:
+                self.__engine_socket.send_string(
+                    EllidaSettings.random_hello(), zmq.NOBLOCK)
+            except:
+                pass
+            sleep(5)
 
     # def shutdown(self):
     #     self.exit.set()

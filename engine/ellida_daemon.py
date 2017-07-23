@@ -18,13 +18,19 @@ import json
 
 sys.path.append('/usr/bin/python3.5/site-packages/')
 sys.path.append('/usr/bin/python2.7/site-packages/')
+sys.path.append('/home/smith/Dropbox/')
+
 
 from daemonize import Daemonize
-# from providers import LtpProvider
-# from settings import EllidaSettings
-from ellida.providers.provider import Provider
-from ellida.providers.ltp_provider import LtpProvider
-from ellida.settings import EllidaSettings
+
+
+from ellidadaemon.settings import EllidaSettings
+from ellidadaemon.providers.provider import Provider
+from ellidadaemon.providers.ltp_provider import LtpProvider
+
+# from ellida.providers.provider import Provider
+# from ellida.providers.ltp_provider import LtpProvider
+# from ellida.settings import EllidaSettings
 
 class EllidaDaemon(object):
     """
@@ -33,7 +39,7 @@ class EllidaDaemon(object):
     """
     proc_pid = "../res/ellida.pid"
     shutdown = False
-
+    RECV_TIMEOUT = 1000
 
     def __init__(self):
         self.__log_setup()
@@ -44,9 +50,11 @@ class EllidaDaemon(object):
     def __network_setup(self):
         print("Daemon setup done")
         self.__context = zmq.Context()
+        self.__poller = zmq.Poller()
         self.__engine_socket = self.__context.socket(zmq.PAIR)
         self.__engine_socket.connect("tcp://" + EllidaSettings.ENGINE_ADDR + ":" +
                                    str(EllidaSettings.DAEMON_SOCKET))
+        self.__poller.register(self.__engine_socket, zmq.POLLIN)
 
     def kill_handler(self, signal, frame):
         """ TODO """
@@ -136,11 +144,15 @@ class EllidaDaemon(object):
         #                            str(EllidaSettings.DAEMON_SOCKET))
         self.__network_setup()
         while not self.shutdown:
-            self.__engine_socket.send_string("Hello")
-            ack = self.__engine_socket.recv_string()
-            if ack != "OK":
-                print("[D] ACK error")
-            sleep(1)
+            sockets = dict(self.__poller.poll(self.RECV_TIMEOUT))
+            if sockets.get(self.__engine_socket) == zmq.POLLIN:
+                packet = self.__engine_socket.recv_json()
+                # print("[D] received: ", packet)
+                sys.stdout.write("[D] received: " + str(packet) + '\n')
+                sys.stdout.flush()
+            else:
+                self.__engine_socket.send_string(EllidaSettings.random_hello())
+                sleep(1)
 
         print("Daemon thread terminated")
 
