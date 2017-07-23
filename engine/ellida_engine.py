@@ -45,53 +45,32 @@ class EllidaEngine(Process):
         self.close_engine()
         sys.exit(0)
 
-    def __manager_comm(self, context):
-        self.__manager_socket = context.socket(zmq.PAIR)
-        self.__manager_socket.bind("tcp://*:%s" % EllidaSettings.MANAGER_SOCKET)
+    def __manager_comm(self):
+        msg = self.__manager_socket.recv()
+        if msg:
+            self.__manager_socket.send_string("OK")
         print_lock.acquire()
-        print(Fore.YELLOW + "[M] Thread up")
+        print(Fore.YELLOW + "[M]")
+        print(msg)
         print_lock.release()
-        while not EllidaEngine.shutdown:
-            msg = self.__manager_socket.recv()
-            if msg:
-                self.__manager_socket.send_string("OK")
-            print_lock.acquire()
-            print(Fore.YELLOW + "[M]")
-            print(msg)
-            print_lock.release()
-            # sleep(1)
-        print(Fore.YELLOW + "[M] Thread down")
 
-    def __daemon_comm(self, context):
-        self.__daemon_socket = context.socket(zmq.PAIR)
-        self.__daemon_socket.bind("tcp://" + EllidaSettings.DAEMON_ADDR + ":" +
-                                  str(EllidaSettings.DAEMON_SOCKET))
+    def __daemon_comm(self):
+        msg = self.__daemon_socket.recv()
+        if msg:
+            self.__daemon_socket.send_string("OK")
         print_lock.acquire()
-        print(Fore.RED + "[D] Thread up")
+        print(Fore.RED + "[D]")
+        print(msg)
         print_lock.release()
-        while not EllidaEngine.shutdown:
-            msg = self.__daemon_socket.recv()
-            if msg:
-                self.__daemon_socket.send_string("OK")
-            print_lock.acquire()
-            print(Fore.RED + "[D]")
-            print(msg)
-            print_lock.release()
-            # sleep(1)
-        print(Fore.RED + "[D] Thread down")
 
-    def __ui_comm(self, context):
-        self.__ui_socket = context.socket(zmq.PAIR)
-        self.__ui_socket.bind("tcp://*:%s" % EllidaSettings.UI_SCOKET)
-        print(Fore.BLUE + "[U] Thread up")
-        while not EllidaEngine.shutdown:
-            msg = self.__ui_socket.recv()
-            if msg:
-                self.__ui_socket.send_string("OK")
-            print(Fore.BLUE + "[U]")
-            print(msg)
-            # sleep(1)
-        print(Fore.BLUE + "[U] Thread down")
+    def __ui_comm(self):
+        print_lock.acquire()
+        msg = self.__ui_socket.recv()
+        if msg:
+            self.__ui_socket.send_string("OK")
+        print(Fore.BLUE + "[U]")
+        print(msg)
+        print_lock.release()
 
     def __run_set(self, test_set):
         test_set = {
@@ -103,51 +82,29 @@ class EllidaEngine(Process):
 
     def __network_setup(self):
         context = zmq.Context()
-
-        manager_thread = Thread(target=self.__manager_comm, args=(context,))
-        manager_thread.daemon = True
-        manager_thread.start()
-        daemon_thread = Thread(target=self.__daemon_comm, args=(context,))
-        daemon_thread.daemon = True
-        daemon_thread.start()
-        ui_thread = Thread(target=self.__ui_comm, args=(context,))
-        ui_thread.daemon = True
-        ui_thread.start()
-
-        ui_thread.join()
-        daemon_thread.join()
-        manager_thread.join()
-        print(Fore.GREEN + "All threads are down")
-
-    # def __network_setup(self):
-    #     context = zmq.Context()
-    #     self.__ui_socket = context.socket(zmq.PAIR)
-    #     self.__ui_socket.bind("tcp://*:%s" % EllidaSettings.UI_SCOKET)
-    #     self.__daemon_socket = context.socket(zmq.PAIR)
-    #     self.__daemon_socket.bind("tcp://" + EllidaSettings.DAEMON_ADDR + ":" +
-    #                               str(EllidaSettings.DAEMON_SOCKET))
-    #     self.__manager_socket = context.socket(zmq.PAIR)
-    #     self.__manager_socket.bind("tcp://*:%s" % EllidaSettings.MANAGER_SOCKET)
-    #     self.__poller = zmq.Poller()
-    #     self.__poller.register(self.__ui_socket, zmq.POLLIN)
-    #     self.__poller.register(self.__daemon_socket, zmq.POLLIN)
-    #     self.__poller.register(self.__manager_socket, zmq.POLLIN)
-
-    # def start_engine(self):
-    #     signal.signal(signal.SIGINT, self.kill_handler)
-    #     self.__network_setup()
-    #     while not EllidaEngine.shutdown:
-    #         sockets = dict(self.__poller.poll())
-    #         if sockets.get(self.__ui_socket) == zmq.POLLIN:
-    #             pass
-    #         if sockets.get(self.__daemon_socket) == zmq.POLLIN:
-    #             pass
-    #         if sockets.get(self.__manager_socket) == zmq.POLLIN:
-    #             pass
+        self.__ui_socket = context.socket(zmq.PAIR)
+        self.__ui_socket.bind("tcp://*:%s" % EllidaSettings.UI_SCOKET)
+        self.__daemon_socket = context.socket(zmq.PAIR)
+        self.__daemon_socket.bind("tcp://" + EllidaSettings.DAEMON_ADDR + ":" +
+                                  str(EllidaSettings.DAEMON_SOCKET))
+        self.__manager_socket = context.socket(zmq.PAIR)
+        self.__manager_socket.bind("tcp://*:%s" % EllidaSettings.MANAGER_SOCKET)
+        self.__poller = zmq.Poller()
+        self.__poller.register(self.__ui_socket, zmq.POLLIN)
+        self.__poller.register(self.__daemon_socket, zmq.POLLIN)
+        self.__poller.register(self.__manager_socket, zmq.POLLIN)
 
     def start_engine(self):
         signal.signal(signal.SIGINT, self.kill_handler)
         self.__network_setup()
+        while not EllidaEngine.shutdown:
+            sockets = dict(self.__poller.poll())
+            if sockets.get(self.__ui_socket) == zmq.POLLIN:
+                self.__ui_comm()
+            if sockets.get(self.__daemon_socket) == zmq.POLLIN:
+                self.__daemon_comm()
+            if sockets.get(self.__manager_socket) == zmq.POLLIN:
+                self.__manager_comm()
 
     def close_engine(self):
         pass
@@ -158,3 +115,22 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+    # def __network_setup(self):
+    #     context = zmq.Context()
+
+    #     manager_thread = Thread(target=self.__manager_comm, args=(context,))
+    #     manager_thread.daemon = True
+    #     manager_thread.start()
+    #     daemon_thread = Thread(target=self.__daemon_comm, args=(context,))
+    #     daemon_thread.daemon = True
+    #     daemon_thread.start()
+    #     ui_thread = Thread(target=self.__ui_comm, args=(context,))
+    #     ui_thread.daemon = True
+    #     ui_thread.start()
+
+    #     ui_thread.join()
+    #     daemon_thread.join()
+    #     manager_thread.join()
+    #     print(Fore.GREEN + "All threads are down")
