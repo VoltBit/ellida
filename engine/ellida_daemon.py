@@ -14,6 +14,7 @@ import sys
 from time import sleep
 from threading import Thread
 import zmq
+import json
 
 sys.path.append('/usr/bin/python3.5/site-packages/')
 sys.path.append('/usr/bin/python2.7/site-packages/')
@@ -23,6 +24,7 @@ from daemonize import Daemonize
 # from settings import EllidaSettings
 from ellida.providers.provider import Provider
 from ellida.providers.ltp_provider import LtpProvider
+from ellida.settings import EllidaSettings
 
 class EllidaDaemon(object):
     """
@@ -30,15 +32,6 @@ class EllidaDaemon(object):
     Ellida engine and the target
     """
     proc_pid = "../res/ellida.pid"
-    engine_addr = "192.168.7.1"
-    local_addr = "192.168.7.2"
-    # engine_addr = "192.168.10.7"
-    # local_addr = "192.168.10.4"
-    # local_addr = "192.168.42.128"
-    # engine_addr = "192.168.42.128"
-    comm_port = 9778
-    log_port = 9779
-    log_results = ["log_test1", "log_test2"]
     shutdown = False
 
 
@@ -48,10 +41,12 @@ class EllidaDaemon(object):
         self.active_sockets = []
         # self.__network_setup()
 
-    # def __network_setup(self):
-    #     self.context = zmq.Context()
-    #     self.engine_socket = self.context.socket(zmq.REP)
-        # self.engine_socket.bind("tcp://*:%s" % EllidaSettings.ENGINE_SOCKET)
+    def __network_setup(self):
+        print("Daemon setup done")
+        self.__context = zmq.Context()
+        self.__engine_socket = self.__context.socket(zmq.PAIR)
+        self.__engine_socket.connect("tcp://" + EllidaSettings.ENGINE_ADDR + ":" +
+                                   str(EllidaSettings.DAEMON_SOCKET))
 
     def kill_handler(self, signal, frame):
         """ TODO """
@@ -94,7 +89,7 @@ class EllidaDaemon(object):
             except socket.error:
                 pass
 
-    def __daemon_thread(self):
+    def __daemon_thread_old(self):
         # start log sender thread
         self.logger.debug("Daemon running")
         log_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -128,21 +123,37 @@ class EllidaDaemon(object):
         log_socket.close()
         command_socket.close()
 
-    def daemon_start(self):
+    """ Ideas:
+    Try to make multiple comunication modes based on the zmq architecture in order to provide
+    parallel testing. Several machines running in parallel could connect to the same engine and run
+    different parts of the testing suite.
+    Call it EllidaGrid.
+    """
+    def __daemon_thread(self):
+        # self.__context = zmq.Context()
+        # self.__engine_socket = self.__context.socket(zmq.PAIR)
+        # self.__engine_socket.connect("tcp://" + EllidaSettings.ENGINE_ADDR + ":" +
+        #                            str(EllidaSettings.DAEMON_SOCKET))
+        self.__network_setup()
+        while not self.shutdown:
+            self.__engine_socket.send_string("Hello")
+            ack = self.__engine_socket.recv_string()
+            if ack != "OK":
+                print("[D] ACK error")
+            sleep(1)
+
+        print("Daemon thread terminated")
+
+    def start_daemon(self):
         """ TODO """
         self.logger.debug("Starting the daemon")
         signal.signal(signal.SIGINT, self.kill_handler)
         self.__daemon_thread()
-        # try:
-        #   print(self.log_fds)
-        #   self.daemon = Daemonize(app="ellida_daemon", pid=self.proc_pid, action=self.__daemon_thread, keep_fds=self.log_fds)
-        #   self.daemon.start()
-        # except Exception as e:
-        #   self.logger.debug(e)
+        print("Main daemon thread finish")
 
 def main():
     ellida_daemon = EllidaDaemon()
-    ellida_daemon.daemon_start()
+    ellida_daemon.start_daemon()
 
 if __name__ == '__main__':
     main()

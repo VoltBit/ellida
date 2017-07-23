@@ -13,14 +13,8 @@ meta-mapping (the spec "superblock") ->
 import json
 import os
 import sys
-import time
 import multiprocessing
 import zmq
-import signal
-import json
-
-from colorama import init, Fore
-init(autoreset=True)
 
 sys.path.append('/home/smith/Dropbox/')
 from ellida.manager.depg import DepGraph
@@ -42,25 +36,16 @@ class EllidaManager(multiprocessing.Process):
     test_database = {}
     spec_graphs = {}
     parse_done = False
-    colour = Fore.YELLOW
 
     def __init__(self):
-
-        # self.__get_supported_specifications()
-        # self.__network_setup()
-        self.shutdown = False
-
-    def kill_handler(self, signal, frame):
-        print("Manager shuting down")
-        self.shutdown = True
-        sys.exit(0)
+        self.__get_supported_specifications()
+        self.__network_setup()
 
     def __network_setup(self):
         self.__context = zmq.Context()
-        self.__engine_socket = self.__context.socket(zmq.PAIR)
-        self.__engine_socket.connect("tcp://" + str(EllidaSettings.ENGINE_ADDR) + ":" +
+        self.__engine_socket = self.context.socket(zmq.PAIR)
+        self.__engine_socket.bind("tcp://" + str(EllidaSettings.ENGINE_ADDR) + ":" +
                                    str(EllidaSettings.MANAGER_SOCKET))
-        print("Setup manager done")
 
     @classmethod
     def __cleanup(cls):
@@ -135,7 +120,8 @@ class EllidaManager(multiprocessing.Process):
                 json.dump(self.superspec, superspec_handle, sort_keys=True, indent=4)
 
 
-    def add_requirement(self, test_id, name, spec, priority, category, test_type, dependencies, description, tests=None):
+    def add_requirement(self, test_id, name, spec, priority, category, test_type,
+                        dependencies, description, tests=None):
         """ Add a requirement to database, changes the spec abstartization structure
         and the meta-mapping.
         """
@@ -231,6 +217,12 @@ class EllidaManager(multiprocessing.Process):
         return [x['id'] for x in self.spec_database[spec]]
 
     @classmethod
+    def start_manager(cls):
+        """ Handler to be used at framework startup.
+        """
+        print("Ellida manager started")
+
+    @classmethod
     def close_manager(cls):
         """ Class handler for framework closing.
         """
@@ -257,28 +249,19 @@ class EllidaManager(multiprocessing.Process):
                 for f in files:
                     print('{}{}'.format(subindent, f))
 
-    def start_manager(self):
-        signal.signal(signal.SIGINT, self.kill_handler)
-        self.__network_setup()
-        # self.parse_specifications()
-        # self.parse_done = True
-        while not self.shutdown:
-            self.__engine_socket.send_string("Hello")
-            ack = self.__engine_socket.recv_string()
-            if ack != "OK":
-                print(Fore.RED + "[M] ACK error")
-            time.sleep(0.3)
+    def start(self):
+        self.parse_specifications()
+        self.parse_done = True
 
-    # def shutdown(self):
-    #     self.exit.set()
+    def shutdown(self):
+        self.exit.set()
 
 
 def main():
     """ Main """
     mgr = EllidaManager()
-    mgr.start_manager()
-    # mgr.parse_specifications()
-
+    # mgr.start()
+    mgr.parse_specifications()
 
 if __name__ == '__main__':
     main()

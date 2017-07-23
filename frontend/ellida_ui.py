@@ -22,7 +22,9 @@ from ellida.settings import EllidaSettings
 class EllidaUi(multiprocessing.Process):
 
     app = None
-    res_path = '../res/'
+    # res_path = '../res/'
+    res_path = os.path.realpath('res/')
+    # res_path = os.path.realpath('../res/')
 
     spec_list = {'CGL': 'Carrier grade Linux', 'AGL': 'Automotive grade Linux'}
     prov_list = [
@@ -64,12 +66,13 @@ class EllidaUi(multiprocessing.Process):
     ]
 
     # def __init__(self):
-        # self.__network_setup()
+    #     self.__network_setup()
 
-    # def __network_setup(self):
-        # self.context = zmq.Context()
-        # self.engine_socket = context.socket(zmq.REP)
-        # self.engine_socket.bind("tcp://*:%s" % EllidaSettings.UI_SCOKET)
+    def __network_setup(self):
+        self.__context = zmq.Context()
+        self.__engine_socket = self.__context.socket(zmq.PAIR)
+        self.__engine_socket.connect("tcp://" + EllidaSettings.ENGINE_ADDR + ":" +
+                                   str(EllidaSettings.UI_SCOKET))
 
     @classmethod
     def __gen_nav_interface(cls, current_view):
@@ -111,12 +114,13 @@ class EllidaUi(multiprocessing.Process):
             current_view.addelement(element)
         return current_view
 
-    @classmethod
-    def __click_msg(cls, event):
+    def __click_msg(self, event):
         if 'id' in event['event_object']['target']:
-            print(event['event_object']['target']['id'] + " CLICKED!")
+            # print(event['event_object']['target']['id'] + " CLICKED!")
+            self.__engine_socket.send_string(event['event_object']['target']['id'] + " CLICKED!")
         else:
-            print(event['event_object']['target']['innerText'] + " CLICKED!")
+            # print(event['event_object']['target']['innerText'] + " CLICKED!")
+            self.__engine_socket.send_string(event['event_object']['target']['innerText'] + " CLICKED!")
 
     async def oninit(self, event):
         # Every page is built on top of a View object, which contains the <head> and <body> tags that are filled in by the other objects
@@ -146,7 +150,7 @@ class EllidaUi(multiprocessing.Process):
         self.app = Sofi()
         self.app.register('init', self.oninit)
         self.app.register('load', self.onload)
-
+        self.__network_setup()
         self.app.start()
 
     async def gen_config_view(self, event):
@@ -296,17 +300,17 @@ class EllidaUi(multiprocessing.Process):
     # the way th path is made is wrong because it is relative to the place the script was run
     def __get_icon_res(self, res_type):
         if res_type == 'general':
-            return self.res_path + 'viking-ship-black.png'
+            return self.res_path + '/viking-ship-black.png'
         if res_type == 'monitor':
-            return self.res_path + 'viking-ship-purple.png'
+            return self.res_path + '/viking-ship-purple.png'
         if res_type == 'benchmark':
-            return self.res_path + 'viking-ship-blue.png'
+            return self.res_path + '/viking-ship-blue.png'
         if res_type == 'security':
-            return self.res_path + 'viking-ship-red.png'
+            return self.res_path + '/viking-ship-red.png'
         if res_type == 'interface':
-            return self.res_path + 'viking-ship-green.png'
+            return self.res_path + '/viking-ship-green.png'
         else:
-            return self.res_path + 'viking-ship-black.png'
+            return self.res_path + '/viking-ship-black.png'
 
     def shutdown(self):
         self.exit.set()

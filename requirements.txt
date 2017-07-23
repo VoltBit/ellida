@@ -1,3 +1,8 @@
 igraph
 lxml
 untangle
+pyzmq
+colorama
+daemonize
+json
+asyncio

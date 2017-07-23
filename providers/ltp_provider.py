@@ -5,10 +5,11 @@ from __future__ import print_function
 import subprocess
 import sys
 import datetime
+import json
 
 sys.path.append('/usr/bin/python3.5/site-packages/')
 sys.path.append('/usr/bin/python2.7/site-packages/')
-from provider import Provider
+from ellida.providers.provider import Provider
 
 class LtpProvider(Provider):
     ''' Provider class for the LTP package '''
@@ -17,7 +18,7 @@ class LtpProvider(Provider):
     __TARGET_ROOT = "/opt/ellida_tests/"
     __LOG_ROOT = "/opt/logs/"
 
-    def __init__(self, log_filename=Provider.DEFAULT_LOG_NAMEFILE):
+    def __init__(self, log_filename=Provider.GLOBAL_LOG_NAMEFILE):
         super(LtpProvider, self).__init__()
         self.log_filename = log_filename
         self.log_handle = open(log_filename, 'a+')
