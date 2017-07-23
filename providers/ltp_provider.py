@@ -4,8 +4,8 @@ from __future__ import print_function
 
 import subprocess
 import sys
-import datetime
 import json
+from datetime import datetime
 
 sys.path.append('/usr/bin/python3.5/site-packages/')
 sys.path.append('/usr/bin/python2.7/site-packages/')
@@ -33,13 +33,15 @@ class LtpProvider(Provider):
 
     def __gen_logfile(self):
         timest = datetime.now().strftime('%H:%M_%d.%m.%Y.log')
-        self.log_filename = self.__LOG_ROOT + self.spec + "_" + self.req + "_" + self.set_no + "_" + timest
+        self.log_filename = self.__LOG_ROOT + self.spec +\
+            "_" + self.req + "_" + str(self.set_no) + "_" + str(timest)
         self.log_handle = open(self.log_filename, 'a+')
         return self.log_filename
 
     def execute(self, targets):
         for target in targets:
             command = self.__BASE_CMD + self.__gen_logfile() + " -f " + self.__TARGET_ROOT + target
+            # command = self.__BASE_CMD + self.log_filename + " -f " + self.__TARGET_ROOT + target
             print("executing command:", command)
             self._start_test(command)
 
@@ -54,7 +56,7 @@ class LtpProvider(Provider):
         pass
 
     def _start_test(self, command=None):
-        ltp_proc = subprocess.Popen(command, stdout=self.log_handle,
+        ltp_proc = subprocess.Popen(command.split(), stdout=self.log_handle,
                                     stderr=self.log_handle)
         ltp_proc.communicate()
         print("LTP proc returned: [", str(ltp_proc.returncode), "]")

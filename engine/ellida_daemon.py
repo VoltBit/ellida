@@ -24,13 +24,13 @@ sys.path.append('/home/smith/Dropbox/')
 from daemonize import Daemonize
 
 
-from ellidadaemon.settings import EllidaSettings
-from ellidadaemon.providers.provider import Provider
-from ellidadaemon.providers.ltp_provider import LtpProvider
+# from ellidadaemon.settings import EllidaSettings
+# from ellidadaemon.providers.provider import Provider
+# from ellidadaemon.providers.ltp_provider import LtpProvider
 
-# from ellida.providers.provider import Provider
-# from ellida.providers.ltp_provider import LtpProvider
-# from ellida.settings import EllidaSettings
+from ellida.providers.provider import Provider
+from ellida.providers.ltp_provider import LtpProvider
+from ellida.settings import EllidaSettings
 
 class EllidaDaemon(object):
     """
@@ -97,39 +97,17 @@ class EllidaDaemon(object):
             except socket.error:
                 pass
 
-    def __daemon_thread_old(self):
-        # start log sender thread
-        self.logger.debug("Daemon running")
-        log_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        log_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        log_socket.bind((self.local_addr, self.log_port))
-        log_thread = Thread(target=self.__log_sender, args=(log_socket,))
-        log_thread.daemon = True
-        log_thread.start()
+    def __execute_test(self, meta_test):
+        # test_info = meta_test.split('.')
+        res = None
+        if meta_test == 'testing':
+            provider = LtpProvider()
+            provider.configure({'spec': "agl", 'req': '711', 'set': 2})
+            provider.execute(["agl/services/AGL.711/set_2/ltp_control_file"])
+            res = provider.get_raw_result()
+        print("Result: " + res)
+        provider.cleanup()
 
-        self.logger.debug("Daemon test")
-        # start command listener
-        command_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        command_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        command_socket.bind((self.local_addr, self.comm_port))
-        command_socket.listen(0)
-        while not self.shutdown:
-            self.logger.debug("Daemon waiting for commands...")
-            (active_socket, address) = command_socket.accept()
-            self.active_sockets.append(active_socket)
-            self.logger.debug("Accepted logger from " + str(address))
-            command_thread = Thread(target=self.__command_interpreter, args=(active_socket,))
-            command_thread.daemon = True
-            command_thread.start()
-            self.active_threads.append(command_thread)
-
-        for thr in self.active_threads:
-            thr.join()
-        log_thread.join()
-        for sock in self.active_sockets:
-            sock.close()
-        log_socket.close()
-        command_socket.close()
 
     """ Ideas:
     Try to make multiple comunication modes based on the zmq architecture in order to provide
@@ -150,6 +128,8 @@ class EllidaDaemon(object):
                 # print("[D] received: ", packet)
                 sys.stdout.write("[D] received: " + str(packet) + '\n')
                 sys.stdout.flush()
+                if packet['event'] == "req_exe":
+                    self.__execute_test(packet['value'])
             else:
                 self.__engine_socket.send_string(EllidaSettings.random_hello())
                 sleep(1)
