@@ -1,4 +1,4 @@
-""" TODO """
+""" LTP provider module """
 
 from __future__ import print_function
 
@@ -14,7 +14,7 @@ sys.path.append('/usr/bin/python2.7/site-packages/')
 from ellida.providers.provider import Provider
 
 class LtpProvider(Provider):
-    ''' Provider class for the LTP package '''
+    """ Provider class for the LTP package """
 
     __BASE_CMD = "/opt/ltp/runltp -p -l "
     __TARGET_ROOT = "/opt/ellida_tests/"
@@ -46,6 +46,7 @@ class LtpProvider(Provider):
             self._start_test(command)
 
     def get_raw_result(self):
+        print("Reading: ", self.log_handle)
         result = self.log_handle.read()
         return result
 

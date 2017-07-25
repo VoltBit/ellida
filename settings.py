@@ -16,10 +16,8 @@ class EllidaSettings(object):
     # DAEMON_ADDR = "192.168.10.4"
     # ENGINE_ADDR = "192.168.10.7"
     # DAEMON_ADDR = "192.168.10.7"
-    # ENGINE_ADDR = "192.168.160.133"
-    # DAEMON_ADDR = "192.168.160.133"
-    ENGINE_ADDR = "192.168.42.102"
-    DAEMON_ADDR = "192.168.42.102"
+    ENGINE_ADDR = "172.19.9.135"
+    DAEMON_ADDR = "172.19.9.135"
 
     random_hellos = [
         "Why so silent?!",

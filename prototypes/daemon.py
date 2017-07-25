@@ -23,10 +23,6 @@ sys.path.append('/home/smith/Dropbox/')
 
 from daemonize import Daemonize
 
-# from ellidadaemon.settings import EllidaSettings
-# from ellidadaemon.providers.provider import Provider
-# from ellidadaemon.providers.ltp_provider import LtpProvider
-
 from ellida.providers.provider import Provider
 from ellida.providers.ltp_provider import LtpProvider
 from ellida.settings import EllidaSettings
@@ -71,31 +67,6 @@ class EllidaDaemon(object):
         self.log_fds = [fh.stream.fileno()]
         self.logger.debug("Logger setup finished")
 
-    def __log_sender(self, log_socket):
-        self.logger.debug("Connecting to daemon on " + self.engine_addr + "...")
-        while not self.shutdown:
-            try:
-                log_socket.connect((self.engine_addr, self.log_port))
-                break
-            except socket.error:
-                sleep(1)
-        for log in self.log_results:
-            payload = bytes(log, 'utf-8')
-            log_socket.sendto(payload, (self.engine_addr, self.log_port))
-
-    def __command_interpreter(self, command_socket):
-        print("Started log interpreter thread")
-        while not self.shutdown:
-            try:
-                packet, _ = command_socket.recvfrom(1024)
-                packet = packet.decode('utf-8')
-                if packet:
-                    print("Received: ", packet, len(packet))
-                else:
-                    break
-            except socket.error:
-                pass
-
     def __execute_test(self, meta_test):
         # test_info = meta_test.split('.')
         res = None
@@ -113,17 +84,7 @@ class EllidaDaemon(object):
         print("Result: " + str(res))
 
 
-    """ Ideas:
-    Try to make multiple comunication modes based on the zmq architecture in order to provide
-    parallel testing. Several machines running in parallel could connect to the same engine and run
-    different parts of the testing suite.
-    Call it EllidaGrid.
-    """
     def __daemon_thread(self):
-        # self.__context = zmq.Context()
-        # self.__engine_socket = self.__context.socket(zmq.PAIR)
-        # self.__engine_socket.connect("tcp://" + EllidaSettings.ENGINE_ADDR + ":" +
-        #                            str(EllidaSettings.DAEMON_SOCKET))
         self.__network_setup()
         while not self.shutdown:
             sockets = dict(self.__poller.poll(self.RECV_TIMEOUT))
