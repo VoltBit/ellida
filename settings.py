@@ -12,12 +12,14 @@ class EllidaSettings(object):
     DAEMON_SOCKET = 27990
 
     # DAEMON_ADDR = "192.168.7.2"
-    ENGINE_ADDR = "192.168.10.4"
-    DAEMON_ADDR = "192.168.10.4"
+    # ENGINE_ADDR = "192.168.10.4"
+    # DAEMON_ADDR = "192.168.10.4"
     # ENGINE_ADDR = "192.168.10.7"
     # DAEMON_ADDR = "192.168.10.7"
     # ENGINE_ADDR = "192.168.160.133"
     # DAEMON_ADDR = "192.168.160.133"
+    ENGINE_ADDR = "192.168.42.102"
+    DAEMON_ADDR = "192.168.42.102"
 
     random_hellos = [
         "Why so silent?!",

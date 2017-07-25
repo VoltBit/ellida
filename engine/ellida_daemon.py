@@ -23,7 +23,6 @@ sys.path.append('/home/smith/Dropbox/')
 
 from daemonize import Daemonize
 
-
 # from ellidadaemon.settings import EllidaSettings
 # from ellidadaemon.providers.provider import Provider
 # from ellidadaemon.providers.ltp_provider import LtpProvider
@@ -105,7 +104,7 @@ class EllidaDaemon(object):
             provider.configure({'spec': "agl", 'req': '711', 'set': 2})
             provider.execute(["agl/services/AGL.711/set_2/ltp_control_file"])
             res = provider.get_raw_result()
-        print("Result: " + res)
+        print("Result: " + str(res))
         provider.cleanup()
 
 

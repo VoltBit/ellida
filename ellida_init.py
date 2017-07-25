@@ -68,7 +68,6 @@ class EllidaInit(object):
         """
         Shutdown all processes and exit.
         """
-        # self.gui_process.join(5)
 
         if self.engine_process.is_alive():
             self.engine_process.terminate()
