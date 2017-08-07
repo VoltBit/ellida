@@ -16,8 +16,10 @@ from .nav import nav
 
 import os
 
-test_suite_path = u'~/Dropbox/ellida/database/test_suite/'
-spec_database_path = u'~/Dropbox/ellida/database/'
+local_dir = os.path.dirname(__file__)
+test_suite_path = u'../database/test_suite/'
+spec_database_path = u'../database/'
+
 
 frontend = Blueprint('frontend', __name__)
 
@@ -97,7 +99,7 @@ def make_tree(path):
 @frontend.route('/specs/')
 def specs():
     spec = request.args.get('spec')
-    path = os.path.expanduser(spec_database_path + spec)
+    path = os.path.join(local_dir, spec_database_path + spec)
     print("Path:", path, "from specs_agl")
     values = request.form.getlist('check')
     print("Values:")
@@ -109,7 +111,7 @@ def specs():
 def test_suite():
     # if request.form['run']:
     #     print("Running")
-    path = os.path.expanduser(test_suite_path + u'agl')
+    path = os.path.join(local_dir, test_suite_path)
     return render_template('dirtree.html', tree=make_tree(path))
 
 
