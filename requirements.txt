@@ -4,5 +4,9 @@ untangle
 pyzmq
 colorama
 daemonize
-json
-asyncio
+flask
+flask-wtf
+flask-appconfig
+flask-nav
+flask-debug
+flask-bootstrap
