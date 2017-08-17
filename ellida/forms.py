@@ -20,3 +20,7 @@ class SignupForm(Form):
                         validators=[Required('You must agree to not agree!')])
 
     submit = SubmitField(u'Signup')
+
+
+class SetSelectForm(Form):
+    select = BooleanField('set_sel', default=False)

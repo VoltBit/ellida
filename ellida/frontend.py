@@ -14,12 +14,20 @@ from markupsafe import escape
 from .forms import SignupForm
 from .nav import nav
 
+import zmq
+import json
 import os
+import sys
+import time
+
+sys.path.append(os.path.dirname(__name__))
+sys.path.append('/home/adobre/Dropbox/')
+from settings import EllidaSettings
+import ellida
 
 local_dir = os.path.dirname(__file__)
 test_suite_path = u'../database/test_suite/'
 spec_database_path = u'../database/'
-
 
 frontend = Blueprint('frontend', __name__)
 
@@ -51,13 +59,15 @@ nav.register_element('frontend_top', Navbar(
     Text('Using Flask-Bootstrap {}'.format(FLASK_BOOTSTRAP_VERSION)), ))
 
 
-
 # Our index-page just shows a quick explanation. Check out the template
 # "templates/index.html" documentation for more details.
 @frontend.route('/')
 def index():
+    packet = {}
+    packet['event'] = "ui_test"
+    packet['value'] = "user on /index.html"
+    ellida.engine_socket.send_json(json.dumps(packet))
     return render_template('index.html')
-
 
 # Shows a long signup form, demonstrating form rendering.
 @frontend.route('/example-form/', methods=('GET', 'POST'))
@@ -82,18 +92,20 @@ def example_form():
 def providers():
     pass
 
-def make_tree(path):
+def make_tree(path, parent=""):
     tree = dict(name=os.path.basename(path), children=[])
     try: lst = os.listdir(path)
     except OSError:
         pass
     else:
+        tree['parent'] = parent
         for name in lst:
             fn = os.path.join(path, name)
             if os.path.isdir(fn):
-                tree['children'].append(make_tree(fn))
+                tree['children'].append(make_tree(fn, tree['name']))
             else:
-                tree['children'].append(dict(name=name))
+                if not "__init__" in name:
+                    tree['children'].append(dict(name=name))
     return tree
 
 @frontend.route('/specs/')
@@ -102,16 +114,17 @@ def specs():
     path = os.path.join(local_dir, spec_database_path + spec)
     print("Path:", path, "from specs_agl")
     values = request.form.getlist('check')
-    print("Values:")
+    print("Values:", values)
+    return render_template('dirtree.html', tree=make_tree(path), test=False)
 
-    return render_template('dirtree.html', tree=make_tree(path))
-
-
-@frontend.route('/test_suite/')
+@frontend.route('/test_suite/', methods=['GET', 'POST'])
 def test_suite():
-    # if request.form['run']:
-    #     print("Running")
     path = os.path.join(local_dir, test_suite_path)
-    return render_template('dirtree.html', tree=make_tree(path))
-
+    if request.method == 'POST':
+        print("Checkboxes: ", request.form.getlist('check'))
+        packet = {}
+        packet['event'] = "req_exe"
+        packet['value'] = request.form.getlist('check')
+        ellida.engine_socket.send_json(json.dumps(packet))
+    return render_template('dirtree.html', tree=make_tree(path), test=True)
 

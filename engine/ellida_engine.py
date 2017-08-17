@@ -68,7 +68,7 @@ class EllidaEngine(Process):
         packet = self.__ui_socket.recv_json()
         packet = json.loads(packet)
         self.tprint("[U]: ", Fore.BLUE)
-        self.tprint(packet['event'] + ": " + packet['value'] + '\n')
+        self.tprint(packet['event'] + ": " + str(packet['value']) + '\n')
         if packet['event'] == self.EXEC:
             try: # TODO make sure this behaviour is fine
                 self.__daemon_socket.send_json(packet, zmq.NOBLOCK)

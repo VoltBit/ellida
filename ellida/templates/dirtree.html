@@ -8,7 +8,7 @@
 
 {% block content %}
 
-<link rel= "stylesheet" type= "text/css"
+<link rel="stylesheet" type="text/css"
           href="{{ url_for('static',filename='styles/tree_enhanced.css') }}">
 
 <meta http-equiv="cache-control" content="max-age=0" />
@@ -18,30 +18,38 @@
 <meta http-equiv="pragma" content="no-cache" />
 
 <h1>{{ tree.name }}</h1>
-<div class="tree well">
-    <ul>
-        {%- for item in tree.children recursive %}
-            <li>
-                {%- if item.children -%}
-                    <span><i class="glyphicon glyphicon-minus-sign"></i>{{ item.name }}</span>
-                    {%- if 'set' in item.name -%}
-                        <input type="checkbox" name="check" value="{{ item.name }}">
+<form method="post" role="form">
+    <div class="tree well">
+        <ul>
+            {%- for item in tree.children recursive %}
+                <li>
+                    {%- if item.children -%}
+                        <span><i class="glyphicon glyphicon-minus-sign" req="{{ item.name }}" parent="{{ item.parent }}"></i>{{ item.name }}</span>
+                        {%- if 'set' in item.name -%}
+                            <input type="checkbox" name="check" value="{{ (item.name, item.parent) }}">
+                        {%- endif %}
+                        <ul>
+                            {{ loop(item.children) }}
+                        </ul>
+                    {% else %}
+                        <span><i class="glyphicon glyphicon-leaf"></i>{{ item.name }}</span>
                     {%- endif %}
-                    <ul>
-                        {{ loop(item.children) }}
-                    </ul>
-                {% else %}
-                    <span><i class="glyphicon glyphicon-leaf"></i>{{ item.name }}</span>
-                {%- endif %}
-            </li>
-        {%- endfor %}
-    </ul>
-</div>
+                </li>
+            {%- endfor %}
+        </ul>
+    </div>
+    <form method="post" role="form">
+        <input type="submit" value="Run">
+    </form>
+</form>
 
-<div class="btn-group" data-toggle="buttons">
-  <label class="btn btn-success">
-    <input type="radio" name="run" id="run" autocomplete="off"> Run
-  </label>
-</div>
+{%- if test -%}
+<!--     <div class="btn-group" data-toggle="buttons">
+      <label class="btn btn-success">
+        <input type="radio" name="run" id="run" autocomplete="off"> Run
+      </label>
+    </div>
+ -->
+{%- endif %}
 
 {% endblock %}
