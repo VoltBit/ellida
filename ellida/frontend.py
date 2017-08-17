@@ -37,8 +37,9 @@ frontend = Blueprint('frontend', __name__)
 nav.register_element('frontend_top', Navbar(
     View('Ellida framework', '.index'),
     View('Home', '.index'),
+    View('Providers', '.providers'),
+    View('Results', '.results'),
     View('Test suite', '.test_suite'),
-    # View('Providers', '.providers'),
     Subgroup(
         'Specifications',
         View('CGL', '.specs', spec='cgl'),
@@ -63,10 +64,6 @@ nav.register_element('frontend_top', Navbar(
 # "templates/index.html" documentation for more details.
 @frontend.route('/')
 def index():
-    packet = {}
-    packet['event'] = "ui_test"
-    packet['value'] = "user on /index.html"
-    ellida.engine_socket.send_json(json.dumps(packet))
     return render_template('index.html')
 
 # Shows a long signup form, demonstrating form rendering.
@@ -90,7 +87,7 @@ def example_form():
 
 @frontend.route('/providers/')
 def providers():
-    pass
+    return render_template('providers.html', providers=EllidaSettings.prov_list, test=False)
 
 def make_tree(path, parent=""):
     tree = dict(name=os.path.basename(path), children=[])
@@ -128,3 +125,6 @@ def test_suite():
         ellida.engine_socket.send_json(json.dumps(packet))
     return render_template('dirtree.html', tree=make_tree(path), test=True)
 
+@frontend.route('/results/', methods=['GET', 'POST'])
+def results():
+    pass

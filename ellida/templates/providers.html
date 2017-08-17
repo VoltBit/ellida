@@ -1,0 +1,31 @@
+{%- extends "base.html" %}
+{% import "bootstrap/utils.html" as utils %}
+
+
+{% block content %}
+
+	<div class="container">
+		{%- for provider in providers %}
+			<div class="col">
+				<div class="span panel panel-default">
+					<div class="panel-heading">{{provider.name}}</div>
+					<div class="panel-body">
+						{{provider.desc}}
+						{% if provider.type == "general" %}
+							<img src="/static/images/viking-ship-black.png" align="right">
+						{% elif provider.type == "monitor" %}
+							<img src="/static/images/viking-ship-purple.png" align="right">
+						{% elif provider.type == "benchmark" %}
+							<img src="/static/images/viking-ship-blue.png" align="right">
+						{% elif provider.type == "security" %}
+							<img src="/static/images/viking-ship-red.png" align="right">
+						{% elif provider.type == "interface"%}
+							<img src="/static/images/viking-ship-green.png" align="right">
+						{%- endif %}
+					</div>
+				</div>
+			</div>
+		{%- endfor %}
+	</div>
+
+{% endblock %}

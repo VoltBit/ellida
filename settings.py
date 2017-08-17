@@ -29,6 +29,44 @@ class EllidaSettings(object):
         "Helooo from the other siiiide!",
     ]
 
+    prov_list = [
+        {
+            'name': 'Core',
+            'desc': 'Core set of standalone tests provided by Ellida',
+            'type': 'general',
+            'state': 'active'},
+        {
+            'name':'LTP',
+            'desc': 'Linux Test Project',
+            'type': 'general',
+            'state': 'inactive'},
+        {
+            'name': 'LLTng',
+            'desc': 'Tracing framework for Linux',
+            'type': 'monitor',
+            'state': 'inactive'},
+        {
+            'name': 'Phoronix',
+            'desc': 'Benchmarking platform',
+            'type': 'benchmark',
+            'state': 'inactive'},
+        {
+            'name': 'Lynis',
+            'desc': 'System and security auditing tool',
+            'type': 'security',
+            'state': 'inactive'},
+        {
+            'name': 'LDTP',
+            'desc': 'Linux Desktop Testing Project',
+            'type': 'interface',
+            'state': 'inactive'},
+        {
+            'name': 'Image Tests',
+            'desc': 'Yocto package for easy managing and writing pf Python tests',
+            'type': 'general',
+            'state': 'inactive'}
+    ]
+
     @classmethod
     def random_hello(cls):
         return random.choice(cls.random_hellos)
