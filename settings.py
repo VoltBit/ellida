@@ -16,12 +16,15 @@ class EllidaSettings(object):
     # DAEMON_ADDR = "192.168.10.4"
     #ENGINE_ADDR = "192.168.10.7"
     #DAEMON_ADDR = "192.168.10.7"
-    ENGINE_ADDR = "192.168.10.6"
-    DAEMON_ADDR = "192.168.10.6"
+    # ENGINE_ADDR = "192.168.10.6"
+    # DAEMON_ADDR = "192.168.10.6"
     # ENGINE_ADDR = "192.168.160.134"
     # DAEMON_ADDR = "192.168.160.134"
     # ENGINE_ADDR = "192.168.160.136"
     # DAEMON_ADDR = "192.168.160.136"
+    ENGINE_ADDR = "voltbit.go.ro"
+    DAEMON_ADDR = "voltbit.go.ro"
+
 
     random_hellos = [
         "Why so silent?!",
