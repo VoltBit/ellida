@@ -16,12 +16,6 @@ Diploma project 2017
 - [ ] 6. Evaluate the performance/cost/efficiency
 - [ ] 7. Provide further development input
 
-[Stage1](https://github.com/VoltBit/ellida/blob/master/docs/stage1.md) - architecture (16.04)
-
-[Stage2](https://github.com/VoltBit/ellida/blob/master/docs/stage2.md) - Framework PoC, basic set of tests (10.05)
-
-[Stage3](https://github.com/VoltBit/ellida) - Complete framework, extended set of tests (10.06)
-
 [Old repo](https://github.com/VoltBit/diploma)
 
 [Icons source](http://www.flaticon.com/packs/vikings)
