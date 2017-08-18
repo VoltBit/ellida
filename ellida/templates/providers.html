@@ -8,7 +8,14 @@
 		{%- for provider in providers %}
 			<div class="col">
 				<div class="span panel panel-default">
-					<div class="panel-heading">{{provider.name}}</div>
+					<div class="panel-heading">
+					{{provider.name}}
+					{% if provider.state == "inactive" %}
+						<span class="label label-default">Inactive</span>
+					{% elif provider.state == "active" %}
+						<span class="label label-success">Active</span>
+					{% endif %}
+					</div>
 					<div class="panel-body">
 						{{provider.desc}}
 						{% if provider.type == "general" %}

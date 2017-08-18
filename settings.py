@@ -14,12 +14,12 @@ class EllidaSettings(object):
     # DAEMON_ADDR = "192.168.7.2"
     # ENGINE_ADDR = "192.168.10.4"
     # DAEMON_ADDR = "192.168.10.4"
-    # ENGINE_ADDR = "192.168.10.7"
-    # DAEMON_ADDR = "192.168.10.7"
+    ENGINE_ADDR = "192.168.10.7"
+    DAEMON_ADDR = "192.168.10.7"
     # ENGINE_ADDR = "192.168.160.134"
     # DAEMON_ADDR = "192.168.160.134"
-    ENGINE_ADDR = "192.168.160.136"
-    DAEMON_ADDR = "192.168.160.136"
+    # ENGINE_ADDR = "192.168.160.136"
+    # DAEMON_ADDR = "192.168.160.136"
 
     random_hellos = [
         "Why so silent?!",
@@ -39,7 +39,7 @@ class EllidaSettings(object):
             'name':'LTP',
             'desc': 'Linux Test Project',
             'type': 'general',
-            'state': 'inactive'},
+            'state': 'active'},
         {
             'name': 'LLTng',
             'desc': 'Tracing framework for Linux',
