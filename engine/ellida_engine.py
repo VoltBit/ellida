@@ -22,6 +22,8 @@ init(autoreset=True)
 
 sys.path.append('/home/smith/Dropbox/')
 sys.path.append('/home/adobre/Dropbox/')
+sys.path.append('../../')
+
 from ellida.manager.ellida_manager import EllidaManager
 from ellida.settings import EllidaSettings
 

@@ -23,8 +23,9 @@ from colorama import init, Fore
 init(autoreset=True)
 
 sys.path.append('/home/smith/Dropbox/')
+sys.path.append('../../')
 from ellida.manager.depg import DepGraph
-from ellida.manager.spec_parser import SpecParser
+#from ellida.manager.spec_parser import SpecParser
 from ellida.settings import EllidaSettings
 from ellida.providers.provider import Provider
 from ellida.providers.ltp_provider import LtpProvider
