@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a cluster-wide logging mechanism. A cluster-wide log shall contain node identification, message type, and cluster time identification. This cluster-wide log may be implemented as a central log or as the collection of specific node logs.",
+    "id": "SMM.5.0",
+    "name": "Kernel Profiling",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

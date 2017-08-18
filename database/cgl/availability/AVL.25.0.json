@@ -1,0 +1,10 @@
+{
+    "category": "availability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide an application heartbeat service that allows applications to register to be monitored via specified APIs. The mechanism shall use periodic synchronized events (heartbeats) between an application and the monitor. If a registered application fails to provide a heartbeat, the monitor shall report the events. The application heartbeat service shall be available to any process or sub-process (thread) entity on the system. A process or thread may register for multiple heartbeats.",
+    "id": "AVL.25.0",
+    "name": "Application Heartbeat Monitor",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

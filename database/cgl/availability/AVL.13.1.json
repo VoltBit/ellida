@@ -1,0 +1,10 @@
+{
+    "category": "availability",
+    "dependencies": [],
+    "description": "CGL specifies that the user initialization procedure executed by the program /sbin/init shall provide a mechanism to allow multiple init scripts to run in parallel. CGL further specifies that a service is only started once its dependent services have started.",
+    "id": "AVL.13.1",
+    "name": "Parallel User Initialization During Startup",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

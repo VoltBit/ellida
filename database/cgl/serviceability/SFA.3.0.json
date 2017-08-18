@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide enriched capabilities in response to a system panic. Currently the default system panic behavior is to print a short message to the console and halt the system. CGL systems shall provide a set of configurable functions, including:",
+    "id": "SFA.3.0",
+    "name": "Kernel Dump: Analysis",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

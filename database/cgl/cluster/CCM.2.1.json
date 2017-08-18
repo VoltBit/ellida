@@ -1,0 +1,10 @@
+{
+    "category": "cluster",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a\ncluster communication service with a socket-based interface that provides\nlogical addressing for pointto-point and multipoint communication. The\ncommunication service must hide the physical topology of the cluster from\napplication programs with this logical addressing scheme. Mapping between\nlogical and physical addresses must be performed transparently. In addition,\nthere must be no user-level distinction between inter- and intra-node\ncommunications or between user-space and kernel-space messages.\nConnection-oriented and connectionless modes must be supported.",
+    "id": "CCM.2.1",
+    "name": "Cluster Communication Service - Logical Addressing",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

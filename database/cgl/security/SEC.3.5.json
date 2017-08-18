@@ -1,0 +1,10 @@
+{
+    "category": "security",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide tools to check passwords to ensure they cannot be cracked using common attack methods. These tools shall support at least the DES cipher text format and allow the user to specify rules for rejecting passwords. Objectives Satisfied: O.APPLICATION-TOOLS",
+    "id": "SEC.3.5",
+    "name": "Log Integrity and Origin Authentication",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

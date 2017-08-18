@@ -1,0 +1,10 @@
+{
+    "category": "security",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide PF_KEY support, as defined by",
+    "id": "SEC.7.4",
+    "name": "Execution Quotas",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

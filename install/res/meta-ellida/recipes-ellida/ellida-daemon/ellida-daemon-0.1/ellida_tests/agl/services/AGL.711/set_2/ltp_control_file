@@ -1,0 +1,7 @@
+#Tag       Test case
+#---------------------------------------
+mtest01     mtest01 -p 10
+mmstress    mmstress -x 100
+fork01      fork01
+chdir01     symlink01 -T chdir01
+#----------------------------------------

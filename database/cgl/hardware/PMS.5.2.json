@@ -1,0 +1,10 @@
+{
+    "category": "hardware",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a basic PKI CA service. This service shall conform to the IETF PKIX standards, specifically",
+    "id": "PMS.5.2",
+    "name": "iSCSI Initiator IPv6 Support",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

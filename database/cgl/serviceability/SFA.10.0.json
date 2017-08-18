@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide support to fully enable debugging of multi-t hreaded programs. This support should allow any actions available for debugging a single-threaded (non-threaded) process be extended to be available for every thread in a multi-threaded process. CGL shall provide specific additional debugging capabilities that are unique to multi-threaded applications:",
+    "id": "SFA.10.0",
+    "name": "Kernel Dump: Configurable Destinations",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

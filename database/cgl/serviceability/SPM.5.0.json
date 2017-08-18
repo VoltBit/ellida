@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a remote software package update feature. The package shall include functions that allow kernel modules and application software to be installed or upgraded remotely, while minimizing downtime of the system. The use of the term \"remotely\" does not imply a central package management platform, nor does it preclude such a system. This requirement only necessitates that a single device may be upgraded without requiring the administrator to be physically at the device. Note: Due to the wide range of platforms and applications in use, CGL does not specify a specific downtime limit metric. Downtime targets will vary based on the system application.",
+    "id": "SPM.5.0",
+    "name": "Manual Software Rollback",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

@@ -1,0 +1,10 @@
+{
+    "category": "standard",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide the APIs as defined by the SA Forum AIS B.01.01 or a subsequent level of the relevant AIS specification",
+    "id": "STD.11.2",
+    "name": "Diameter Protocol Minor CGL Features",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

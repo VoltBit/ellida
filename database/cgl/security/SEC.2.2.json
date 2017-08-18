@@ -1,0 +1,10 @@
+{
+    "category": "security",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide support for constraining the privileges and access to system resources of a process independently of the user account under which the process runs, using a mandatory access control (MAC) mechanism. This limits the effects of a security compromise of a process, such as a buffer overflow exploit, even if it running as root. Objectives Satisfied: O.BYPASS-TOE, O.CONTAINMENT, O.ACCESS-MALICIOUS",
+    "id": "SEC.2.2",
+    "name": "Password Integrity Checking",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

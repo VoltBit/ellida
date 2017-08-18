@@ -1,0 +1,10 @@
+{
+    "category": "hardware",
+    "dependencies": [],
+    "description": ", 3279 & 3280. Support for processing certification revocation lists (CRLs) is required, although a specified delivery mechanism such as HTTP/FTP (",
+    "id": "PMT.1.3",
+    "name": "IPMI Accessibility",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

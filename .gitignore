@@ -4,6 +4,4 @@ __pycache__/
 compile/
 node_modules/
 debug/
-cgl/
-agl/
 *.pyc

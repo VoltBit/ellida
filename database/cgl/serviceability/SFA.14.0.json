@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide support for correctly storing core dumps of multi-threaded user-space applications.",
+    "id": "SFA.14.0",
+    "name": "Per Thread CPU Time Limits and Signaling",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

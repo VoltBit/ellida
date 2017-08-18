@@ -1,0 +1,10 @@
+{
+    "category": "hardware",
+    "dependencies": [],
+    "description": ", 3279 & 3280. Support for the management of certification revocation lists (CRLs) is required. Certificate management and request protocols as defined by",
+    "id": "PMS.5.3",
+    "name": "iSCSI Target Discovery",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

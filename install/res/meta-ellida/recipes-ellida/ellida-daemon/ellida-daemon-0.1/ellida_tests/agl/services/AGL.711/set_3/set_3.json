@@ -1,0 +1,4 @@
+{
+    "provider": "lynis",
+    "requirement": "AGL.711",
+}

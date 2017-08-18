@@ -1,0 +1,10 @@
+{
+    "category": "security",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a mechanism for periodically and automatically analyzing log files. This mechanism shall be able to generate reports if any suspicious or unrecognized log entry is detected. Objectives Satisfied: O.DETECT-SOPHISTICATED, O.ACCOUNT-TOE, O.DETECT-TOE,\nO.OBSERVE-TOE, O.DETECT-SYSTEM",
+    "id": "SEC.4.3",
+    "name": "PF_KEY Version 2",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

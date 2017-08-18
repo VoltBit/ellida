@@ -1,0 +1,10 @@
+{
+    "category": "serviceability",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide support for detecting a repeating reboot cycle due to recurring failures. This detection should happen in user space before system services are started. This type of failure requires a response due to the negative impact of repeatedly bringing up and taking down services. A configurable policy is needed to set thresholds of cycling and desired shutdown actions, such as exponential back off, shutdown, or notifying administrators.",
+    "id": "SMM.7.5",
+    "name": "Network Monitoring",
+    "priority": "P2",
+    "spec": "CGL",
+    "type": ""
+}

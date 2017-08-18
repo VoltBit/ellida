@@ -1,0 +1,10 @@
+{
+    "category": "cluster",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide a consistent method to access shared storage from different nodes to ensure partition information isn't changed on one node while a partition is in use on another node that would prevent the change.",
+    "id": "CSM.7.0",
+    "name": "Shared Storage Consistent Access",
+    "priority": "P1",
+    "spec": "CGL",
+    "type": ""
+}

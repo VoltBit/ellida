@@ -1,0 +1,10 @@
+{
+    "category": "standard",
+    "dependencies": [],
+    "description": "CGL specifies that carrier grade Linux shall provide the functionality listed in the Internet draft below.",
+    "id": "STD.4.2.4",
+    "name": "IPv6 Additional Features: ",
+    "priority": "P3",
+    "spec": "CGL",
+    "type": ""
+}
