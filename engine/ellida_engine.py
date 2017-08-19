@@ -35,7 +35,7 @@ class EllidaEngine(Process):
     """
     shutdown = False
 
-    EXEC = "req_exe"
+    _EXEC = "req_exe"
 
     def __init__(self):
         self.colour = Fore.BLUE
@@ -71,9 +71,11 @@ class EllidaEngine(Process):
         packet = json.loads(packet)
         self.tprint("[U]: ", Fore.BLUE)
         self.tprint(packet['event'] + ": " + str(packet['value']) + '\n')
-        if packet['event'] == self.EXEC:
-            try: # TODO make sure this behaviour is fine
-                self.__daemon_socket.send_json(packet, zmq.NOBLOCK)
+        if packet['event'] == self._EXEC:
+            try:
+                # self.__daemon_socket.send_json(packet, zmq.NOBLOCK)
+                print("replay to UI")
+                self.__ui_socket.send_json({'msg': "all good"}, zmq.NOBLOCK)
             except:
                 pass
 

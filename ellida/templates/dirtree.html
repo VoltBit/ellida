@@ -7,12 +7,30 @@
   <script type=text/javascript>
     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
   </script>
+
   <script type=text/javascript>
       $(function() {
         $('#send_tests').click(function(event) {
             $.ajax({
                 url: '/_send_tests',
                 data: $('form').serialize(),
+                type: 'POST',
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            })
+        })
+      });
+  </script>
+  <script type=text/javascript>
+      $(function() {
+        $('.close, .close-btn').click(function(event) {
+            $.ajax({
+                url: '/_cancel_run',
+                data: 'cancel',
                 type: 'POST',
                 success: function(response) {
                     console.log(response);
@@ -59,11 +77,27 @@
         </ul>
     </div>
     {%- if test -%}
-    <!-- <form method="post" role="form" id="send_tests">
-        <input type="submit" value="Run">
-    </form> -->
-    <button class="btn btn-lg btn-default" type="button" id="send_tests">Run</button>
+        <button class="btn btn-lg btn-default" type="button" id="send_tests" data-toggle="modal" data-target="#feedbackModal">Run</button>
     {%- endif %}
 </form>
+
+<div id="feedbackModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" id="close" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Running tests...</h4>
+      </div>
+      <div class="modal-body">
+        <p>Results</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="close" class="btn btn-default close-btn" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 {% endblock %}

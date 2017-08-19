@@ -19,6 +19,7 @@ import json
 import os
 import sys
 import time
+from multiprocessing import Process
 
 sys.path.append(os.path.dirname(__name__))
 # sys.path.append('/home/adobre/Dropbox/')
@@ -31,6 +32,8 @@ test_suite_path = u'../database/test_suite/'
 spec_database_path = u'../database/'
 
 frontend = Blueprint('frontend', __name__)
+
+feedback_proc = None
 
 # We're adding a navbar as well through flask-navbar. In our example, the
 # navbar has an usual amount of Link-Elements, more commonly you will have a
@@ -123,12 +126,30 @@ def test_suite():
 @frontend.route('/_send_tests', methods=['GET', 'POST'])
 def send_tests():
     """ Function for sending the selection to the engine. """
+    global feedback_proc
     packet = {}
     packet['event'] = "req_exe"
     packet['value'] = request.form.getlist('check')
     ellida.engine_socket.send_json(json.dumps(packet))
+    # feedback_proc = Process(target=__log_receiver, args=(), daemon=True)
+    # feedback_proc.start()
+    # print("Started", feedback_proc.pid)
     return json.dumps({'status': "sent", 'msg': packet['value']})
+
+@frontend.route('/_cancel_run', methods=['GET', 'POST'])
+def cancel_run():
+    global feedback_proc
+    print("Closing run dialog")
+    feedback_proc.terminate()
+    return "ok"
 
 @frontend.route('/results/', methods=['GET', 'POST'])
 def results():
     pass
+
+def __log_receiver():
+    print("Waiting...")
+    packet = ellida.engine_socket.recv_json()
+    packet = json.loads(packet)
+    print("Received from engine: ", packet)
+    return json.dumps(packet)
