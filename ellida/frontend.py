@@ -118,13 +118,16 @@ def specs():
 @frontend.route('/test_suite/', methods=['GET', 'POST'])
 def test_suite():
     path = os.path.join(local_dir, test_suite_path)
-    if request.method == 'POST':
-        print("Checkboxes: ", request.form.getlist('check'))
-        packet = {}
-        packet['event'] = "req_exe"
-        packet['value'] = request.form.getlist('check')
-        ellida.engine_socket.send_json(json.dumps(packet))
     return render_template('dirtree.html', tree=make_tree(path), test=True)
+
+@frontend.route('/_send_tests', methods=['GET', 'POST'])
+def send_tests():
+    """ Function for sending the selection to the engine. """
+    packet = {}
+    packet['event'] = "req_exe"
+    packet['value'] = request.form.getlist('check')
+    ellida.engine_socket.send_json(json.dumps(packet))
+    return json.dumps({'status': "sent", 'msg': packet['value']})
 
 @frontend.route('/results/', methods=['GET', 'POST'])
 def results():

@@ -4,6 +4,26 @@
 {% block scripts %}
   {{super()}}
   <script src="{{url_for('static', filename='tree.js')}}"></script>
+  <script type=text/javascript>
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+  </script>
+  <script type=text/javascript>
+      $(function() {
+        $('#send_tests').click(function(event) {
+            $.ajax({
+                url: '/_send_tests',
+                data: $('form').serialize(),
+                type: 'POST',
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            })
+        })
+      });
+  </script>
 {% endblock %}
 
 {% block content %}
@@ -18,7 +38,7 @@
 <meta http-equiv="pragma" content="no-cache" />
 
 <h1>{{ tree.name }}</h1>
-<form method="post" role="form">
+<form method="post" role="form" id="treeForm">
     <div class="tree well">
         <ul>
             {%- for item in tree.children recursive %}
@@ -39,19 +59,11 @@
         </ul>
     </div>
     {%- if test -%}
-    <form method="post" role="form">
+    <!-- <form method="post" role="form" id="send_tests">
         <input type="submit" value="Run">
-    </form>
+    </form> -->
+    <button class="btn btn-lg btn-default" type="button" id="send_tests">Run</button>
     {%- endif %}
 </form>
-
-{%- if test -%}
-<!--     <div class="btn-group" data-toggle="buttons">
-      <label class="btn btn-success">
-        <input type="radio" name="run" id="run" autocomplete="off"> Run
-      </label>
-    </div>
- -->
-{%- endif %}
 
 {% endblock %}
