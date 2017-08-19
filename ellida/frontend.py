@@ -21,7 +21,8 @@ import sys
 import time
 
 sys.path.append(os.path.dirname(__name__))
-sys.path.append('/home/adobre/Dropbox/')
+# sys.path.append('/home/adobre/Dropbox/')
+sys.path.append('../../')
 from settings import EllidaSettings
 import ellida
 
@@ -56,7 +57,7 @@ nav.register_element('frontend_top', Navbar(
         Link('Components', 'http://getbootstrap.com/components/'),
         Link('Javascript', 'http://getbootstrap.com/javascript/'),
         Link('Customize', 'http://getbootstrap.com/customize/'), ),
-    View('Forms Example', '.example_form'),
+    # View('Forms Example', '.example_form'),
     Text('Using Flask-Bootstrap {}'.format(FLASK_BOOTSTRAP_VERSION)), ))
 
 
@@ -99,7 +100,7 @@ def make_tree(path, parent=""):
         for name in lst:
             fn = os.path.join(path, name)
             if os.path.isdir(fn):
-                tree['children'].append(make_tree(fn, tree['name']))
+                tree['children'].append(make_tree(fn, tree['parent'] + '/' + tree['name']))
             else:
                 if not "__init__" in name:
                     tree['children'].append(dict(name=name))

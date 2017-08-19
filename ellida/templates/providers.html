@@ -9,7 +9,7 @@
 			<div class="col">
 				<div class="span panel panel-default">
 					<div class="panel-heading">
-					{{provider.name}}
+					<a href="{{provider.home}}">{{provider.name}}</a>
 					{% if provider.state == "inactive" %}
 						<span class="label label-default">Inactive</span>
 					{% elif provider.state == "active" %}

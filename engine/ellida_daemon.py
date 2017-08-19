@@ -19,6 +19,9 @@ import json
 sys.path.append('/usr/bin/python3.5/site-packages/')
 sys.path.append('/usr/bin/python2.7/site-packages/')
 sys.path.append('/home/smith/Dropbox/')
+# sys.path.append('../../')
+# sys.path.append('../../')
+# sys.path.append('../../')
 
 
 from daemonize import Daemonize
@@ -36,9 +39,10 @@ class EllidaDaemon(object):
     Daemon object that runs on target machine and manages communication between
     Ellida engine and the target
     """
-    proc_pid = "../res/ellida.pid"
     shutdown = False
-    RECV_TIMEOUT = 1000
+    __PROC_PID = "../res/ellida.pid"
+    __RECV_TIMEOUT = 1000
+    __TARGET_ROOT = "/opt/ellida_tests/"
 
     def __init__(self):
         self.__log_setup()
@@ -96,20 +100,19 @@ class EllidaDaemon(object):
             except socket.error:
                 pass
 
-    def __execute_test(self, meta_test):
-        # test_info = meta_test.split('.')
+    def __execute_test(self, target):
+        print("executing: ", target)
+        test_info = target[1][:2].split('/')
+        metadata = json.load(self.__TARGET_ROOT + target[1][:2] + '/' + target[0] + '.json')
         res = None
-        if meta_test == 'testing':
+        if metadata['provider'] == "ltp":
             provider = LtpProvider()
-            provider.configure({'spec': "agl", 'req': '711', 'set': 2})
-            provider.execute(["agl/services/AGL.711/set_2/ltp_control_file"])
-            res = provider.get_raw_result()
-            print("Result: " + str(res))
-            sleep(1)
-            res = provider.get_raw_result()
-            print("Result: " + str(res))
-            sleep(2)
-            provider.cleanup()
+        else:
+            raise ValueError
+        provider.configure({'spec': test_info[0], 'req': test_info[1], 'set': target[0]})
+        provider.execute(metadata['targets'])
+        res = provider.get_raw_result()
+        provider.cleanup()
         print("Result: " + str(res))
 
 
@@ -126,14 +129,16 @@ class EllidaDaemon(object):
         #                            str(EllidaSettings.DAEMON_SOCKET))
         self.__network_setup()
         while not self.shutdown:
-            sockets = dict(self.__poller.poll(self.RECV_TIMEOUT))
+            sockets = dict(self.__poller.poll(self.__RECV_TIMEOUT))
             if sockets.get(self.__engine_socket) == zmq.POLLIN:
                 packet = self.__engine_socket.recv_json()
                 # print("[D] received: ", packet)
                 sys.stdout.write("[D] received: " + str(packet) + '\n')
                 sys.stdout.flush()
                 if packet['event'] == "req_exe":
-                    self.__execute_test(packet['value'])
+                    for test in packet['value']:
+                        print('Executing: ', test)
+                        self.__execute_test(test)
             else:
                 self.__engine_socket.send_string(EllidaSettings.random_hello())
                 sleep(1)

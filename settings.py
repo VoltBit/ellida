@@ -12,12 +12,12 @@ class EllidaSettings(object):
     DAEMON_SOCKET = 27990
 
     # DAEMON_ADDR = "192.168.7.2"
-    # ENGINE_ADDR = "192.168.10.4"
-    # DAEMON_ADDR = "192.168.10.4"
-    #ENGINE_ADDR = "192.168.10.7"
-    #DAEMON_ADDR = "192.168.10.7"
-    ENGINE_ADDR = "192.168.10.6"
-    DAEMON_ADDR = "192.168.10.6"
+    # ENGINE_ADDR = "192.168.10.3"
+    # DAEMON_ADDR = "192.168.10.3"
+    ENGINE_ADDR = "192.168.10.7"
+    DAEMON_ADDR = "192.168.10.7"
+    # ENGINE_ADDR = "192.168.10.6"
+    # # DAEMON_ADDR = "192.168.10.6"
     # ENGINE_ADDR = "192.168.160.134"
     # DAEMON_ADDR = "192.168.160.134"
     # ENGINE_ADDR = "192.168.160.136"
@@ -39,37 +39,44 @@ class EllidaSettings(object):
             'name': 'Core',
             'desc': 'Core set of standalone tests provided by Ellida',
             'type': 'general',
-            'state': 'active'},
+            'state': 'active',
+            'home': ''},
         {
             'name':'LTP',
             'desc': 'Linux Test Project',
             'type': 'general',
-            'state': 'active'},
+            'state': 'active',
+            'home': 'http://linux-test-project.github.io/'},
         {
             'name': 'LLTng',
             'desc': 'Tracing framework for Linux',
             'type': 'monitor',
-            'state': 'inactive'},
+            'state': 'inactive',
+            'home': 'http://lttng.org/'},
         {
             'name': 'Phoronix',
             'desc': 'Benchmarking platform',
             'type': 'benchmark',
-            'state': 'inactive'},
+            'state': 'inactive',
+            'home': 'https://www.phoronix-test-suite.com/'},
         {
             'name': 'Lynis',
             'desc': 'System and security auditing tool',
             'type': 'security',
-            'state': 'inactive'},
+            'state': 'inactive',
+            'home': 'https://cisofy.com/lynis/'},
         {
             'name': 'LDTP',
             'desc': 'Linux Desktop Testing Project',
             'type': 'interface',
-            'state': 'inactive'},
+            'state': 'inactive',
+            'home': 'https://ldtp.freedesktop.org/wiki/'},
         {
             'name': 'Image Tests',
             'desc': 'Yocto package for easy managing and writing pf Python tests',
             'type': 'general',
-            'state': 'inactive'}
+            'state': 'inactive',
+            'home': 'https://wiki.yoctoproject.org/wiki/Image_tests'}
     ]
 
     @classmethod

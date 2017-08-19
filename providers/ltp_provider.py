@@ -29,12 +29,12 @@ class LtpProvider(Provider):
     def configure(self, config):
         self.spec = config['spec']
         self.req = config['req']
-        self.set_no = config['set']
+        self.set_id = config['set']
 
     def __gen_logfile(self):
         timest = datetime.now().strftime('%H:%M_%d.%m.%Y.log')
         self.log_filename = self.__LOG_ROOT + self.spec +\
-            "_" + self.req + "_" + str(self.set_no) + "_" + str(timest)
+            "_" + self.req + "_" + self.set_id + "_" + str(timest)
         self.log_handle = open(self.log_filename, 'a+')
         return self.log_filename
 
