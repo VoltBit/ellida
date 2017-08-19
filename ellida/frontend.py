@@ -19,6 +19,7 @@ import json
 import os
 import sys
 import time
+import random
 from multiprocessing import Process
 
 sys.path.append(os.path.dirname(__name__))
@@ -127,14 +128,21 @@ def test_suite():
 def send_tests():
     """ Function for sending the selection to the engine. """
     global feedback_proc
-    packet = {}
-    packet['event'] = "req_exe"
-    packet['value'] = request.form.getlist('check')
-    ellida.engine_socket.send_json(json.dumps(packet))
-    # feedback_proc = Process(target=__log_receiver, args=(), daemon=True)
-    # feedback_proc.start()
-    # print("Started", feedback_proc.pid)
-    return json.dumps({'status': "sent", 'msg': packet['value']})
+
+    # context = zmq.Context()
+    # engine_socket = context.socket(zmq.PAIR)
+    # engine_socket.connect("tcp://" + EllidaSettings.ENGINE_ADDR + ":" +
+    #                        str(EllidaSettings.UI_SOCKET))
+
+    # packet = {}
+    # packet['event'] = "req_exe"
+    # packet['value'] = request.form.getlist('check')
+    # engine_socket.send_json(json.dumps(packet))
+    # return json.dumps({'status': "sent", 'msg': packet['value']})
+    feedback_proc = Process(target=comm_manager,
+        args=(request.form.getlist('check'),))
+    feedback_proc.start()
+    return json.dumps({'status': "sent", 'msg': 'ok'})
 
 @frontend.route('/_cancel_run', methods=['GET', 'POST'])
 def cancel_run():
@@ -147,9 +155,34 @@ def cancel_run():
 def results():
     pass
 
-def __log_receiver():
-    print("Waiting...")
-    packet = ellida.engine_socket.recv_json()
-    packet = json.loads(packet)
-    print("Received from engine: ", packet)
-    return json.dumps(packet)
+def comm_manager(args):
+    context = zmq.Context()
+    engine_socket = context.socket(zmq.PAIR)
+
+    engine_socket.connect("tcp://" + EllidaSettings.ENGINE_ADDR + ":" +
+                           str(EllidaSettings.UI_SOCKET))
+
+    feedback_port = __get_rand_port()
+    feedback_socket = context.socket(zmq.PAIR)
+    feedback_socket.bind("tcp://*:%s" % feedback_port)
+
+    packet = {}
+    packet['event'] = "req_exe"
+    packet['value'] = args
+    packet['addr'] = EllidaSettings.UI_ADDR
+    packet['port'] = str(feedback_port)
+    print("sending:", packet)
+    engine_socket.send_json(json.dumps(packet))
+    engine_socket.close()
+
+    while True:
+        packet = json.loads(feedback_socket.recv_json())
+        if packet['data'] == 'EXIT':
+            break
+        print(packet['data'])
+    feedback_socket.close()
+    print("UI communication ended")
+
+def __get_rand_port(start=30000, end=35000):
+    return random.randrange(start, end)
+

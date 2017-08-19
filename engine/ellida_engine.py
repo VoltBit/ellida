@@ -39,6 +39,7 @@ class EllidaEngine(Process):
 
     def __init__(self):
         self.colour = Fore.BLUE
+        self.__opened_threads = []
         # self.__network_setup()
         EllidaEngine.shutdown = False
         print("Ellida engine initialized.")
@@ -53,6 +54,8 @@ class EllidaEngine(Process):
         print("Engine shuting down")
         self.shutdown = True
         self.close_engine()
+        for thr in self.__opened_threads:
+            thr.join()
         sys.exit(0)
 
     def __manager_comm(self):
@@ -74,8 +77,12 @@ class EllidaEngine(Process):
         if packet['event'] == self._EXEC:
             try:
                 # self.__daemon_socket.send_json(packet, zmq.NOBLOCK)
-                print("replay to UI")
-                self.__ui_socket.send_json({'msg': "all good"}, zmq.NOBLOCK)
+                fsock = self.context.socket(zmq.PAIR)
+                fsock.connect("tcp://" + packet['addr'] + ':' + packet['port'])
+                for i in range(5):
+                    fsock.send_json(json.dumps({'data': str(i)}))
+                    # time.sleep(1)
+                fsock.send_json(json.dumps({'data': "EXIT"}))
             except:
                 pass
 
@@ -89,13 +96,13 @@ class EllidaEngine(Process):
         }
 
     def __network_setup(self):
-        context = zmq.Context()
-        self.__ui_socket = context.socket(zmq.PAIR)
-        self.__ui_socket.bind("tcp://*:%s" % EllidaSettings.UI_SCOKET)
-        self.__daemon_socket = context.socket(zmq.PAIR)
+        self.context = zmq.Context()
+        self.__ui_socket = self.context.socket(zmq.PAIR)
+        self.__ui_socket.bind("tcp://*:%s" % EllidaSettings.UI_SOCKET)
+        self.__daemon_socket = self.context.socket(zmq.PAIR)
         self.__daemon_socket.bind("tcp://" + EllidaSettings.DAEMON_ADDR + ":" +
                                   str(EllidaSettings.DAEMON_SOCKET))
-        self.__manager_socket = context.socket(zmq.PAIR)
+        self.__manager_socket = self.context.socket(zmq.PAIR)
         self.__manager_socket.bind("tcp://*:%s" % EllidaSettings.MANAGER_SOCKET)
         self.__poller = zmq.Poller()
         self.__poller.register(self.__ui_socket, zmq.POLLIN)
@@ -108,11 +115,20 @@ class EllidaEngine(Process):
         while not EllidaEngine.shutdown:
             sockets = dict(self.__poller.poll())
             if sockets.get(self.__ui_socket) == zmq.POLLIN:
-                self.__ui_comm()
+                # self.__ui_comm()
+                ui_thr = Thread(target=self.__ui_comm)
+                ui_thr.start()
+                self.__opened_threads.append(ui_thr)
             if sockets.get(self.__daemon_socket) == zmq.POLLIN:
                 self.__daemon_comm()
+                # d_thr = Thread(target=self.__daemon_comm)
+                # d_thr.start()
+                # self.__opened_threads.append(d_thr)
             if sockets.get(self.__manager_socket) == zmq.POLLIN:
                 self.__manager_comm()
+                # man_thr = Thread(target=self.__manager_comm)
+                # man_thr.start()
+                # self.__opened_threads.append(man_thr)
 
     def close_engine(self):
         pass
