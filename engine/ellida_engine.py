@@ -116,7 +116,7 @@ class EllidaEngine(Process):
             sockets = dict(self.__poller.poll())
             if sockets.get(self.__ui_socket) == zmq.POLLIN:
                 # self.__ui_comm()
-                ui_thr = Thread(target=self.__ui_comm)
+                ui_thr = Thread(target=self.__ui_comm, daemon=True)
                 ui_thr.start()
                 self.__opened_threads.append(ui_thr)
             if sockets.get(self.__daemon_socket) == zmq.POLLIN:
