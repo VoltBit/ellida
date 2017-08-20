@@ -40,6 +40,7 @@ class EllidaEngine(Process):
     def __init__(self):
         self.colour = Fore.BLUE
         self.__opened_threads = []
+        self.__sockets = []
         # self.__network_setup()
         EllidaEngine.shutdown = False
         print("Ellida engine initialized.")
@@ -53,9 +54,17 @@ class EllidaEngine(Process):
     def kill_handler(self, signal, frame):
         print("Engine shuting down")
         self.shutdown = True
-        self.close_engine()
+        print("Engine shuting down...")
+        for sock in self.__sockets:
+            sock.close()
         for thr in self.__opened_threads:
-            thr.join()
+            print("*")
+            thr.join(1000)
+            if thr.is_alive():
+                print(Fore.RED + "could not join", thr)
+            else:
+                print("joined", thr)
+        print("exiting")
         sys.exit(0)
 
     def __manager_comm(self):
@@ -78,11 +87,13 @@ class EllidaEngine(Process):
             try:
                 # self.__daemon_socket.send_json(packet, zmq.NOBLOCK)
                 fsock = self.context.socket(zmq.PAIR)
+                self.__sockets.append(fsock)
                 fsock.connect("tcp://" + packet['addr'] + ':' + packet['port'])
                 for i in range(5):
                     fsock.send_json(json.dumps({'data': str(i)}))
                     # time.sleep(1)
                 fsock.send_json(json.dumps({'data': "EXIT"}))
+                fsock.close()
             except:
                 pass
 
@@ -110,7 +121,7 @@ class EllidaEngine(Process):
         self.__poller.register(self.__manager_socket, zmq.POLLIN)
 
     def start_engine(self):
-        signal.signal(signal.SIGINT, self.kill_handler)
+        # signal.signal(signal.SIGINT, self.kill_handler)
         self.__network_setup()
         while not EllidaEngine.shutdown:
             sockets = dict(self.__poller.poll())
@@ -129,9 +140,6 @@ class EllidaEngine(Process):
                 # man_thr = Thread(target=self.__manager_comm)
                 # man_thr.start()
                 # self.__opened_threads.append(man_thr)
-
-    def close_engine(self):
-        pass
 
 def main():
     engine = EllidaEngine()

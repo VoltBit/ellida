@@ -4,6 +4,7 @@
 {% block scripts %}
   {{super()}}
   <script src="{{url_for('static', filename='tree.js')}}"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
   <script type=text/javascript>
     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
   </script>
@@ -41,6 +42,20 @@
             })
         })
       });
+  </script>
+  <script type="text/javascript" charset="utf-8">
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+    socket.on('log_event', function(msg) {
+        $('.modal-body').append("<p>" + msg.data + "</p>")
+        console.log(msg.data)
+    });
+    socket.on('exit_event', function(msg) {
+        console.log('Comm ended: ' + msg);
+    });
+    socket.on('connect', function() {
+        socket.emit('connection', {data: 'I\'m connected!'});
+        console.log('Comm started');
+    });
   </script>
 {% endblock %}
 

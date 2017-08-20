@@ -9,6 +9,8 @@ from flask import Blueprint, render_template, flash, redirect, url_for
 from flask_bootstrap import __version__ as FLASK_BOOTSTRAP_VERSION
 from flask_nav.elements import Navbar, View, Subgroup, Link, Text, Separator
 from flask import request
+from flask import current_app as app
+from flask_socketio import emit
 from markupsafe import escape
 
 from .forms import SignupForm
@@ -21,12 +23,16 @@ import sys
 import time
 import random
 from multiprocessing import Process
+from threading import Thread
 
-sys.path.append(os.path.dirname(__name__))
+import eventlet
+eventlet.monkey_patch()
+
+# sys.path.append(os.path.dirname(__name__))
 # sys.path.append('/home/adobre/Dropbox/')
 sys.path.append('../../')
 from settings import EllidaSettings
-import ellida
+from sockets import socketio
 
 local_dir = os.path.dirname(__file__)
 test_suite_path = u'../database/test_suite/'
@@ -35,6 +41,7 @@ spec_database_path = u'../database/'
 frontend = Blueprint('frontend', __name__)
 
 feedback_proc = None
+# socketio = None
 
 # We're adding a navbar as well through flask-navbar. In our example, the
 # navbar has an usual amount of Link-Elements, more commonly you will have a
@@ -139,21 +146,28 @@ def send_tests():
     # packet['value'] = request.form.getlist('check')
     # engine_socket.send_json(json.dumps(packet))
     # return json.dumps({'status': "sent", 'msg': packet['value']})
-    feedback_proc = Process(target=comm_manager,
+    # feedback_proc = Process(target=comm_manager,
+    #     args=(request.form.getlist('check'), socketio))
+    # feedback_proc.start()
+    feedback_thread = Thread(target=comm_manager,
         args=(request.form.getlist('check'),))
-    feedback_proc.start()
+    feedback_thread.start()
     return json.dumps({'status': "sent", 'msg': 'ok'})
 
 @frontend.route('/_cancel_run', methods=['GET', 'POST'])
 def cancel_run():
     global feedback_proc
     print("Closing run dialog")
-    feedback_proc.terminate()
+    # feedback_proc.terminate()
     return "ok"
 
 @frontend.route('/results/', methods=['GET', 'POST'])
 def results():
     pass
+
+@socketio.on('connection')
+def conn_handler(json):
+    print('received json: ' + str(json))
 
 def comm_manager(args):
     context = zmq.Context()
@@ -178,8 +192,10 @@ def comm_manager(args):
     while True:
         packet = json.loads(feedback_socket.recv_json())
         if packet['data'] == 'EXIT':
+            socketio.emit('exit_event', {'data': 'EXIT'})
             break
         print(packet['data'])
+        socketio.emit('log_event', {'data': packet['data']})
     feedback_socket.close()
     print("UI communication ended")
 

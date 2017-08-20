@@ -8,3 +8,5 @@ flask-appconfig
 flask-nav
 flask-debug
 flask-bootstrap
+flask-socketio
+eventlet

@@ -12,7 +12,7 @@ class EllidaSettings(object):
     DAEMON_SOCKET = 27990
     TEST = 27800
 
-    UI_ADDR = "192.168.10.7"
+    UI_ADDR = "192.168.10.3"
     # DAEMON_ADDR = "192.168.7.2"
     ENGINE_ADDR = "192.168.10.3"
     DAEMON_ADDR = "192.168.10.3"
