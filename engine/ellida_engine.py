@@ -79,11 +79,11 @@ class EllidaEngine(Process):
             client_id = msg.split('_')[1]
             if client_id not in self.__clients:
                 self.__clients.append(client_id)
-                self.tprint("[D]: " + str(client_id) + "joined", Fore.RED)
+                self.tprint("[D]: " + str(client_id) + " joined\n", Fore.RED)
         elif "exit" in msg:
             client_id = msg.split('_')[1]
             self.__clients.remove(client_id)
-            self.tprint("[D]: " + str(client_id) + "left", Fore.RED)
+            self.tprint("[D]: " + str(client_id) + " left\n", Fore.RED)
         else:
             self.tprint("[D]: ", Fore.RED)
             self.tprint(msg + '\n')

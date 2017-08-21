@@ -11,19 +11,19 @@ class EllidaSettings(object):
     UI_SOCKET = 27997
     DAEMON_SOCKET = 27990
 
-    # UI_ADDR = "voltbit.go.ro"
+    UI_ADDR = "voltbit.go.ro"
     # UI_ADDR = "192.168.10.3"
-    UI_ADDR = "192.168.10.7"
+    # UI_ADDR = "192.168.10.7"
     # DAEMON_ADDR = "192.168.7.2"
     # ENGINE_ADDR = "192.168.10.3"
     # DAEMON_ADDR = "192.168.10.3"
-    ENGINE_ADDR = "192.168.10.7"
+    # ENGINE_ADDR = "192.168.10.7"
     DAEMON_ADDR = "192.168.10.7"
     # ENGINE_ADDR = "192.168.10.6"
     # # DAEMON_ADDR = "192.168.10.6"
     # ENGINE_ADDR = "192.168.160.136"
     # DAEMON_ADDR = "192.168.160.136"
-    # ENGINE_ADDR = "voltbit.go.ro"
+    ENGINE_ADDR = "voltbit.go.ro"
     # DAEMON_ADDR = "voltbit.go.ro"
 
 
