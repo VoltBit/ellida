@@ -19,11 +19,6 @@ class Provider(object):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_result(self, type=None):
-        """ TODO """
-        raise NotImplementedError()
-
-    @abstractmethod
     def _start_test(self, command=None):
         """ TODO """
         raise NotImplementedError()

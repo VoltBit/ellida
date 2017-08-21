@@ -25,7 +25,7 @@ class LtpProvider(Provider):
     def __init__(self, log_filename=Provider.GLOBAL_LOG_NAMEFILE):
         super(LtpProvider, self).__init__()
         self.log_filename = log_filename
-        self.log_handle = open(log_filename, 'a+')
+        # self.log_handle = open(log_filename, 'a+')
         self.spec = None
 
     def configure(self, config):
@@ -49,16 +49,6 @@ class LtpProvider(Provider):
             result = self._start_test(command)
             results.append(result)
         return results
-
-    def get_raw_result(self):
-        result = self.log_handle.read()
-        return result
-
-    def get_ellida_result(self):
-        pass
-
-    def get_result(self, type=None):
-        pass
 
     def _start_test(self, command=None):
         ltp_proc = subprocess.Popen(command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)

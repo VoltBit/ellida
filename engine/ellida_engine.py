@@ -41,6 +41,7 @@ class EllidaEngine(Process):
         self.colour = Fore.BLUE
         self.__opened_threads = []
         self.__sockets = []
+        self.__clients = []
         # self.__network_setup()
         EllidaEngine.shutdown = False
         print("Ellida engine initialized.")
@@ -74,8 +75,30 @@ class EllidaEngine(Process):
 
     def __daemon_comm(self):
         msg = self.__daemon_socket.recv_string()
-        self.tprint("[D]: ", Fore.RED)
-        self.tprint(msg + '\n')
+        if "init" in msg:
+            client_id = msg.split('_')[1]
+            if client_id not in self.__clients:
+                self.__clients.append(client_id)
+                self.tprint("[D]: " + str(client_id) + "joined", Fore.RED)
+        elif "exit" in msg:
+            client_id = msg.split('_')[1]
+            self.__clients.remove(client_id)
+            self.tprint("[D]: " + str(client_id) + "left", Fore.RED)
+        else:
+            self.tprint("[D]: ", Fore.RED)
+            self.tprint(msg + '\n')
+
+    def __drop_test(self, packet):
+        if 'addr' not in packet or 'port' not in packet:
+            # TODO
+            print(Fore.RED + "No information about the connection for request:", packet)
+            sys.exit(1)
+        fsock = self.__context.socket(zmq.PAIR)
+        self.__sockets.append(fsock)
+        fsock.connect("tcp://" + packet['addr'] + ':' + packet['port'])
+        fsock.send(bytes("No client connected (no daemon running)", 'utf-8'))
+        fsock.send(bytes("ELLIDA_EXIT", 'utf-8'))
+        fsock.close()
 
     def __ui_comm(self):
         packet = json.dumps({})
@@ -84,6 +107,8 @@ class EllidaEngine(Process):
         self.tprint("[U]: ", Fore.BLUE)
         self.tprint(packet['event'] + ": " + str(packet['value']) + '\n')
         if packet['event'] == self._EXEC:
+            if not self.__clients:
+                self.__drop_test(packet)
             try:
                 self.__daemon_socket.send_json(packet, zmq.NOBLOCK)
                 print("Sending ", packet, " to daemon")
@@ -100,13 +125,13 @@ class EllidaEngine(Process):
         }
 
     def __network_setup(self):
-        self.context = zmq.Context()
-        self.__ui_socket = self.context.socket(zmq.PAIR)
+        self.__context = zmq.Context()
+        self.__ui_socket = self.__context.socket(zmq.PAIR)
         self.__ui_socket.bind("tcp://*:%s" % EllidaSettings.UI_SOCKET)
-        self.__daemon_socket = self.context.socket(zmq.PAIR)
+        self.__daemon_socket = self.__context.socket(zmq.PAIR)
         self.__daemon_socket.bind("tcp://" + EllidaSettings.DAEMON_ADDR + ":" +
                                   str(EllidaSettings.DAEMON_SOCKET))
-        self.__manager_socket = self.context.socket(zmq.PAIR)
+        self.__manager_socket = self.__context.socket(zmq.PAIR)
         self.__manager_socket.bind("tcp://*:%s" % EllidaSettings.MANAGER_SOCKET)
         self.__poller = zmq.Poller()
         self.__poller.register(self.__ui_socket, zmq.POLLIN)

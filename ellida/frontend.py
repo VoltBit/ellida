@@ -39,12 +39,13 @@ spec_database_path = u'../database/'
 
 frontend = Blueprint('frontend', __name__)
 
+target_machine = '1'
 
 nav.register_element('frontend_top', Navbar(
     View('Ellida framework', '.index'),
     View('Home', '.index'),
     View('Providers', '.providers'),
-    View('Results', '.results'),
+    # View('Results', '.results'),
     View('Test suite', '.test_suite'),
     Subgroup(
         'Specifications',
@@ -177,12 +178,13 @@ def comm_manager(args):
     while True:
         # packet = json.loads(feedback_socket.recv_json())
         packet = feedback_socket.recv()
+        print("Received:", packet)
         if packet == bytes('ELLIDA_EXIT','utf-8'):
             socketio.emit('exit_event', {'data': 'EXIT'})
             break
         # print(packet['data'])
         # print(packet)
-        socketio.emit('log_event', {'data': packet.decode('ascii')})
+        socketio.emit('log_event', {'data': packet.decode('utf-8')})
     feedback_socket.close()
     print("UI communication ended")
 

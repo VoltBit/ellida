@@ -8,6 +8,21 @@
   <script type=text/javascript>
     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
   </script>
+  <!-- <script type=text/javascript>
+      $(function() {
+          $('.modal-content').resizable({
+            //alsoResize: ".modal-dialog",
+            minHeight: 300,
+            minWidth: 300
+        })
+        $('.modal-dialog').draggable()
+        $('#feedbackModal').on('show.bs.modal', function () {
+            $(this).find('.modal-body').css({
+                'max-height':'100%'
+            })
+        })
+    });
+    </script> -->
   <script type=text/javascript>
       $(function() {
         $('#send_tests').click(function(event) {
@@ -28,7 +43,7 @@
   <script type=text/javascript>
       $(function() {
         $('.close, .close-btn').click(function(event) {
-            $('.modal-body').val("<p>Log results</p>")
+            $('.modal-body').html("<p>Log results</p>")
             $.ajax({
                 url: '/_cancel_run',
                 data: 'cancel',
@@ -47,6 +62,7 @@
     var socket = io.connect('http://' + document.domain + ':' + location.port);
     socket.on('log_event', function(msg) {
         $('.modal-body').append("<pre><code>" + msg.data + "</pre></code>")
+        $('.modal-title').html("<h4>Updated</h4>")
         console.log(msg.data)
     });
     socket.on('exit_event', function(msg) {
@@ -97,7 +113,7 @@
 </form>
 
 <div id="feedbackModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
 
     <div class="modal-content">
       <div class="modal-header">
@@ -105,7 +121,7 @@
         <h4 class="modal-title">Running tests...</h4>
       </div>
       <div class="modal-body" style="white-space: pre-wrap;">
-        <p>Results</p>
+
       </div>
       <div class="modal-footer">
         <button type="button" id="close" class="btn btn-default close-btn" data-dismiss="modal">Close</button>

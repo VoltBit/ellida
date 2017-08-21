@@ -61,6 +61,7 @@ class EllidaDaemon(object):
     def kill_handler(self, signal, frame):
         self.logger.debug("Ellida daemon shuting down")
         self.shutdown = True
+        self.__engine_unregister()
         for sock in self.__sockets:
             sock.close()
         sys.exit(0)
@@ -119,6 +120,11 @@ class EllidaDaemon(object):
         provider.cleanup()
         return result
 
+    def __engine_register(self):
+        self.__engine_socket.send_string("init_1")
+
+    def __engine_unregister(self):
+        self.__engine_socket.send_string("exit_1")
 
     """ Ideas:
     Try to make multiple comunication modes based on the zmq architecture in order to provide
@@ -132,6 +138,7 @@ class EllidaDaemon(object):
         # self.__engine_socket.connect("tcp://" + EllidaSettings.ENGINE_ADDR + ":" +
         #                            str(EllidaSettings.DAEMON_SOCKET))
         self.__network_setup()
+        self.__engine_register()
         while not self.shutdown:
             sockets = dict(self.__poller.poll(self._RECV_TIMEOUT))
             if sockets.get(self.__engine_socket) == zmq.POLLIN:
@@ -153,8 +160,8 @@ class EllidaDaemon(object):
                     fsock.send(bytes("ELLIDA_EXIT", 'utf-8'))
                     fsock.close()
             else:
-                self.__engine_socket.send_string(EllidaSettings.random_hello())
-                time.sleep(2.5)
+                # self.__engine_socket.send_string(EllidaSettings.random_hello())
+                time.sleep(5)
 
         print("Daemon thread terminated")
 

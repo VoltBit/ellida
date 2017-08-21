@@ -5,3 +5,4 @@ compile/
 node_modules/
 debug/
 *.pyc
+settings.py
