@@ -85,15 +85,8 @@ class EllidaEngine(Process):
         self.tprint(packet['event'] + ": " + str(packet['value']) + '\n')
         if packet['event'] == self._EXEC:
             try:
-                # self.__daemon_socket.send_json(packet, zmq.NOBLOCK)
-                fsock = self.context.socket(zmq.PAIR)
-                self.__sockets.append(fsock)
-                fsock.connect("tcp://" + packet['addr'] + ':' + packet['port'])
-                for i in range(5):
-                    fsock.send_json(json.dumps({'data': str(i)}))
-                    # time.sleep(1)
-                fsock.send_json(json.dumps({'data': "EXIT"}))
-                fsock.close()
+                self.__daemon_socket.send_json(packet, zmq.NOBLOCK)
+                print("Sending ", packet, " to daemon")
             except:
                 pass
 
@@ -126,10 +119,10 @@ class EllidaEngine(Process):
         while not EllidaEngine.shutdown:
             sockets = dict(self.__poller.poll())
             if sockets.get(self.__ui_socket) == zmq.POLLIN:
-                # self.__ui_comm()
-                ui_thr = Thread(target=self.__ui_comm, daemon=True)
-                ui_thr.start()
-                self.__opened_threads.append(ui_thr)
+                self.__ui_comm()
+                # ui_thr = Thread(target=self.__ui_comm, daemon=True)
+                # ui_thr.start()
+                # self.__opened_threads.append(ui_thr)
             if sockets.get(self.__daemon_socket) == zmq.POLLIN:
                 self.__daemon_comm()
                 # d_thr = Thread(target=self.__daemon_comm)

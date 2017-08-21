@@ -22,7 +22,6 @@ import os
 import sys
 import time
 import random
-from multiprocessing import Process
 from threading import Thread
 
 import eventlet
@@ -40,12 +39,7 @@ spec_database_path = u'../database/'
 
 frontend = Blueprint('frontend', __name__)
 
-feedback_proc = None
-# socketio = None
 
-# We're adding a navbar as well through flask-navbar. In our example, the
-# navbar has an usual amount of Link-Elements, more commonly you will have a
-# lot more View instances.
 nav.register_element('frontend_top', Navbar(
     View('Ellida framework', '.index'),
     View('Home', '.index'),
@@ -72,13 +66,10 @@ nav.register_element('frontend_top', Navbar(
     Text('Using Flask-Bootstrap {}'.format(FLASK_BOOTSTRAP_VERSION)), ))
 
 
-# Our index-page just shows a quick explanation. Check out the template
-# "templates/index.html" documentation for more details.
 @frontend.route('/')
 def index():
     return render_template('index.html')
 
-# Shows a long signup form, demonstrating form rendering.
 @frontend.route('/example-form/', methods=('GET', 'POST'))
 def example_form():
     form = SignupForm()
@@ -134,7 +125,6 @@ def test_suite():
 @frontend.route('/_send_tests', methods=['GET', 'POST'])
 def send_tests():
     """ Function for sending the selection to the engine. """
-    global feedback_proc
 
     # context = zmq.Context()
     # engine_socket = context.socket(zmq.PAIR)
@@ -146,9 +136,6 @@ def send_tests():
     # packet['value'] = request.form.getlist('check')
     # engine_socket.send_json(json.dumps(packet))
     # return json.dumps({'status': "sent", 'msg': packet['value']})
-    # feedback_proc = Process(target=comm_manager,
-    #     args=(request.form.getlist('check'), socketio))
-    # feedback_proc.start()
     feedback_thread = Thread(target=comm_manager,
         args=(request.form.getlist('check'),))
     feedback_thread.start()
@@ -156,9 +143,7 @@ def send_tests():
 
 @frontend.route('/_cancel_run', methods=['GET', 'POST'])
 def cancel_run():
-    global feedback_proc
     print("Closing run dialog")
-    # feedback_proc.terminate()
     return "ok"
 
 @frontend.route('/results/', methods=['GET', 'POST'])
@@ -190,12 +175,14 @@ def comm_manager(args):
     engine_socket.close()
 
     while True:
-        packet = json.loads(feedback_socket.recv_json())
-        if packet['data'] == 'EXIT':
+        # packet = json.loads(feedback_socket.recv_json())
+        packet = feedback_socket.recv()
+        if packet == bytes('ELLIDA_EXIT','utf-8'):
             socketio.emit('exit_event', {'data': 'EXIT'})
             break
-        print(packet['data'])
-        socketio.emit('log_event', {'data': packet['data']})
+        # print(packet['data'])
+        # print(packet)
+        socketio.emit('log_event', {'data': packet.decode('ascii')})
     feedback_socket.close()
     print("UI communication ended")
 

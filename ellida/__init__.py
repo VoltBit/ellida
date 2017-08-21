@@ -12,7 +12,7 @@ init(autoreset=True)
 
 import zmq
 
-context_test = zmq.Context()
+# context = zmq.Context()
 # engine_socket = context.socket(zmq.PAIR)
 
 # engine_socket.connect("tcp://" + EllidaSettings.ENGINE_ADDR + ":" +
@@ -26,5 +26,4 @@ def create_app(configfile=None):
     app.register_blueprint(frontend)
     app.config['BOOTSTRAP_SERVE_LOCAL'] = True
     nav.init_app(app)
-    # socketio.init_app(app)
     return app

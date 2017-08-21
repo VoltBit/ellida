@@ -8,7 +8,6 @@
   <script type=text/javascript>
     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
   </script>
-
   <script type=text/javascript>
       $(function() {
         $('#send_tests').click(function(event) {
@@ -29,6 +28,7 @@
   <script type=text/javascript>
       $(function() {
         $('.close, .close-btn').click(function(event) {
+            $('.modal-body').val("<p>Log results</p>")
             $.ajax({
                 url: '/_cancel_run',
                 data: 'cancel',
@@ -46,7 +46,7 @@
   <script type="text/javascript" charset="utf-8">
     var socket = io.connect('http://' + document.domain + ':' + location.port);
     socket.on('log_event', function(msg) {
-        $('.modal-body').append("<p>" + msg.data + "</p>")
+        $('.modal-body').append("<pre><code>" + msg.data + "</pre></code>")
         console.log(msg.data)
     });
     socket.on('exit_event', function(msg) {
@@ -104,7 +104,7 @@
         <button type="button" id="close" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Running tests...</h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="white-space: pre-wrap;">
         <p>Results</p>
       </div>
       <div class="modal-footer">

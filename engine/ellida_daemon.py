@@ -11,17 +11,15 @@ import socket
 import logging
 import signal
 import sys
-from time import sleep
-from threading import Thread
+import time
 import zmq
 import json
+from threading import Thread
 
 sys.path.append('/usr/bin/python3.5/site-packages/')
 sys.path.append('/usr/bin/python2.7/site-packages/')
 sys.path.append('/home/smith/Dropbox/')
-# sys.path.append('../../')
-# sys.path.append('../../')
-# sys.path.append('../../')
+sys.path.append('../../')
 
 
 from daemonize import Daemonize
@@ -40,14 +38,15 @@ class EllidaDaemon(object):
     Ellida engine and the target
     """
     shutdown = False
-    __PROC_PID = "../res/ellida.pid"
-    __RECV_TIMEOUT = 1000
-    __TARGET_ROOT = "/opt/ellida_tests/"
+    _PROC_PID = "../res/ellida.pid"
+    _RECV_TIMEOUT = 1000
+    _TARGET_ROOT = "/opt/ellida_tests/"
 
     def __init__(self):
         self.__log_setup()
         self.active_threads = []
         self.active_sockets = []
+        self.__sockets = []
         # self.__network_setup()
 
     def __network_setup(self):
@@ -60,9 +59,10 @@ class EllidaDaemon(object):
         self.__poller.register(self.__engine_socket, zmq.POLLIN)
 
     def kill_handler(self, signal, frame):
-        """ TODO """
         self.logger.debug("Ellida daemon shuting down")
         self.shutdown = True
+        for sock in self.__sockets:
+            sock.close()
         sys.exit(0)
 
     def __log_setup(self):
@@ -82,7 +82,7 @@ class EllidaDaemon(object):
                 log_socket.connect((self.engine_addr, self.log_port))
                 break
             except socket.error:
-                sleep(1)
+                time.sleep(1)
         for log in self.log_results:
             payload = bytes(log, 'utf-8')
             log_socket.sendto(payload, (self.engine_addr, self.log_port))
@@ -101,19 +101,23 @@ class EllidaDaemon(object):
                 pass
 
     def __execute_test(self, target):
-        print("executing: ", target)
-        test_info = target[1][:2].split('/')
-        metadata = json.load(self.__TARGET_ROOT + target[1][:2] + '/' + target[0] + '.json')
+        metadata_path = self._TARGET_ROOT + target[1][2:] + '/' + target[0] + '/' + target[0] + '.json'
+        with open(metadata_path) as metadata_file:
+            metadata = json.load(metadata_file)
         res = None
         if metadata['provider'] == "ltp":
             provider = LtpProvider()
+            # print("Data:", metadata)
         else:
             raise ValueError
+        test_info = target[1][2:].split('/')
         provider.configure({'spec': test_info[0], 'req': test_info[1], 'set': target[0]})
-        provider.execute(metadata['targets'])
-        res = provider.get_raw_result()
+        for x in range(len(metadata['targets'])):
+            metadata['targets'][x] = self._TARGET_ROOT + target[1][2:] + '/' + target[0] + '/' + metadata['targets'][x]
+        # print("sending targets:", metadata['targets'])
+        result = provider.execute(metadata['targets'])
         provider.cleanup()
-        print("Result: " + str(res))
+        return result
 
 
     """ Ideas:
@@ -129,19 +133,28 @@ class EllidaDaemon(object):
         #                            str(EllidaSettings.DAEMON_SOCKET))
         self.__network_setup()
         while not self.shutdown:
-            sockets = dict(self.__poller.poll(self.__RECV_TIMEOUT))
+            sockets = dict(self.__poller.poll(self._RECV_TIMEOUT))
             if sockets.get(self.__engine_socket) == zmq.POLLIN:
                 packet = self.__engine_socket.recv_json()
-                # print("[D] received: ", packet)
                 sys.stdout.write("[D] received: " + str(packet) + '\n')
                 sys.stdout.flush()
                 if packet['event'] == "req_exe":
+                    if 'addr' not in packet or 'port' not in packet:
+                        print(Fore.RED + "No information about the connection for request:", packet)
+                        sys.exit(1)
+                    fsock = self.__context.socket(zmq.PAIR)
+                    self.__sockets.append(fsock)
+                    fsock.connect("tcp://" + packet['addr'] + ':' + packet['port'])
                     for test in packet['value']:
                         print('Executing: ', test)
-                        self.__execute_test(test)
+                        results = self.__execute_test(eval(test))
+                        for result in results:
+                            fsock.send(result)
+                    fsock.send(bytes("ELLIDA_EXIT", 'utf-8'))
+                    fsock.close()
             else:
                 self.__engine_socket.send_string(EllidaSettings.random_hello())
-                sleep(1)
+                time.sleep(2.5)
 
         print("Daemon thread terminated")
 
