@@ -1,5 +1,5 @@
 {
     "provider": "ltp",
-    "requirement": "AGL.711",
+    "requirement": "AGL.611",
     "targets": ["ltp_control_file"]
 }
