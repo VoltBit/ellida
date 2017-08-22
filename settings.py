@@ -11,9 +11,10 @@ class EllidaSettings(object):
     UI_SOCKET = 27997
     DAEMON_SOCKET = 27990
 
-    UI_ADDR = "ellida.go.ro"
+    # UI_ADDR = "ellida.go.ro"
     # UI_ADDR = "192.168.10.3"
     # UI_ADDR = "192.168.10.7"
+    UI_ADDR = "192.168.160.137"
     DAEMON_ADDR = "192.168.160.137"
     # ENGINE_ADDR = "192.168.10.3"
     # DAEMON_ADDR = "192.168.10.3"
@@ -21,9 +22,9 @@ class EllidaSettings(object):
     # DAEMON_ADDR = "192.168.10.7"
     # ENGINE_ADDR = "192.168.10.6"
     # # DAEMON_ADDR = "192.168.10.6"
-    # ENGINE_ADDR = "192.168.160.136"
+    ENGINE_ADDR = "192.168.160.137"
     # DAEMON_ADDR = "192.168.160.136"
-    ENGINE_ADDR = "ellida.go.ro"
+    # ENGINE_ADDR = "ellida.go.ro"
     # DAEMON_ADDR = "voltbit.go.ro"
 
 

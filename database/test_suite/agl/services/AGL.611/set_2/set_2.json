@@ -1,4 +1,5 @@
 {
-	"provider": "ellida-core",
-	"requirement": "AGL.711"
+	"provider": "core",
+	"requirement": "AGL.611",
+    "targets": ["test.py"]
 }

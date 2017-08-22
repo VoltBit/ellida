@@ -30,6 +30,7 @@ from daemonize import Daemonize
 
 from ellida.providers.provider import Provider
 from ellida.providers.ltp_provider import LtpProvider
+from ellida.providers.core_provider import CoreProvider
 from ellida.settings import EllidaSettings
 
 class EllidaDaemon(object):
@@ -105,17 +106,19 @@ class EllidaDaemon(object):
         metadata_path = self._TARGET_ROOT + target[1][2:] + '/' + target[0] + '/' + target[0] + '.json'
         with open(metadata_path) as metadata_file:
             metadata = json.load(metadata_file)
+        print("Loaded:", metadata)
         res = None
         if metadata['provider'] == "ltp":
             provider = LtpProvider()
-            # print("Data:", metadata)
+        elif metadata['provider'] == "core":
+            provider = CoreProvider()
         else:
             raise ValueError
         test_info = target[1][2:].split('/')
         provider.configure({'spec': test_info[0], 'req': test_info[1], 'set': target[0]})
         for x in range(len(metadata['targets'])):
             metadata['targets'][x] = self._TARGET_ROOT + target[1][2:] + '/' + target[0] + '/' + metadata['targets'][x]
-        # print("sending targets:", metadata['targets'])
+        print("sending targets:", metadata['targets'])
         result = provider.execute(metadata['targets'])
         provider.cleanup()
         return result

@@ -41,7 +41,7 @@ class CoreProvider(Provider):
         return self.log_filename
 
     def execute(self, targets):
-    	results = []
+        results = []
         for target in targets:
             command = self.__BASE_CMD + target
             # command = self.__BASE_CMD + target + ' 2>&1 ' + self.__gen_logfile()
@@ -50,8 +50,11 @@ class CoreProvider(Provider):
             results.append(result)
         return results
 
-	def _start_test(self, command=None):
-		pass
+    def _start_test(self, command=None):
+        ltp_proc = subprocess.Popen(command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        res, err = ltp_proc.communicate()
+        print("code:", ltp_proc.returncode)
+        return res
 
-	def cleanup(self):
+    def cleanup(self):
         self.log_handle.close()
