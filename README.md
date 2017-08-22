@@ -20,4 +20,4 @@ Diploma project 2017
 
 [Icons source](http://www.flaticon.com/packs/vikings)
 
-[Working demo (hopefully)](http://voltbit.go.ro:5000/)
+[Working demo (hopefully)](http://ellida.go.ro:5000/)
