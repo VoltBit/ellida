@@ -1,0 +1,5 @@
+{
+	"provider": "core",
+	"requirement": "AGL.611",
+    "targets": ["test.py"]
+}
