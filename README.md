@@ -8,16 +8,22 @@ Diploma project 2017
 
 ### Goals
 
-- [ ] 1. Used the full power of the Yocto Project
-- [ ] 2. Permit extensibility and remote execution
-- [ ] 3. Encapsulate the available Linux testing suites
-- [ ] 4. Identify new testing formats suitable for specifications such as CGL or AGL
-- [ ] 5. Define a proof of concept for this new testing formats
-- [ ] 6. Evaluate the performance/cost/efficiency
-- [ ] 7. Provide further development input
+- [x] 1. Use the Yocto Project
+- [x] 2. Permit extensibility and remote execution
+- [x] 3. Encapsulate the available Linux testing suites
+- [x] 4. Identify new testing formats suitable for specifications such as CGL or AGL
+- [x] 5. Define a proof of concept for this new testing formats
+- [x] 6. Evaluate the performance/cost/efficiency
+- [x] 7. Provide further development input
 
 [Old repo](https://github.com/VoltBit/diploma)
 
 [Icons source](http://www.flaticon.com/packs/vikings)
 
 [Working demo (hopefully)](http://ellida.go.ro:5000/)
+
+### Installation and usage instructions
+
+TODO
+
+

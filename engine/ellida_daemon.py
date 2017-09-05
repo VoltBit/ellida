@@ -27,6 +27,7 @@ from daemonize import Daemonize
 # from ellidadaemon.settings import EllidaSettings
 # from ellidadaemon.providers.provider import Provider
 # from ellidadaemon.providers.ltp_provider import LtpProvider
+# from ellidadaemon.providers.core_provider import CoreProvider
 
 from ellida.providers.provider import Provider
 from ellida.providers.ltp_provider import LtpProvider
