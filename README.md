@@ -16,8 +16,8 @@ Main components
 4. The Manager - tool that keeps the internal representation of the
 specifications organised and up to date
 
+<center><img src="res/ellida_arch.png" width=700></center>
 
-<img src="https://github.com/VoltBit/ellida/tree/master/res/ellida_arch.png" width=350>
 The framework is intened to parse a specification, download a test suite
 specific to that specification, add Yocto specific configurations required for
 adding all dependencies (test suites and test control component), execute the
@@ -26,10 +26,9 @@ tests remotely and return the results.
 Currently supported specs are AGL and CGL.
 
 Ellida is a diploma project, the thesis contents that go into details about the
-architecture can be found at [Theseis][1].
+architecture can be found at [Theseis](https://github.com/VoltBit/diploma-thesis).
 
 [Icons source](http://www.flaticon.com/packs/vikings)
-[1]:(https://github.com/VoltBit/diploma-thesis)
 
 ### Installation and usage instructions
 
