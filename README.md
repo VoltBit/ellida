@@ -32,5 +32,23 @@ architecture can be found at [Thesis](https://github.com/VoltBit/diploma-thesis)
 
 ### Installation and usage instructions
 
-TODO
+The system can be used after:
+
+1. The current repository was cloned
+2. The daemon component is installed on the target
+
+Note the requirments.txt file where all or most of the dependencies are included.
+
+To start the system use:
+
+    * ui.py for starting the interface (the controller)
+    * engine/ellida_engine.py for starting the engine
+    * manager/ellida_manager for starting the manager
+
+The install folder contains the Yocto layer for Ellida and build environment
+configuration files.
+
+The install.sh script was used during the development to copy relevant framework
+files to the Poky directory structure. Should only be used as reference for the
+required files as the paths are hardcoded.
 
